@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sensors_array">
+        <item>Accelerometer</item>
+        <item>Magnetometer</item>
+        <item>Orientation</item>
+        <item>Gyroscope</item>
+        <item>Light</item>
+        <item>Pressure</item>
+        <item>Device Temp</item>
+        <item>Proximity</item>
+        <item>Gravity</item>
+        <item>Linear Accel</item>
+        <item>Rotation</item>
+        <item>Humidity</item>
+        <item>Device Temp</item>
+        <item>Touch</item>
+    </string-array>
+</resources>
