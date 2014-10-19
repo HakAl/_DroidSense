@@ -1,6 +1,5 @@
 package com.jacmobile.droidsense.util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +13,8 @@ import com.jacmobile.droidsense.R;
 import com.jacmobile.droidsense.interfaces.Navigatable;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 /**
  * Created by alex on 10/12/14.
  */
@@ -22,9 +23,9 @@ public class SensorListAdapter extends BaseAdapter
     private Context context;
     private Picasso picasso;
     private LayoutInflater inflater;
-    private Navigatable data[] = null;
+    private ArrayList<Navigatable> data = null;
 
-    public SensorListAdapter(Context context, Picasso picasso, LayoutInflater inflater, Navigatable[] data)
+    public SensorListAdapter(Context context, Picasso picasso, LayoutInflater inflater, ArrayList<Navigatable> data)
     {
         super();
         this.context = context;
@@ -40,7 +41,8 @@ public class SensorListAdapter extends BaseAdapter
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = this.inflater.inflate(R.layout.card_sensor, parent, false);
-            holder.title = (TextView) convertView.findViewById(R.id.tv_sensor_name);
+            holder.title = (TextView) convertView.findViewById(R.id.tv_sensor_title);
+            holder.subTitle = (TextView) convertView.findViewById(R.id.tv_sensor_sub_title);
             holder.descript = (TextView) convertView.findViewById(R.id.tv_sensor_descript);
             holder.icon = (ImageView) convertView.findViewById(R.id.iv_sensor_icon);
 
@@ -48,10 +50,17 @@ public class SensorListAdapter extends BaseAdapter
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.title.setText(this.data[position].getName());
-        holder.descript.setText(this.data[position].getDescription());
-        this.picasso.load(this.data[position].getIconUrl()).placeholder(R.drawable.gear).into(holder.icon);
-
+        if (this.data.get(position).getName().equals("Touch")) {
+            holder.title.setText(this.data.get(position).getName());
+            this.picasso.load(this.data.get(position).getIconUrl()).placeholder(R.drawable.gear).into(holder.icon);
+            holder.subTitle.setText("");
+            holder.descript.setText("");
+        } else {
+            holder.subTitle.setText(this.data.get(position).getSensor().getVendor());
+            holder.title.setText(this.data.get(position).getName());
+            holder.descript.setText(this.data.get(position).getSensor().getName());
+            this.picasso.load(this.data.get(position).getIconUrl()).placeholder(R.drawable.gear).into(holder.icon);
+        }
         convertView.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -68,13 +77,13 @@ public class SensorListAdapter extends BaseAdapter
     @Override
     public int getCount()
     {
-        return this.data.length;
+        return this.data.size();
     }
 
     @Override
     public Object getItem(int position)
     {
-        return this.data[position];
+        return this.data.get(position);
     }
 
     @Override
@@ -87,6 +96,7 @@ public class SensorListAdapter extends BaseAdapter
     {
         ImageView icon;
         TextView title;
+        TextView subTitle;
         TextView descript;
     }
 }

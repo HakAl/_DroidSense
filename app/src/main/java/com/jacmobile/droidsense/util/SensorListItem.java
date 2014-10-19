@@ -1,5 +1,7 @@
 package com.jacmobile.droidsense.util;
 
+import android.hardware.Sensor;
+
 import com.jacmobile.droidsense.interfaces.Navigatable;
 
 /**
@@ -7,32 +9,11 @@ import com.jacmobile.droidsense.interfaces.Navigatable;
  */
 public class SensorListItem implements Navigatable
 {
+    private String url;
     private String name;
-    private String iconUrl;
-    private String description;
+    private Sensor sensor;
 
     @Override
-    public String getIconUrl()
-    {
-        return iconUrl;
-    }
-
-    public void setIconUrl(String iconUrl)
-    {
-        this.iconUrl = iconUrl;
-    }
-
-    @Override
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
     public String getName()
     {
         return name;
@@ -41,5 +22,27 @@ public class SensorListItem implements Navigatable
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public void setSensor(Sensor sensor)
+    {
+        this.sensor = sensor;
+    }
+
+    public void setIconUrl(String url)
+    {
+        this.url = url;
+    }
+
+    @Override
+    public Sensor getSensor()
+    {
+        return sensor;
+    }
+
+    @Override
+    public String getIconUrl()
+    {
+        return url;
     }
 }

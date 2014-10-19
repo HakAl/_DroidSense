@@ -6,6 +6,7 @@ import android.content.Context;
 import com.jacmobile.droidsense.activities.ABaseActivity;
 import com.jacmobile.droidsense.activities.MainActivity;
 import com.jacmobile.droidsense.fragments.MainFragment;
+import com.jacmobile.droidsense.fragments.SensorFragment;
 import com.jacmobile.droidsense.fragments.SensorListFragment;
 import com.jacmobile.droidsense.injection.annotations.ForActivity;
 
@@ -24,6 +25,7 @@ import dagger.Provides;
         injects = {
                 MainActivity.class,
                 MainFragment.class,
+                SensorFragment.class,
                 SensorListFragment.class
         }
 )

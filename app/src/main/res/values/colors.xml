@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="fog">#aafafafa</color>
-    <color name="grey">#b3b3b3</color>
+    <color name="grey_fog">#aab3b3b3</color>
     <color name="off_white">#eaeaea</color>
     <color name="white">#fff</color>
 

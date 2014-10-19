@@ -13,7 +13,7 @@
         <item>Linear Accel</item>
         <item>Rotation</item>
         <item>Humidity</item>
-        <item>Device Temp</item>
+        <item>Ambient Temp</item>
         <item>Touch</item>
     </string-array>
 </resources>

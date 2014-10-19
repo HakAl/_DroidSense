@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="6dp"
-    android:background="@color/fog"
+    android:background="@drawable/list_selector"
     android:id="@+id/parent_device_card">
 
     <TextView
-        android:id="@+id/tv_sensor_name"
+        android:id="@+id/tv_sensor_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
@@ -17,10 +17,20 @@
         android:textColor="#000"/>
 
     <TextView
+        android:id="@+id/tv_sensor_sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/iv_sensor_icon"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="12dp"
+        android:layout_below="@id/tv_sensor_title"
+        android:textSize="@dimen/device_icon_text"
+        android:textColor="#000"/>
+
+    <TextView
         android:id="@+id/tv_sensor_descript"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/device_icon_padding"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"

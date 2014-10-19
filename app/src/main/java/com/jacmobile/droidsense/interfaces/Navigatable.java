@@ -1,7 +1,6 @@
 package com.jacmobile.droidsense.interfaces;
 
-import android.content.Context;
-import android.view.View;
+import android.hardware.Sensor;
 
 /**
  * Created by acorll on 10/12/2014
@@ -9,6 +8,6 @@ import android.view.View;
 public interface Navigatable
 {
     public String getName();
+    public Sensor getSensor();
     public String getIconUrl();
-    public String getDescription();
 }
