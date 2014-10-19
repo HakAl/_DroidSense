@@ -70,7 +70,6 @@ public class SensorListAdapter extends BaseAdapter
             }
         });
 
-
         return convertView;
     }
 
