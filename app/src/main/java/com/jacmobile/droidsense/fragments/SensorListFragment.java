@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.jacmobile.droidsense.R;
 import com.jacmobile.droidsense.config.ImageUrls;
 import com.jacmobile.droidsense.interfaces.Navigatable;
-import com.jacmobile.droidsense.util.DeviceProperties;
+import com.jacmobile.droidsense.util.DeviceInfo;
 import com.jacmobile.droidsense.util.SensorListAdapter;
 import com.jacmobile.droidsense.util.SensorListItem;
 import com.squareup.picasso.Picasso;
@@ -70,8 +70,8 @@ public class SensorListFragment extends ABaseFragment
     {
         View result = this.layoutInflater.inflate(R.layout.card_device, null);
         this.picasso.load(R.drawable.ic_launcher).into((ImageView)result.findViewById(R.id.iv_device_icon));
-        ((TextView) result.findViewById(R.id.tv_device_name)).setText(DeviceProperties.getModel());
-        ((TextView) result.findViewById(R.id.tv_os_version)).setText(DeviceProperties.getOSVersion());
+        ((TextView) result.findViewById(R.id.tv_device_name)).setText(DeviceInfo.getModel());
+        ((TextView) result.findViewById(R.id.tv_os_version)).setText(DeviceInfo.getOSVersion());
         return result;
     }
 }

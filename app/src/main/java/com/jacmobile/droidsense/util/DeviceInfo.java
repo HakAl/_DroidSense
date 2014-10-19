@@ -3,12 +3,12 @@ package com.jacmobile.droidsense.util;
 /**
  * Created by alex on 10/12/14.
  */
-public class DeviceProperties
+public class DeviceInfo
 {
 
-    public static DeviceProperties newInstance()
+    public static DeviceInfo newInstance()
     {
-        return new DeviceProperties();
+        return new DeviceInfo();
     }
 
     /*
@@ -53,7 +53,7 @@ public class DeviceProperties
     }
 
 
-    private DeviceProperties()
+    private DeviceInfo()
     {
     }
 }

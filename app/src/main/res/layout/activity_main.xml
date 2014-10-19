@@ -4,7 +4,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="activities.MainActivity"
-    android:background="@color/pressed_blue"
-    android:paddingTop="4dp"
-    android:paddingBottom="4dp"
+    android:background="@color/off_white"
     tools:ignore="MergeRootFrame" />

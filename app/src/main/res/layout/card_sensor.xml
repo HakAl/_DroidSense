@@ -3,20 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/device_list_item_padding"
-    android:layout_margin="@dimen/device_icon_padding"
-    android:background="@color/orange"
+    android:padding="6dp"
+    android:background="@color/fog"
     android:id="@+id/parent_device_card">
 
     <TextView
         android:id="@+id/tv_sensor_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="12dp"
         android:layout_toRightOf="@+id/iv_sensor_icon"
-        android:padding="4dp"
         android:textSize="@dimen/device_icon_label"
-        android:text="Nexus 5"
         android:textColor="#000"/>
 
     <TextView
@@ -26,19 +23,15 @@
         android:layout_marginTop="@dimen/device_icon_padding"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/tv_sensor_name"
-        android:padding="6dp"
+        android:layout_alignParentBottom="true"
         android:textSize="@dimen/device_icon_text"
-        android:text="Kit Kat"
         android:textColor="#000"/>
 
     <ImageView
         android:id="@+id/iv_sensor_icon"
         android:layout_width="@dimen/device_icon"
         android:layout_height="@dimen/device_icon"
-        android:padding="@dimen/device_icon_padding"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/ic_launcher"
-        android:background="@color/white"/>
+        android:src="@drawable/ic_launcher"/>
 
 </RelativeLayout>

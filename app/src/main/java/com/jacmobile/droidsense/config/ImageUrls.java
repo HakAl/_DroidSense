@@ -25,9 +25,9 @@ public class ImageUrls
     public static final String TOUCH = PREFIX + "touch.png";
 
     private static final String[] IMAGE_URLS = {
-            ACCELEROMETER, AMBIENT_TEMP, DEVICE_TEMP, GRAVITY,
-            GYRO, HUMID, LIGHT, LINEAR, MAGNETIC, ORIENTATION, PRESSURE,
-            PROXIMITY, ROTATION, TOUCH
+            ACCELEROMETER, MAGNETIC, ORIENTATION, GYRO, LIGHT, PRESSURE,
+            DEVICE_TEMP, PROXIMITY, GRAVITY, LINEAR, ROTATION, HUMID,
+            DEVICE_TEMP, TOUCH
     };
     public static String[] getImageUrls()
     {
