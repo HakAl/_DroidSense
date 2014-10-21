@@ -2,6 +2,8 @@ package com.jacmobile.droidsense.interfaces;
 
 import android.hardware.Sensor;
 
+import java.util.HashMap;
+
 /**
  * Created by acorll on 10/12/2014
  */

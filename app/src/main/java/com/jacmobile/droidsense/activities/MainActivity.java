@@ -1,17 +1,23 @@
 package com.jacmobile.droidsense.activities;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.jacmobile.droidsense.R;
+import com.jacmobile.droidsense.fragments.SensorFragment;
 import com.jacmobile.droidsense.fragments.SensorListFragment;
+import com.jacmobile.droidsense.interfaces.Navigator;
 
 /**
  * Created by alex on 10/12/14.
  */
-public class MainActivity extends ABaseActivity
+public class MainActivity extends ABaseActivity implements Navigator
 {
+    private static final String SENSOR_FRAGMENT = "com.jacmobile.droidsense.sensorfragment";
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -44,5 +50,26 @@ public class MainActivity extends ABaseActivity
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onTransition(int... which)
+    {
+        this.newSensorFragment(which[0]);
+    }
+
+    private void newSensorFragment(int sensor)
+    {
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+// Replace whatever is in the fragment_container view with this fragment,
+// and add the transaction to the back stack
+
+        transaction.replace(R.id.container, SensorFragment.newInstance(sensor), SENSOR_FRAGMENT);
+        transaction.addToBackStack(null);
+
+// Commit the transaction
+        transaction.commit();
     }
 }

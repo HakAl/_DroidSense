@@ -20,15 +20,13 @@ import java.util.ArrayList;
  */
 public class SensorListAdapter extends BaseAdapter
 {
-    private Context context;
     private Picasso picasso;
     private LayoutInflater inflater;
     private ArrayList<Navigatable> data = null;
 
-    public SensorListAdapter(Context context, Picasso picasso, LayoutInflater inflater, ArrayList<Navigatable> data)
+    public SensorListAdapter(Picasso picasso, LayoutInflater inflater, ArrayList<Navigatable> data)
     {
         super();
-        this.context = context;
         this.data = data;
         this.inflater = inflater;
         this.picasso = picasso;
@@ -45,30 +43,14 @@ public class SensorListAdapter extends BaseAdapter
             holder.subTitle = (TextView) convertView.findViewById(R.id.tv_sensor_sub_title);
             holder.descript = (TextView) convertView.findViewById(R.id.tv_sensor_descript);
             holder.icon = (ImageView) convertView.findViewById(R.id.iv_sensor_icon);
-
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        if (this.data.get(position).getName().equals("Touch")) {
-            holder.title.setText(this.data.get(position).getName());
-            this.picasso.load(this.data.get(position).getIconUrl()).placeholder(R.drawable.gear).into(holder.icon);
-            holder.subTitle.setText("");
-            holder.descript.setText("");
-        } else {
-            holder.subTitle.setText(this.data.get(position).getSensor().getVendor());
-            holder.title.setText(this.data.get(position).getName());
-            holder.descript.setText(this.data.get(position).getSensor().getName());
-            this.picasso.load(this.data.get(position).getIconUrl()).placeholder(R.drawable.gear).into(holder.icon);
-        }
-        convertView.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Toast.makeText(context, "Position: " + position, Toast.LENGTH_LONG).show();
-            }
-        });
+        holder.subTitle.setText(this.data.get(position).getSensor().getVendor());
+        holder.title.setText(this.data.get(position).getName());
+        holder.descript.setText(this.data.get(position).getSensor().getName());
+        this.picasso.load(this.data.get(position).getIconUrl()).placeholder(R.drawable.gear).into(holder.icon);
 
         return convertView;
     }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="sensors_array">
+        <item>Touch</item>
         <item>Accelerometer</item>
         <item>Magnetometer</item>
         <item>Orientation</item>
@@ -14,6 +15,5 @@
         <item>Rotation</item>
         <item>Humidity</item>
         <item>Ambient Temp</item>
-        <item>Touch</item>
     </string-array>
 </resources>

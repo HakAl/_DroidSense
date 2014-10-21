@@ -4,6 +4,8 @@ import android.hardware.Sensor;
 
 import com.jacmobile.droidsense.interfaces.Navigatable;
 
+import java.util.HashMap;
+
 /**
  * Created by alex on 10/12/14.
  */
@@ -12,7 +14,6 @@ public class SensorListItem implements Navigatable
     private String url;
     private String name;
     private Sensor sensor;
-
     @Override
     public String getName()
     {
@@ -33,6 +34,7 @@ public class SensorListItem implements Navigatable
     {
         this.url = url;
     }
+
 
     @Override
     public Sensor getSensor()

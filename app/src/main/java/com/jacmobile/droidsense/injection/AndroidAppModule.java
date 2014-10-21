@@ -7,7 +7,17 @@ import android.location.LocationManager;
 import android.view.LayoutInflater;
 
 
+import com.jacmobile.droidsense.R;
+import com.jacmobile.droidsense.config.ImageUrls;
 import com.jacmobile.droidsense.injection.annotations.ForApplication;
+import com.jacmobile.droidsense.interfaces.Navigatable;
+import com.jacmobile.droidsense.util.SensorListAdapter;
+import com.jacmobile.droidsense.util.SensorListItem;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 import javax.inject.Singleton;
 
@@ -56,5 +66,32 @@ public class AndroidAppModule
     SensorManager provideSensorManager()
     {
         return (SensorManager) sApplicationContext.getSystemService(Activity.SENSOR_SERVICE);
+    }
+
+    @Provides
+    @Singleton
+    ArrayList<Navigatable> provideSensorData(SensorManager sensorManager)
+    {
+        ArrayList<String> sensorNames = new ArrayList<String>(Arrays.asList(sApplicationContext.getResources().getStringArray(R.array.sensors_array)));
+        String[] imageUrls = ImageUrls.getImageUrls();
+        ArrayList<Navigatable> result = new ArrayList<Navigatable>();
+        HashMap<String, Boolean> resultMap = new HashMap<String, Boolean>();
+        for (int i = 1; i < 14; i++) {
+            if (sensorManager.getDefaultSensor(i) != null) {
+                SensorListItem temp = new SensorListItem();
+                temp.setSensor(sensorManager.getDefaultSensor(i));
+                temp.setName(sensorNames.get(i));
+                temp.setIconUrl(imageUrls[i]);
+                result.add(temp);
+            }
+        }
+        return result;
+    }
+
+    @Provides
+    @Singleton
+    SensorListAdapter provideSensorListAdapter(Picasso picasso, LayoutInflater layoutInflater, ArrayList<Navigatable> sensorData)
+    {
+        return new SensorListAdapter(picasso, layoutInflater, sensorData);
     }
 }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_eight">
+
+    <com.androidplot.xy.XYPlot
+        android:id="@+id/xy_accel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/single_sensor_card"
+        android:layout_alignParentTop="true"
+        androidPlot.backgroundPaint.color="@color/fog"
+        androidPlot.borderPaint.color="@color/grey_fog"
+        androidPlot.domainLabel="Domain"
+        androidPlot.domainLabelWidget.labelPaint.textSize="@dimen/domain_label_font_size"
+        androidPlot.domainLabelWidget.labelPaint.color="@color/black"
+        androidPlot.graphWidget.backgroundPaint.color="@color/fog"
+        androidPlot.graphWidget.domainLabelPaint.color="@color/black"
+        androidPlot.graphWidget.domainLabelPaint.textSize="@dimen/domain_tick_label_font_size"
+        androidPlot.graphWidget.domainOriginLabelPaint.textSize="@dimen/domain_tick_label_font_size"
+        androidPlot.graphWidget.gridBackgroundPaint.color="@color/dim_fog"
+        androidPlot.graphWidget.marginBottom="20dp"
+        androidPlot.graphWidget.marginLeft="10dp"
+        androidPlot.graphWidget.marginRight="15dp"
+        androidPlot.graphWidget.marginTop="15dp"
+        androidPlot.graphWidget.rangeLabelPaint.textSize="@dimen/range_tick_label_font_size"
+        androidPlot.graphWidget.rangeLabelPaint.color="@color/black"
+        androidPlot.graphWidget.rangeOriginLabelPaint.textSize="@dimen/range_tick_label_font_size"
+        androidPlot.legendWidget.heightMetric.value="25dp"
+        androidPlot.legendWidget.iconSizeMetrics.heightMetric.value="12sp"
+        androidPlot.legendWidget.iconSizeMetrics.widthMetric.value="12sp"
+        androidPlot.legendWidget.textPaint.textSize="@dimen/legend_text_font_size"
+        androidPlot.rangeLabel="m/s^2"
+        androidPlot.rangeLabelWidget.labelPaint.color="@color/black"
+        androidPlot.rangeLabelWidget.labelPaint.textSize="@dimen/range_label_font_size"
+        androidPlot.title="Acceleration"
+        androidPlot.titleWidget.labelPaint.textSize="@dimen/title_font_size"
+        androidPlot.titleWidget.labelPaint.color="@color/black"
+        androidplot.renderMode="use_background_thread"/>
+
+    <include
+        layout="@layout/card_sensor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/single_sensor_card"/>
+
+</RelativeLayout>

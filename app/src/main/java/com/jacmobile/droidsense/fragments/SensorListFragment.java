@@ -1,44 +1,53 @@
 package com.jacmobile.droidsense.fragments;
 
+import android.app.Activity;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jacmobile.droidsense.R;
-import com.jacmobile.droidsense.config.ImageUrls;
 import com.jacmobile.droidsense.interfaces.Navigatable;
-import com.jacmobile.droidsense.util.DeviceInfo;
+import com.jacmobile.droidsense.interfaces.Navigator;
+import com.jacmobile.droidsense.util.Animation;
+import com.jacmobile.droidsense.util.AnimationListener;
+import com.jacmobile.droidsense.util.FlipVerticalAnimation;
 import com.jacmobile.droidsense.util.SensorListAdapter;
-import com.jacmobile.droidsense.util.SensorListItem;
 import com.jacmobile.droidsense.util.SystemInfo;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import android.hardware.Sensor;
-
 import javax.inject.Inject;
 
 /**
  * Created by alex on 10/12/14.
  */
-public class SensorListFragment extends SensorFragment
+public class SensorListFragment extends ABaseFragment
 {
+    private ListView listView;
+    private Navigator navigatorListener;
+
     @Inject Picasso picasso;
     @Inject LayoutInflater layoutInflater;
-
-    private ListView listView;
+    @Inject ArrayList<Navigatable> sensorData;
 
     public static SensorListFragment newInstance()
     {
         return new SensorListFragment();
+    }
+
+    @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+        this.navigatorListener = (Navigator) activity;
     }
 
     @Override
@@ -47,38 +56,48 @@ public class SensorListFragment extends SensorFragment
         return inflater.inflate(R.layout.fragment_sensor_list, container, false);
     }
 
+//    TODO
+    //        this.listView.addFooterView(getFooterView);
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
         this.listView = getView(R.id.list_sensors);
         this.listView.addHeaderView(this.getHeaderView());
-        this.listView.setAdapter(new SensorListAdapter(getActivity(), picasso, layoutInflater, getData()));
+        this.listView.setAdapter(new SensorListAdapter(this.picasso, this.layoutInflater, this.sensorData));
+        this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id)
+            {
+                if (position != 0) {
+                    FlipVerticalAnimation animation = new FlipVerticalAnimation(view);
+                    animation.setListener(new AnimationListener()
+                    {
+                        @Override
+                        public void onAnimationEnd(Animation animation)
+                        {
+                            navigatorListener.onTransition(position - 1);
+                        }
+                    });
+                    animation.animate();
+                }
+            }
+        });
     }
 
-    private ArrayList<Navigatable> getData()
+
+    private int getSensor(String name)
     {
         ArrayList<String> sensorNames = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.sensors_array)));
-        ArrayList<Sensor> sensors = this.getSensors();
-
-
-        String[] imageUrls = ImageUrls.getImageUrls();
-        ArrayList<Navigatable> result = new ArrayList<Navigatable>();
-        for (int i = 1; i < 14; i++) {
-            if (sensorManager.getDefaultSensor(i) != null) {
-                SensorListItem temp = new SensorListItem();
-                temp.setSensor(sensorManager.getDefaultSensor(i));
-                temp.setName(sensorNames.get(i-1));
-                temp.setIconUrl(imageUrls[i-1]);
-                result.add(temp);
+        for (int i = 0; i < sensorNames.size(); i++) {
+            if (sensorNames.get(i).equals(name)) {
+                return i;
             }
         }
-        SensorListItem touch = new SensorListItem();
-        touch.setIconUrl(ImageUrls.TOUCH);
-        touch.setName(sensorNames.get(13));
-        result.add(touch);
-        return result;
+        return -1;
     }
+
 
     private View getHeaderView()
     {
@@ -87,5 +106,14 @@ public class SensorListFragment extends SensorFragment
         ((TextView) result.findViewById(R.id.tv_os_version)).setText(SystemInfo.getVMName());
         this.picasso.load(R.drawable.ic_android).into((ImageView) result.findViewById(R.id.iv_device_icon));
         return result;
+    }
+
+    private View getFooterView()
+    {
+//        SensorListItem touch = new SensorListItem();
+//        touch.setIconUrl(ImageUrls.TOUCH);
+//        touch.setName(sensorNames.get(13));
+//        result.add(touch);
+        return new View(getActivity());
     }
 }

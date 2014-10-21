@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="fog">#aafafafa</color>
+    <color name="dim_fog">#cceaeaea</color>
     <color name="grey_fog">#aab3b3b3</color>
+    <color name="steel">#aacdcddd</color>
     <color name="off_white">#eaeaea</color>
     <color name="white">#fff</color>
+    <color name="black">#000</color>
 
     <color name="orange">#ffffdc7e</color>
     <color name="green">#ff8dd304</color>
