@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:padding="@dimen/activity_eight">
 
+
     <com.androidplot.xy.XYPlot
         android:id="@+id/xy_accel"
         android:layout_width="match_parent"
