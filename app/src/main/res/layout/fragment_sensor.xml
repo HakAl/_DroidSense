@@ -7,7 +7,7 @@
 
 
     <com.androidplot.xy.XYPlot
-        android:id="@+id/xy_accel"
+        android:id="@+id/sensor_plot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/single_sensor_card"
