@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jacmobile.droidsense.R;
+import com.jacmobile.droidsense.activities.ABaseActivity;
 import com.jacmobile.droidsense.interfaces.Navigatable;
 import com.jacmobile.droidsense.interfaces.Navigator;
 import com.jacmobile.droidsense.util.Animation;
@@ -62,6 +63,7 @@ public class SensorListFragment extends ABaseFragment
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
+        ((ABaseActivity)getActivity()).inject(this);
         this.listView = getView(R.id.list_sensors);
         this.listView.addHeaderView(this.getHeaderView());
         this.listView.setAdapter(new SensorListAdapter(this.picasso, this.layoutInflater, this.sensorData));

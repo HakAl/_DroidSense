@@ -11,9 +11,10 @@ import com.jacmobile.droidsense.activities.ABaseActivity;
 public abstract class ABaseFragment extends Fragment
 {
     @Override
-    public void onActivityCreated(Bundle savedInstanceState)
-    {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Assume that it lives within a BaseActivity host
         ((ABaseActivity)getActivity()).inject(this);
     }
 
