@@ -8,6 +8,9 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -41,8 +44,6 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     Picasso picasso;
     @Inject
     SensorManager sensorManager;
-    @Inject
-    LayoutInflater layoutInflater;
     @Inject
     ArrayList<Navigatable> sensorData;
     @Inject
@@ -89,44 +90,37 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         this.sensorManager.registerListener(this, this.mSensor.getSensor(), SensorManager.SENSOR_DELAY_UI);
     }
 
-//    private XYPlot getGraph(ViewGroup containerView, String sensorName, String rangeLabel)
-//    {
-//        // Init Plot and x,y,z series
-//        XYPlot xyPlot = (XYPlot) layoutInflater.inflate(R.layout.sensor_plot, containerView, false);
-//        xyPlot.setTitle(sensorName);
-//        xSeries = new SimpleXYSeries("X");
-//        xSeries.useImplicitXVals();
-//        ySeries = new SimpleXYSeries("Y");
-//        ySeries.useImplicitXVals();
-//        zSeries = new SimpleXYSeries("Z");
-//        zSeries.useImplicitXVals();
-//        // Set domain & range
-//        xyPlot.setDomainBoundaries(0, HISTORY_SIZE, BoundaryMode.FIXED);
-//        xyPlot.setRangeBoundaries(-20, 20, BoundaryMode.FIXED);
-//        xyPlot.setRangeLabel(rangeLabel);
-//        // Incorporate x,y,z series
-//        xyPlot.addSeries(xSeries, new LineAndPointFormatter(Color.RED, null, null, null));
-//        xyPlot.addSeries(ySeries, new LineAndPointFormatter(Color.CYAN, null, null, null));
-//        xyPlot.addSeries(zSeries, new LineAndPointFormatter(Color.YELLOW, null, null, null));
-//        // Set drawing speed
-//        xyPlot.setDomainStepMode(XYStepMode.INCREMENT_BY_VAL);
-//        xyPlot.setDomainStepValue(10 / 1);
-//        xyPlot.setTicksPerRangeLabel(3);
-//        // Number format
-//        xyPlot.setDomainValueFormat(new DecimalFormat("#"));
-//        xyPlot.setRangeValueFormat(new DecimalFormat("#"));
-//    }
+    private int[][] domain;
+    private int[][] range;
+    private String[][] lineLabels;
+    private String[] units;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-//        View view = inflater.inflate(R.layout.fragment_sensor, container, false);
-
-
         ViewGroup view = contentView.getPlot(getActivity());
 
-
         this.mSensor = this.sensorData.get(getArguments().getInt(SENSOR));
+
+        XYPlot sensorPlot = (XYPlot) view.findViewById(R.id.sensor_plot);
+
+        xSeries = new SimpleXYSeries("X");
+        ySeries = new SimpleXYSeries("Y");
+        zSeries = new SimpleXYSeries("Z");
+        // Set domain & range
+        sensorPlot.setDomainBoundaries(0, 100, BoundaryMode.FIXED);
+        sensorPlot.setRangeBoundaries(-20, 20, BoundaryMode.FIXED);
+        drawer = new Redrawer(sensorPlot, 100, false);
+
+
+        xSeries.useImplicitXVals();
+        ySeries.useImplicitXVals();
+        zSeries.useImplicitXVals();
+        sensorPlot.setTitle(this.mSensor.getName());
+        sensorPlot.addSeries(xSeries, new LineAndPointFormatter(Color.RED, null, null, null));
+        sensorPlot.addSeries(ySeries, new LineAndPointFormatter(Color.CYAN, null, null, null));
+        sensorPlot.addSeries(zSeries, new LineAndPointFormatter(Color.YELLOW, null, null, null));
+
 
         ((TextView) view.findViewById(R.id.tv_sensor_title)).setText(this.mSensor.getName());
         ((TextView) view.findViewById(R.id.tv_sensor_sub_title)).setText(this.mSensor.getSensor().getVendor());
@@ -157,17 +151,72 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         super.onStop();
     }
 
+
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        drawer.finish();
+    }
+
     @Override
     public void onResume()
     {
         super.onResume();
+        drawer.start();
+        this.sensorManager.registerListener(this, this.mSensor.getSensor(), SensorManager.SENSOR_DELAY_UI);
+    }
+
+
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.base, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
+        drawer.pause();
+        this.sensorManager.unregisterListener(this, this.mSensor.getSensor());
+
     }
+
+    private void updateGUI() {
+        getActivity().runOnUiThread(new Runnable()
+        {
+            public void run()
+            {
+                String resultX = "" + (float) Math.round(100 * currentX) / 100;
+                String resultY = "" + (float) Math.round(100 * currentY) / 100;
+                String resultZ = "" + (float) Math.round(100 * currentZ) / 100;
+//                tvX.setText(resultX);
+//                tvY.setText(resultY);
+//                tvZ.setText(resultZ);
+//                tvX.invalidate();
+//                tvY.invalidate();
+//                tvZ.invalidate();
+            }
+        });
+    };
 
     private float alpha = .9f;
 

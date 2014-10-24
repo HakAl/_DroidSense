@@ -28,7 +28,6 @@
     androidPlot.rangeLabel="m/s^2"
     androidPlot.rangeLabelWidget.labelPaint.color="@color/black"
     androidPlot.rangeLabelWidget.labelPaint.textSize="@dimen/range_label_font_size"
-    androidPlot.title="Acceleration"
     androidPlot.titleWidget.labelPaint.textSize="@dimen/title_font_size"
     androidPlot.titleWidget.labelPaint.color="@color/black"
     androidplot.renderMode="use_background_thread"/>
