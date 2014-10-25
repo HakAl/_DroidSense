@@ -14,7 +14,7 @@ import com.jacmobile.droidsense.interfaces.Navigator;
 /**
  * Created by alex on 10/12/14.
  */
-public class MainActivity extends ABaseActivity implements Navigator
+public class DSActivity extends ABaseActivity implements Navigator
 {
     private static final String SENSOR_FRAGMENT = "com.jacmobile.droidsense.sensorfragment";
 
@@ -22,9 +22,12 @@ public class MainActivity extends ABaseActivity implements Navigator
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
+            getFragmentManager()
+                    .beginTransaction()
                     .add(R.id.container, SensorListFragment.newInstance())
                     .commit();
         }
@@ -64,7 +67,6 @@ public class MainActivity extends ABaseActivity implements Navigator
     {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.container, SensorFragment.newInstance(sensor), SENSOR_FRAGMENT);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        transaction.addToBackStack(null).commitAllowingStateLoss();
     }
 }

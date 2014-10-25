@@ -96,6 +96,10 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     private String[][] lineLabels;
     private String[] units;
 
+    String[] DEFAULT_DOMAIN_BOUNDARY = {
+
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -134,6 +138,21 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
 
         return view;
     }
+
+    private void switchLineLabels(int which)
+    {
+        switch(which) {
+            case 0:
+
+                break;
+            case 1:
+
+                break;
+            default:break;
+        }
+    }
+
+//    private void setDomainBoundaries()
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)

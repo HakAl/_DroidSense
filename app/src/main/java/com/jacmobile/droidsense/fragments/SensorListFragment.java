@@ -32,6 +32,7 @@ import javax.inject.Inject;
  */
 public class SensorListFragment extends ABaseFragment
 {
+    private int length;
     private ListView listView;
     private Navigator navigatorListener;
 
@@ -48,6 +49,7 @@ public class SensorListFragment extends ABaseFragment
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
+
         this.navigatorListener = (Navigator) activity;
     }
 
@@ -64,22 +66,24 @@ public class SensorListFragment extends ABaseFragment
     {
         super.onViewCreated(view, savedInstanceState);
         ((ABaseActivity)getActivity()).inject(this);
+
         this.listView = getView(R.id.list_sensors);
-        this.listView.addHeaderView(this.getHeaderView());
+        this.listView.addFooterView(this.getFooterView());
+        this.length=this.sensorData.size();
         this.listView.setAdapter(new SensorListAdapter(this.picasso, this.layoutInflater, this.sensorData));
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id)
             {
-                if (position != 0) {
+                if (position != length) {
                     FlipVerticalAnimation animation = new FlipVerticalAnimation(view);
                     animation.setListener(new AnimationListener()
                     {
                         @Override
                         public void onAnimationEnd(Animation animation)
                         {
-                            navigatorListener.onTransition(position - 1);
+                            navigatorListener.onTransition(position);
                         }
                     });
                     animation.animate();
@@ -103,19 +107,19 @@ public class SensorListFragment extends ABaseFragment
 
     private View getHeaderView()
     {
-        View result = this.layoutInflater.inflate(R.layout.card_device, null);
-        ((TextView) result.findViewById(R.id.tv_device_name)).setText(SystemInfo.getVendor());
-        ((TextView) result.findViewById(R.id.tv_os_version)).setText(SystemInfo.getVMName());
-        this.picasso.load(R.drawable.ic_android).into((ImageView) result.findViewById(R.id.iv_device_icon));
-        return result;
-    }
-
-    private View getFooterView()
-    {
 //        SensorListItem touch = new SensorListItem();
 //        touch.setIconUrl(ImageUrls.TOUCH);
 //        touch.setName(sensorNames.get(13));
 //        result.add(touch);
         return new View(getActivity());
+    }
+
+    private View getFooterView()
+    {
+        View result = this.layoutInflater.inflate(R.layout.card_device, null);
+        ((TextView) result.findViewById(R.id.tv_device_name)).setText(SystemInfo.getVendor());
+        ((TextView) result.findViewById(R.id.tv_os_version)).setText(SystemInfo.getVMName());
+        this.picasso.load(R.drawable.gear).into((ImageView) result.findViewById(R.id.iv_device_icon));
+        return result;
     }
 }

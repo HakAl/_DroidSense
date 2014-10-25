@@ -5,6 +5,14 @@ package com.jacmobile.droidsense.util;
  */
 public class DeviceInfo
 {
+    private static final String MODEL = "Model";
+    private static final String PRODUCT = "Product";
+    private static final String OSVERSION = "OS Version";
+    private static final String OSVERSION_INCREMENTAL = "";
+    private static final String SDKVERSION = "SDK Version";
+//    public String[] getDeviceInfoStrings()
+//    {
+//    }
 
     public static DeviceInfo newInstance()
     {

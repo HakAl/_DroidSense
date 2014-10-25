@@ -18,5 +18,19 @@
     </string-array>
 
 
+    <!--
+    	Unit labels
+     -->
+    <string name="star_m_sec_sq">"* m/s&#178;"</string>
+    <string name="sinTheta">"sin&#x398;/2"</string>
+    <string name="lux">lux</string>
+    <string name="rad_sec">"rad/s"</string>
+    <string name="degree">"&#xb0;"</string>
+    <string name="mbar">"mbar"</string>
+    <string name="centimeter">"cm"</string>
+    <string name="gs">"Gs"</string>
+    <string name="meters_sec">"m/s&#178;"</string>
+    <string name="micro_t">"&#956;T"</string>
+    <string name="degrees_c">"&#xb0;C"</string>
 
 </resources>

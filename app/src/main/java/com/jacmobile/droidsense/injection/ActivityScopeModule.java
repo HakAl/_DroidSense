@@ -2,26 +2,14 @@ package com.jacmobile.droidsense.injection;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
-import com.androidplot.xy.BoundaryMode;
-import com.androidplot.xy.LineAndPointFormatter;
-import com.androidplot.xy.SimpleXYSeries;
-import com.androidplot.xy.XYPlot;
-import com.androidplot.xy.XYStepMode;
-import com.jacmobile.droidsense.R;
 import com.jacmobile.droidsense.activities.ABaseActivity;
-import com.jacmobile.droidsense.activities.MainActivity;
+import com.jacmobile.droidsense.activities.DSActivity;
 import com.jacmobile.droidsense.fragments.MainFragment;
 import com.jacmobile.droidsense.fragments.SensorFragment;
 import com.jacmobile.droidsense.fragments.SensorListFragment;
 import com.jacmobile.droidsense.injection.annotations.ForActivity;
 import com.jacmobile.droidsense.interfaces.ContentView;
-
-import java.text.DecimalFormat;
 
 import javax.inject.Singleton;
 
@@ -33,7 +21,7 @@ import dagger.Provides;
         library = true,
         addsTo = ApplicationScopeModule.class, // Important for object graph validation at compile time
         injects = {
-                MainActivity.class,
+                DSActivity.class,
                 MainFragment.class,
                 SensorFragment.class,
                 SensorListFragment.class

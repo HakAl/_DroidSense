@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme"
         android:name=".injection.DaggerApplication">
         <activity
-            android:name="com.jacmobile.droidsense.activities.MainActivity"
+            android:name=".activities.DSActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
