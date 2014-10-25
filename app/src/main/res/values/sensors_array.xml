@@ -11,7 +11,7 @@
         <item>Device Temp</item>
         <item>Proximity</item>
         <item>Gravity</item>
-        <item>Linear Accel</item>
+        <item>Linear Acceleration</item>
         <item>Rotation</item>
         <item>Humidity</item>
         <item>Ambient Temp</item>
@@ -22,7 +22,7 @@
     	Unit labels
      -->
     <string name="star_m_sec_sq">"* m/s&#178;"</string>
-    <string name="sinTheta">"sin&#x398;/2"</string>
+    <string name="sin_theta">"sin&#x398;/2"</string>
     <string name="lux">lux</string>
     <string name="rad_sec">"rad/s"</string>
     <string name="degree">"&#xb0;"</string>

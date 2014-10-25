@@ -65,7 +65,6 @@ public class SensorListFragment extends ABaseFragment
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        ((ABaseActivity)getActivity()).inject(this);
 
         this.listView = getView(R.id.list_sensors);
         this.listView.addFooterView(this.getFooterView());

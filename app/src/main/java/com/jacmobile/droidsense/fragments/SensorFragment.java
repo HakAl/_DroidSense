@@ -103,7 +103,6 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        ((ABaseActivity)getActivity()).inject(this);
         ViewGroup view = contentView.getPlot(getActivity());
 
         this.mSensor = this.sensorData.get(getArguments().getInt(SENSOR));

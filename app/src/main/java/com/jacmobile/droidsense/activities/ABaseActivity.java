@@ -17,14 +17,12 @@ public abstract class ABaseActivity extends Activity implements DaggerInjector
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
-
         // Create the activity graph by .plus-ing our modules onto the application graph.
-        DaggerApplication application = (DaggerApplication) getApplication();
-        mActivityGraph = application.getObjectGraph().plus(geActivitytModules());
-
+        mActivityGraph = ((DaggerApplication) getApplication()).getObjectGraph().plus(geActivitytModules());
         // Inject ourselves so subclasses will have dependencies fulfilled when this method returns.
         mActivityGraph.inject(this);
+
+        super.onCreate(savedInstanceState);
     }
 
     @Override

@@ -10,15 +10,23 @@ import com.jacmobile.droidsense.activities.ABaseActivity;
  */
 public abstract class ABaseFragment extends Fragment
 {
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    private boolean mFirstAttach = true;
 
-        // Assume that it lives within a BaseActivity host
-        ((ABaseActivity)getActivity()).inject(this);
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+
+        super.onCreate(savedInstanceState);
+        // make sure it's the first time through; we don't want to re-inject a retained
+        // fragment that is going through a detach/attach sequence.
+        if (mFirstAttach) {
+            ((ABaseActivity) getActivity()).inject(this);
+            mFirstAttach = false;
+        }
     }
 
-    protected <T> T getView(int id) {
+    protected <T> T getView(int id)
+    {
         return (T) getView().findViewById(id);
     }
 }
