@@ -33,10 +33,12 @@ import javax.inject.Inject;
  */
 public class SensorFragment extends ABaseFragment implements SensorEventListener
 {
+    public static final float STANDARD_GRAVITY = 9.80665f;
     private static final String SENSOR = "sensor";
     private static final float ALPHA = .9f;
 
     private Navigable mSensor;
+    private int[] range;
     private static final int HISTORY_SIZE = 100;
     private float currentX, currentY, currentZ;
 
@@ -71,21 +73,41 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         ViewGroup view = contentView.getPlot(getActivity());
         this.mSensor = this.sensorData.get(getArguments().getInt(SENSOR));
         XYPlot sensorPlot = (XYPlot) view.findViewById(R.id.sensor_plot);
-        sensorPlot.setRangeBoundaries(-20, 20, BoundaryMode.FIXED);
+        this.range = getRange();
+        sensorPlot.setRangeBoundaries(range[0], range[1], BoundaryMode.FIXED);
+        sensorPlot.setRangeLabel(this.mSensor.getUnitLabel());
         sensorPlot.setDomainBoundaries(0, HISTORY_SIZE, BoundaryMode.FIXED);
         sensorPlot.setTitle(this.mSensor.getName());
-        xSeries = new SimpleXYSeries("X");
-        ySeries = new SimpleXYSeries("Y");
-        zSeries = new SimpleXYSeries("Z");
-        xSeries.useImplicitXVals();
-        ySeries.useImplicitXVals();
-        zSeries.useImplicitXVals();
-        sensorPlot.addSeries(xSeries, new LineAndPointFormatter(Color.RED, null, null, null));
-        sensorPlot.addSeries(ySeries, new LineAndPointFormatter(Color.CYAN, null, null, null));
-        sensorPlot.addSeries(zSeries, new LineAndPointFormatter(Color.YELLOW, null, null, null));
+        this.setSeries(sensorPlot);
         drawer = new Redrawer(sensorPlot, HISTORY_SIZE, false);
         this.setSensorCard(view);
         return view;
+    }
+
+    private void setSeries(XYPlot sensorPlot)
+    {
+        if (isSingleSeries()) {
+            xSeries = new SimpleXYSeries("X");
+            xSeries.useImplicitXVals();
+            sensorPlot.addSeries(xSeries, new LineAndPointFormatter(Color.RED, null, null, null));
+        } else {
+            xSeries = new SimpleXYSeries("X");
+            ySeries = new SimpleXYSeries("Y");
+            zSeries = new SimpleXYSeries("Z");
+            xSeries.useImplicitXVals();
+            ySeries.useImplicitXVals();
+            zSeries.useImplicitXVals();
+            sensorPlot.addSeries(xSeries, new LineAndPointFormatter(Color.RED, null, null, null));
+            sensorPlot.addSeries(ySeries, new LineAndPointFormatter(Color.CYAN, null, null, null));
+            sensorPlot.addSeries(zSeries, new LineAndPointFormatter(Color.YELLOW, null, null, null));
+        }
+    }
+
+    private int[] getRange()
+    {
+        return new int[] {
+                Integer.valueOf(mSensor.getSensorRange()[0]),
+                Integer.valueOf(mSensor.getSensorRange()[1]) };
     }
 
     private void setSensorCard(View parent)
@@ -117,16 +139,31 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         super.onResume();
         this.sensorManager.registerListener(this, this.mSensor.getSensor(), SensorManager.SENSOR_DELAY_UI);
         this.drawer.start();
-        this.timerRunnable =  new Runnable()
-        {
-            public void run()
-            {
-                xSeries.setTitle(String.valueOf((float) Math.round(100 * currentX) / 100));
-                ySeries.setTitle(String.valueOf((float) Math.round(100 * currentY) / 100));
-                zSeries.setTitle(String.valueOf((float) Math.round(100 * currentZ) / 100));
-            }
-        };
+        setRunnable();
         this.setTimer();
+    }
+
+    private void setRunnable()
+    {
+        if (isSingleSeries()) {
+            this.timerRunnable =  new Runnable()
+            {
+                public void run()
+                {
+                    xSeries.setTitle(String.valueOf((float) Math.round(10 * currentX) / 10));
+                }
+            };
+        } else {
+            this.timerRunnable =  new Runnable()
+            {
+                public void run()
+                {
+                    xSeries.setTitle(String.valueOf((float) Math.round(10 * currentX) / 10));
+                    ySeries.setTitle(String.valueOf((float) Math.round(10 * currentY) / 10));
+                    zSeries.setTitle(String.valueOf((float) Math.round(10 * currentZ) / 10));
+                }
+            };
+        }
     }
 
     @Override
@@ -154,9 +191,25 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     @Override
     public synchronized void onSensorChanged(SensorEvent event)
     {
-        currentX = ALPHA * currentX + (1 - ALPHA) * event.values[0];
-        currentY = ALPHA * currentY + (1 - ALPHA) * event.values[1];
-        currentZ = ALPHA * currentZ + (1 - ALPHA) * event.values[2];
+        useFilteredData(event);
+    }
+
+    private void useFilteredData(SensorEvent event)
+    {
+         if (isLight() || isProximity() || isHumidity() || isDeviceTemperature() || isAmbientTemperature() || isPressure()) {
+             setSingleSeries(event);
+             return;
+        } else if (isMagnetometer()) {
+             setMagnetometerData(event);
+        } else if(isGravity()) {
+             setGravityData(event);
+             setSingleSeries(event);
+             return;
+         } else {
+            currentX = ALPHA * currentX + (1 - ALPHA) * event.values[0];
+            currentY = ALPHA * currentY + (1 - ALPHA) * event.values[1];
+            currentZ = ALPHA * currentZ + (1 - ALPHA) * event.values[2];
+        }
         if (zSeries.size() > HISTORY_SIZE) {
             zSeries.removeFirst();
             ySeries.removeFirst();
@@ -167,8 +220,77 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         zSeries.addLast(null, currentZ);
     }
 
+    private void setMagnetometerData(SensorEvent event)
+    {
+        currentX = Math.abs(ALPHA * currentX + (1 - ALPHA) * event.values[0]);
+        currentY = Math.abs(ALPHA * currentX + (1 - ALPHA) * event.values[1]);
+        currentZ = Math.abs(ALPHA * currentX + (1 - ALPHA) * event.values[2]);
+    }
+
+    private void setGravityData(SensorEvent event)
+    {
+        double a = Math.round(Math.sqrt(Math.pow(event.values[0], 2)
+                + Math.pow(event.values[1], 2)
+                + Math.pow(event.values[2], 2)));
+        currentX = (float) ( Math.abs((float) (a - STANDARD_GRAVITY)) / 9.81 );
+    }
+
+    private void setSingleSeries(SensorEvent event)
+    {
+        currentX = ALPHA * currentX + (1 - ALPHA) * event.values[0];
+        if (xSeries.size() > HISTORY_SIZE) {
+            xSeries.removeFirst();
+        }
+        xSeries.addLast(null, currentX);
+    }
+
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy)
     {
+    }
+
+    private boolean isMagnetometer()
+    {
+        return this.mSensor.getName().equals("Magnetometer");
+    }
+
+    private boolean isSingleSeries()
+    {
+        return (isLight() || isProximity() || isGravity() || isAmbientTemperature() || isDeviceTemperature() || isHumidity() || isPressure());
+    }
+
+    private boolean isLight()
+    {
+        return this.mSensor.getName().equals("Light");
+    }
+
+    private boolean isProximity()
+    {
+        return this.mSensor.getName().equals("Proximity");
+    }
+
+    private boolean isGravity()
+    {
+        return this.mSensor.getName().equals("Gravity");
+    }
+
+    private boolean isPressure()
+    {
+        return this.mSensor.getName().equals("Pressure");
+    }
+
+    private boolean isHumidity()
+    {
+        return this.mSensor.getName().equals("Humidity");
+    }
+
+    private boolean isDeviceTemperature()
+    {
+        return this.mSensor.getName().equals("Device Temperature");
+    }
+
+    private boolean isAmbientTemperature()
+    {
+        return this.mSensor.getName().equals("Ambient Temperature");
     }
 }

@@ -21,7 +21,6 @@ public abstract class ABaseActivity extends Activity implements DaggerInjector
         mActivityGraph = ((DaggerApplication) getApplication()).getObjectGraph().plus(geActivitytModules());
         // Inject ourselves so subclasses will have dependencies fulfilled when this method returns.
         mActivityGraph.inject(this);
-
         super.onCreate(savedInstanceState);
     }
 
@@ -31,11 +30,6 @@ public abstract class ABaseActivity extends Activity implements DaggerInjector
         // Eagerly clear the reference to the activity graph to allow it to be garbage collected ASAP
         mActivityGraph = null;
         super.onDestroy();
-    }
-
-    protected <T> T getView(int id)
-    {
-        return (T) findViewById(id);
     }
 
     /**
@@ -54,9 +48,13 @@ public abstract class ABaseActivity extends Activity implements DaggerInjector
 
     protected Object[] geActivitytModules()
     {
-        return new Object[]{
+        return new Object[] {
                 new ActivityScopeModule(this)
-                // new AnotherActivityScopedModule(),
         };
+    }
+
+    protected <T> T getView(int id)
+    {
+        return (T) findViewById(id);
     }
 }

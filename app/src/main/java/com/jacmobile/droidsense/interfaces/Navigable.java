@@ -10,4 +10,6 @@ public interface Navigable
     public String getName();
     public Sensor getSensor();
     public String getIconUrl();
+    public String getUnitLabel();
+    public String[] getSensorRange();
 }

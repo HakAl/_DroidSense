@@ -24,7 +24,7 @@ public class ApplicationScopeModule
         Picasso picasso = Picasso.with(context);
 
         // some app-wide common settings
-        picasso.setDebugging(BuildConfig.DEBUG);
+//        picasso.setDebugging(BuildConfig.DEBUG);
 
         return picasso;
     }

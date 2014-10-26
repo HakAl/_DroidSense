@@ -72,21 +72,55 @@ public class AndroidAppModule
     @Singleton
     ArrayList<Navigable> provideSensorData(SensorManager sensorManager)
     {
+        String[] sensorRanges = sApplicationContext.getResources().getStringArray(R.array.sensor_ranges);
+        ArrayList<String> sensorUnitLabels = new ArrayList<String>(Arrays.asList(sApplicationContext.getResources().getStringArray(R.array.sensor_unit_labels)));
         ArrayList<String> sensorNames = new ArrayList<String>(Arrays.asList(sApplicationContext.getResources().getStringArray(R.array.sensors_array)));
         String[] imageUrls = ImageUrls.getImageUrls();
         ArrayList<Navigable> result = new ArrayList<Navigable>();
-        HashMap<String, Boolean> resultMap = new HashMap<String, Boolean>();
         for (int i = 1; i < 14; i++) {
             if (sensorManager.getDefaultSensor(i) != null) {
                 SensorListItem temp = new SensorListItem();
+                temp.setUnitLabel(sensorUnitLabels.get(i));
                 temp.setSensor(sensorManager.getDefaultSensor(i));
                 temp.setName(sensorNames.get(i));
                 temp.setIconUrl(imageUrls[i]);
+                temp.setSensorRange(sensorRanges[i].split(","));
                 result.add(temp);
             }
         }
         return result;
     }
+
+//    @Provides
+//    @Singleton
+//    ArrayList<Navigable> provideMockSensorData(SensorManager sensorManager)
+//    {
+//        String[] sensorRanges = sApplicationContext.getResources().getStringArray(R.array.sensor_ranges);
+//        ArrayList<String> sensorUnitLabels = new ArrayList<String>(Arrays.asList(sApplicationContext.getResources().getStringArray(R.array.sensor_unit_labels)));
+//        ArrayList<String> sensorNames = new ArrayList<String>(Arrays.asList(sApplicationContext.getResources().getStringArray(R.array.sensors_array)));
+//        String[] imageUrls = ImageUrls.getImageUrls();
+//        ArrayList<Navigable> result = new ArrayList<Navigable>();
+//        for (int i = 1; i < 14; i++) {
+//            if (i == 5 || i ==6 || i==7 || i ==8 || i==9 ||i ==12 ||i==13) {
+//                SensorListItem temp = new SensorListItem();
+//                temp.setUnitLabel(sensorUnitLabels.get(i));
+//                temp.setSensor(sensorManager.getDefaultSensor(9));
+//                temp.setName(sensorNames.get(i));
+//                temp.setIconUrl(imageUrls[i]);
+//                temp.setSensorRange(sensorRanges[i].split(","));
+//                result.add(temp);
+//            } else {
+//                SensorListItem temp = new SensorListItem();
+//                temp.setUnitLabel(sensorUnitLabels.get(i));
+//                temp.setSensor(sensorManager.getDefaultSensor(1));
+//                temp.setName(sensorNames.get(i));
+//                temp.setIconUrl(imageUrls[i]);
+//                temp.setSensorRange(sensorRanges[i].split(","));
+//                result.add(temp);
+//            }
+//        }
+//        return result;
+//    }
 
     @Provides
     @Singleton

@@ -12,6 +12,29 @@ public class SensorListItem implements Navigable
     private String url;
     private String name;
     private Sensor sensor;
+    private String unitLabel;
+    private String[] sensorRange;
+
+    @Override
+    public String[] getSensorRange()
+    {
+        return sensorRange;
+    }
+
+    public void setSensorRange(String[] sensorRange)
+    {
+        this.sensorRange = sensorRange;
+    }
+
+    public String getUnitLabel()
+    {
+        return unitLabel;
+    }
+
+    public void setUnitLabel(String unitLabel)
+    {
+        this.unitLabel = unitLabel;
+    }
 
     @Override
     public String getName()

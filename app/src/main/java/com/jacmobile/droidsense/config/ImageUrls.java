@@ -27,7 +27,7 @@ public class ImageUrls
     private static final String[] IMAGE_URLS = {
             TOUCH, ACCELEROMETER, MAGNETIC, ORIENTATION, GYRO,
             LIGHT,PRESSURE, DEVICE_TEMP, PROXIMITY, GRAVITY,
-            LINEAR, ROTATION, HUMID,DEVICE_TEMP
+            LINEAR, ROTATION, HUMID, AMBIENT_TEMP
     };
     public static String[] getImageUrls()
     {
