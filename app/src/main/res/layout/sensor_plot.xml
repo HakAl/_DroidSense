@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     androidPlot.backgroundPaint.color="@color/fog"
     androidPlot.borderPaint.color="@color/grey_fog"
-    androidPlot.domainLabel="Domain"
     androidPlot.domainLabelWidget.labelPaint.textSize="15sp"
     androidPlot.domainLabelWidget.labelPaint.color="@color/black"
     androidPlot.graphWidget.backgroundPaint.color="@color/fog"
@@ -24,10 +23,11 @@
     androidPlot.legendWidget.iconSizeMetrics.heightMetric.value="14sp"
     androidPlot.legendWidget.iconSizeMetrics.widthMetric.value="14sp"
     androidPlot.legendWidget.textPaint.textSize="20sp"
-    androidPlot.rangeLabel="m/s\u00B2"
     androidPlot.rangeLabelWidget.labelPaint.color="@color/black"
     androidPlot.rangeLabelWidget.labelPaint.textSize="15sp"
     androidPlot.titleWidget.labelPaint.textSize="@dimen/title_font_size"
     androidPlot.titleWidget.marginTop="6dp"
     androidPlot.titleWidget.labelPaint.color="@color/black"
-    androidplot.renderMode="use_background_thread"/>
+    androidplot.renderMode="use_background_thread"
+    androidPlot.domainLabel="Domain"
+    androidPlot.rangeLabel="m/s\u00B2"/>

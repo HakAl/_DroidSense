@@ -2,14 +2,12 @@ package com.jacmobile.droidsense.util;
 
 import android.hardware.Sensor;
 
-import com.jacmobile.droidsense.interfaces.Navigatable;
-
-import java.util.HashMap;
+import com.jacmobile.droidsense.interfaces.Navigable;
 
 /**
  * Created by alex on 10/12/14.
  */
-public class SensorListItem implements Navigatable
+public class SensorListItem implements Navigable
 {
     private String url;
     private String name;

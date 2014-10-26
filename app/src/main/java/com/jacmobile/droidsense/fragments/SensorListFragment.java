@@ -1,7 +1,6 @@
 package com.jacmobile.droidsense.fragments;
 
 import android.app.Activity;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jacmobile.droidsense.R;
-import com.jacmobile.droidsense.activities.ABaseActivity;
-import com.jacmobile.droidsense.interfaces.Navigatable;
+import com.jacmobile.droidsense.interfaces.Navigable;
 import com.jacmobile.droidsense.interfaces.Navigator;
 import com.jacmobile.droidsense.util.Animation;
 import com.jacmobile.droidsense.util.AnimationListener;
@@ -38,7 +36,7 @@ public class SensorListFragment extends ABaseFragment
 
     @Inject Picasso picasso;
     @Inject LayoutInflater layoutInflater;
-    @Inject ArrayList<Navigatable> sensorData;
+    @Inject ArrayList<Navigable> sensorData;
 
     public static SensorListFragment newInstance()
     {

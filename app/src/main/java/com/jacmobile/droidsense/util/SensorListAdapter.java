@@ -1,16 +1,14 @@
 package com.jacmobile.droidsense.util;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jacmobile.droidsense.R;
-import com.jacmobile.droidsense.interfaces.Navigatable;
+import com.jacmobile.droidsense.interfaces.Navigable;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -22,9 +20,9 @@ public class SensorListAdapter extends BaseAdapter
 {
     private Picasso picasso;
     private LayoutInflater inflater;
-    private ArrayList<Navigatable> data = null;
+    private ArrayList<Navigable> data = null;
 
-    public SensorListAdapter(Picasso picasso, LayoutInflater inflater, ArrayList<Navigatable> data)
+    public SensorListAdapter(Picasso picasso, LayoutInflater inflater, ArrayList<Navigable> data)
     {
         super();
         this.data = data;

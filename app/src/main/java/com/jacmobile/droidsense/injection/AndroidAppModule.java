@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import com.jacmobile.droidsense.R;
 import com.jacmobile.droidsense.config.ImageUrls;
 import com.jacmobile.droidsense.injection.annotations.ForApplication;
-import com.jacmobile.droidsense.interfaces.Navigatable;
+import com.jacmobile.droidsense.interfaces.Navigable;
 import com.jacmobile.droidsense.util.SensorListAdapter;
 import com.jacmobile.droidsense.util.SensorListItem;
 import com.squareup.picasso.Picasso;
@@ -70,11 +70,11 @@ public class AndroidAppModule
 
     @Provides
     @Singleton
-    ArrayList<Navigatable> provideSensorData(SensorManager sensorManager)
+    ArrayList<Navigable> provideSensorData(SensorManager sensorManager)
     {
         ArrayList<String> sensorNames = new ArrayList<String>(Arrays.asList(sApplicationContext.getResources().getStringArray(R.array.sensors_array)));
         String[] imageUrls = ImageUrls.getImageUrls();
-        ArrayList<Navigatable> result = new ArrayList<Navigatable>();
+        ArrayList<Navigable> result = new ArrayList<Navigable>();
         HashMap<String, Boolean> resultMap = new HashMap<String, Boolean>();
         for (int i = 1; i < 14; i++) {
             if (sensorManager.getDefaultSensor(i) != null) {
@@ -90,7 +90,7 @@ public class AndroidAppModule
 
     @Provides
     @Singleton
-    SensorListAdapter provideSensorListAdapter(Picasso picasso, LayoutInflater layoutInflater, ArrayList<Navigatable> sensorData)
+    SensorListAdapter provideSensorListAdapter(Picasso picasso, LayoutInflater layoutInflater, ArrayList<Navigable> sensorData)
     {
         return new SensorListAdapter(picasso, layoutInflater, sensorData);
     }
