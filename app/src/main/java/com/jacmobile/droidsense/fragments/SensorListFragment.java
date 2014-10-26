@@ -14,7 +14,7 @@ import com.jacmobile.droidsense.R;
 import com.jacmobile.droidsense.interfaces.Navigable;
 import com.jacmobile.droidsense.interfaces.Navigator;
 import com.jacmobile.droidsense.util.Animation;
-import com.jacmobile.droidsense.util.AnimationListener;
+import com.jacmobile.droidsense.interfaces.AnimationListener;
 import com.jacmobile.droidsense.util.FlipVerticalAnimation;
 import com.jacmobile.droidsense.util.SensorListAdapter;
 import com.jacmobile.droidsense.util.SystemInfo;
@@ -47,8 +47,11 @@ public class SensorListFragment extends ABaseFragment
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
-
-        this.navigatorListener = (Navigator) activity;
+        try {
+            this.navigatorListener = (Navigator) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement Navigator");
+        }
     }
 
     @Override
@@ -57,7 +60,7 @@ public class SensorListFragment extends ABaseFragment
         return inflater.inflate(R.layout.fragment_sensor_list, container, false);
     }
 
-//    TODO
+//    TODO touch?
     //        this.listView.addFooterView(getFooterView);
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
@@ -84,31 +87,12 @@ public class SensorListFragment extends ABaseFragment
                         }
                     });
                     animation.animate();
+                } else {
+                    //todo navigate to vendor url
                 }
+
             }
         });
-    }
-
-
-    private int getSensor(String name)
-    {
-        ArrayList<String> sensorNames = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.sensors_array)));
-        for (int i = 0; i < sensorNames.size(); i++) {
-            if (sensorNames.get(i).equals(name)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-
-    private View getHeaderView()
-    {
-//        SensorListItem touch = new SensorListItem();
-//        touch.setIconUrl(ImageUrls.TOUCH);
-//        touch.setName(sensorNames.get(13));
-//        result.add(touch);
-        return new View(getActivity());
     }
 
     private View getFooterView()

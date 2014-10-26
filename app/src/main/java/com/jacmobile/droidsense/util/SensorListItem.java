@@ -12,6 +12,7 @@ public class SensorListItem implements Navigable
     private String url;
     private String name;
     private Sensor sensor;
+
     @Override
     public String getName()
     {
@@ -32,7 +33,6 @@ public class SensorListItem implements Navigable
     {
         this.url = url;
     }
-
 
     @Override
     public Sensor getSensor()

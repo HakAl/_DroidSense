@@ -7,20 +7,20 @@ import java.lang.System;
  */
 public class SystemInfo
 {
-    private static String A = "java.vm.";
+    private static String PREFIX = "java.vm.";
 
     public static String getVendor()
     {
-        return System.getProperty(A+"vendor");
+        return System.getProperty(PREFIX +"vendor");
     }
 
     public static String getVendorUrl()
     {
-        return System.getProperty(A+"vendor.url");
+        return System.getProperty(PREFIX +"vendor.url");
     }
 
     public static String getVMName()
     {
-        return System.getProperty("java.specification.name") + " " + System.getProperty(A+"specification.version");
+        return System.getProperty("java.specification.name") + " " + System.getProperty(PREFIX +"specification.version");
     }
 }

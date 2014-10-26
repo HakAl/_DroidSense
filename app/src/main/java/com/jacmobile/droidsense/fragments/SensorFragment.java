@@ -41,8 +41,8 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     private float currentX, currentY, currentZ;
 
     private Timer timer;
-    private Runnable timerRunnable;
     private Redrawer drawer;
+    private Runnable timerRunnable;
     private SimpleXYSeries xSeries = null;
     private SimpleXYSeries ySeries = null;
     private SimpleXYSeries zSeries = null;

@@ -1,21 +1,10 @@
 package com.jacmobile.droidsense.util;
+
 import android.view.View;
 
-/**
- * The parent class of all animation classes.
- *
- */
-public abstract class Animation {
-
-    // constants
-    public static final int DIRECTION_LEFT = 1;
-    public static final int DIRECTION_RIGHT = 2;
-    public static final int DIRECTION_UP = 3;
-    public static final int DIRECTION_DOWN = 4;
-
-    public static final int DURATION_DEFAULT = 300; // 300 ms
-    public static final int DURATION_SHORT = 100;	// 100 ms
-    public static final int DURATION_LONG = 500;	// 500 ms
+public abstract class Animation
+{
+    public static final int DURATION = 500;
 
     View view;
 
@@ -24,5 +13,4 @@ public abstract class Animation {
      * object.
      */
     public abstract void animate();
-
 }

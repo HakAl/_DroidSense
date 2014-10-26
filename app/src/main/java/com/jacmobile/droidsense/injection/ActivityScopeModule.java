@@ -5,13 +5,10 @@ import android.content.Context;
 
 import com.jacmobile.droidsense.activities.ABaseActivity;
 import com.jacmobile.droidsense.activities.DSActivity;
-import com.jacmobile.droidsense.fragments.MainFragment;
 import com.jacmobile.droidsense.fragments.SensorFragment;
 import com.jacmobile.droidsense.fragments.SensorListFragment;
 import com.jacmobile.droidsense.injection.annotations.ForActivity;
 import com.jacmobile.droidsense.interfaces.ContentView;
-
-import java.util.Timer;
 
 import javax.inject.Singleton;
 
@@ -24,7 +21,6 @@ import dagger.Provides;
         addsTo = ApplicationScopeModule.class, // Important for object graph validation at compile time
         injects = {
                 DSActivity.class,
-                MainFragment.class,
                 SensorFragment.class,
                 SensorListFragment.class
         }

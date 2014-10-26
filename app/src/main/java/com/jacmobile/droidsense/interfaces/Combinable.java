@@ -3,8 +3,6 @@ package com.jacmobile.droidsense.interfaces;
 import android.animation.AnimatorSet;
 import android.animation.TimeInterpolator;
 
-import com.jacmobile.droidsense.util.AnimationListener;
-
 /**
  * This interface is implemented only by animation classes that can be combined
  * to animate together.

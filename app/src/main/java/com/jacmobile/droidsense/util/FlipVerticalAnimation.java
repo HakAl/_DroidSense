@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
+import com.jacmobile.droidsense.interfaces.AnimationListener;
 import com.jacmobile.droidsense.interfaces.Combinable;
 
 /**
@@ -40,7 +41,7 @@ public class FlipVerticalAnimation extends Animation implements Combinable
         degrees = 360;
         pivot = PIVOT_CENTER;
         interpolator = new AccelerateDecelerateInterpolator();
-        duration = DURATION_LONG;
+        duration = DURATION;
         listener = null;
     }
 
@@ -191,5 +192,4 @@ public class FlipVerticalAnimation extends Animation implements Combinable
         this.listener = listener;
         return this;
     }
-
 }
