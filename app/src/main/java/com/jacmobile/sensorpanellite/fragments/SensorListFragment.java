@@ -32,6 +32,7 @@ public class SensorListFragment extends ABaseFragment
     private int length;
     private ListView listView;
     private Navigator navigatorListener;
+    private FlipVerticalAnimation animation;
 
     @Inject Picasso picasso;
     @Inject LayoutInflater layoutInflater;
@@ -59,8 +60,6 @@ public class SensorListFragment extends ABaseFragment
         return inflater.inflate(R.layout.fragment_sensor_list, container, false);
     }
 
-//    TODO touch?
-    //        this.listView.addFooterView(getFooterView);
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
@@ -76,7 +75,7 @@ public class SensorListFragment extends ABaseFragment
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id)
             {
                 if (position != length) {
-                    FlipVerticalAnimation animation = new FlipVerticalAnimation(view);
+                    animation = new FlipVerticalAnimation(view);
                     animation.setListener(new AnimationListener()
                     {
                         @Override
@@ -85,11 +84,11 @@ public class SensorListFragment extends ABaseFragment
                             navigatorListener.onTransition(position);
                         }
                     });
-                    animation.animate();
                 } else {
                     //todo navigate to vendor url
+                    animation = new FlipVerticalAnimation(view, 180);
                 }
-
+                animation.animate();
             }
         });
     }

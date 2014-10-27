@@ -37,6 +37,15 @@ public class FlipVerticalAnimation extends Animation implements Combinable
         duration = DURATION;
         listener = null;
     }
+    public FlipVerticalAnimation(View view, float degrees)
+    {
+        this.view = view;
+        this.degrees = degrees;
+        pivot = PIVOT_CENTER;
+        interpolator = new AccelerateDecelerateInterpolator();
+        duration = DURATION;
+        listener = null;
+    }
 
     @Override
     public void animate()

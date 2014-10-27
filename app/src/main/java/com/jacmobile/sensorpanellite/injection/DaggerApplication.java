@@ -15,7 +15,6 @@ import dagger.ObjectGraph;
  */
 public class DaggerApplication extends Application implements DaggerInjector
 {
-
     private ObjectGraph mObjectGraph;
 
     @Override
@@ -29,8 +28,6 @@ public class DaggerApplication extends Application implements DaggerInjector
 
         List<Object> modules = new ArrayList<Object>();
         modules.add(sharedAppModule);
-        //modules.add(new UserAccountModule());
-        //modules.add(new ThreadingModule());
         modules.addAll(getAppModules());
 
         mObjectGraph = ObjectGraph.create(modules.toArray());

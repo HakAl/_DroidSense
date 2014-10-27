@@ -15,6 +15,7 @@
     androidPlot.graphWidget.gridBackgroundPaint.color="@color/dim_fog"
     androidPlot.graphWidget.marginBottom="40dp"
     androidPlot.graphWidget.marginRight="15dp"
+    androidPlot.graphWidget.marginLeft="10dp"
     androidPlot.graphWidget.marginTop="20dp"
     androidPlot.graphWidget.rangeLabelPaint.textSize="15sp"
     androidPlot.graphWidget.rangeLabelPaint.color="@color/black"
@@ -29,5 +30,4 @@
     androidPlot.titleWidget.marginTop="6dp"
     androidPlot.titleWidget.labelPaint.color="@color/black"
     androidplot.renderMode="use_background_thread"
-    androidPlot.domainLabel="Domain"
-    androidPlot.rangeLabel="m/s\u00B2"/>
+    androidPlot.domainLabel="Domain"/>

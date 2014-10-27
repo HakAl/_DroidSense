@@ -3,9 +3,7 @@ package com.jacmobile.sensorpanellite.injection;
 import android.app.Activity;
 import android.content.Context;
 import android.hardware.SensorManager;
-import android.location.LocationManager;
 import android.view.LayoutInflater;
-
 
 import com.jacmobile.sensorpanellite.R;
 import com.jacmobile.sensorpanellite.config.ImageUrls;
@@ -38,38 +36,22 @@ public class AndroidAppModule
      * Allow the application context to be injected but require that it be annotated with
      * {@link com.jacmobile.sensorpanellite.injection.annotations.ForApplication @Annotation} to explicitly differentiate it from an activity context.
      */
-    @Provides
-    @Singleton
-    @ForApplication
-    Context provideApplicationContext()
+    @Provides @Singleton @ForApplication Context provideApplicationContext()
     {
         return sApplicationContext;
     }
 
-    @Provides
-    @Singleton
-    LocationManager provideLocationManager()
-    {
-        return (LocationManager) sApplicationContext.getSystemService(Context.LOCATION_SERVICE);
-    }
-
-    @Provides
-    @Singleton
-    LayoutInflater provideLayoutInflater()
+    @Provides @Singleton LayoutInflater provideLayoutInflater()
     {
         return LayoutInflater.from(sApplicationContext);
     }
 
-    @Provides
-    @Singleton
-    SensorManager provideSensorManager()
+    @Provides @Singleton SensorManager provideSensorManager()
     {
         return (SensorManager) sApplicationContext.getSystemService(Activity.SENSOR_SERVICE);
     }
 
-    @Provides
-    @Singleton
-    ArrayList<Navigable> provideSensorData(SensorManager sensorManager)
+    @Provides @Singleton ArrayList<Navigable> provideSensorData(SensorManager sensorManager)
     {
         String[] sensorRanges = sApplicationContext.getResources().getStringArray(R.array.sensor_ranges);
         ArrayList<String> sensorUnitLabels = new ArrayList<String>(Arrays.asList(sApplicationContext.getResources().getStringArray(R.array.sensor_unit_labels)));
@@ -90,40 +72,7 @@ public class AndroidAppModule
         return result;
     }
 
-//    @Provides
-//    @Singleton
-//    ArrayList<Navigable> provideMockSensorData(SensorManager sensorManager)
-//    {
-//        String[] sensorRanges = sApplicationContext.getResources().getStringArray(R.array.sensor_ranges);
-//        ArrayList<String> sensorUnitLabels = new ArrayList<String>(Arrays.asList(sApplicationContext.getResources().getStringArray(R.array.sensor_unit_labels)));
-//        ArrayList<String> sensorNames = new ArrayList<String>(Arrays.asList(sApplicationContext.getResources().getStringArray(R.array.sensors_array)));
-//        String[] imageUrls = ImageUrls.getImageUrls();
-//        ArrayList<Navigable> result = new ArrayList<Navigable>();
-//        for (int i = 1; i < 14; i++) {
-//            if (i == 5 || i ==6 || i==7 || i ==8 || i==9 ||i ==12 ||i==13) {
-//                SensorListItem temp = new SensorListItem();
-//                temp.setUnitLabel(sensorUnitLabels.get(i));
-//                temp.setSensor(sensorManager.getDefaultSensor(9));
-//                temp.setName(sensorNames.get(i));
-//                temp.setIconUrl(imageUrls[i]);
-//                temp.setSensorRange(sensorRanges[i].split(","));
-//                result.add(temp);
-//            } else {
-//                SensorListItem temp = new SensorListItem();
-//                temp.setUnitLabel(sensorUnitLabels.get(i));
-//                temp.setSensor(sensorManager.getDefaultSensor(1));
-//                temp.setName(sensorNames.get(i));
-//                temp.setIconUrl(imageUrls[i]);
-//                temp.setSensorRange(sensorRanges[i].split(","));
-//                result.add(temp);
-//            }
-//        }
-//        return result;
-//    }
-
-    @Provides
-    @Singleton
-    SensorListAdapter provideSensorListAdapter(Picasso picasso, LayoutInflater layoutInflater, ArrayList<Navigable> sensorData)
+    @Provides @Singleton SensorListAdapter provideSensorListAdapter(Picasso picasso, LayoutInflater layoutInflater, ArrayList<Navigable> sensorData)
     {
         return new SensorListAdapter(picasso, layoutInflater, sensorData);
     }

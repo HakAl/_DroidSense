@@ -7,8 +7,6 @@ public class ImageUrls
 {
     private static final String PREFIX = "http://jacmobile.com/ds_images/";
 
-    public static final String DROIDSENSE = "http://jacmobile.com/images/droidsense.png";
-
     public static final String ACCELEROMETER = PREFIX + "accel.png";
     public static final String AMBIENT_TEMP = PREFIX + "ambtemp.png";
     public static final String DEVICE_TEMP = PREFIX + "devicetemp.png";

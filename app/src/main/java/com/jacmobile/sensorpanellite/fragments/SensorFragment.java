@@ -6,6 +6,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,13 +34,14 @@ import javax.inject.Inject;
  */
 public class SensorFragment extends ABaseFragment implements SensorEventListener
 {
-    public static final float STANDARD_GRAVITY = 9.80665f;
     private static final String SENSOR = "sensor";
     private static final float ALPHA = .9f;
+    public static final float STANDARD_GRAVITY = 9.80665f;
+    private static final int HISTORY_SIZE = 100;
 
     private Navigable mSensor;
     private int[] range;
-    private static final int HISTORY_SIZE = 100;
+    private int scale;
     private float currentX, currentY, currentZ;
 
     private Timer timer;
@@ -50,8 +52,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     private SimpleXYSeries zSeries = null;
 
     @Inject Picasso picasso;
-    @Inject
-    ContentView contentView;
+    @Inject ContentView contentView;
     @Inject SensorManager sensorManager;
     @Inject ArrayList<Navigable> sensorData;
 
@@ -75,6 +76,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         this.mSensor = this.sensorData.get(getArguments().getInt(SENSOR));
         XYPlot sensorPlot = (XYPlot) view.findViewById(R.id.sensor_plot);
         this.range = getRange();
+        this.setScale();
         sensorPlot.setRangeBoundaries(range[0], range[1], BoundaryMode.FIXED);
         sensorPlot.setRangeLabel(this.mSensor.getUnitLabel());
         sensorPlot.setDomainBoundaries(0, HISTORY_SIZE, BoundaryMode.FIXED);
@@ -102,6 +104,21 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
             sensorPlot.addSeries(ySeries, new LineAndPointFormatter(Color.CYAN, null, null, null));
             sensorPlot.addSeries(zSeries, new LineAndPointFormatter(Color.YELLOW, null, null, null));
         }
+    }
+
+    private void setScale()
+    {
+        Log.wtf("RANGE: ", this.range[1]+"");
+        if (this.range[1] >= 99) {
+            this.scale = 1;
+            return;
+        } else if (this.range[1] >= 20) {
+            this.scale = 10;
+            return;
+        } else {
+            this.scale = 100;
+        }
+        Log.wtf("SCALE: ", this.scale+"");
     }
 
     private int[] getRange()
@@ -147,11 +164,22 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     private void setRunnable()
     {
         if (isSingleSeries()) {
+            this.scale = 100;
             this.timerRunnable =  new Runnable()
             {
                 public void run()
                 {
-                    xSeries.setTitle(String.valueOf((float) Math.round(10 * currentX) / 10));
+                    xSeries.setTitle(String.valueOf((float) Math.round(scale * currentX) / scale));
+                }
+            };
+        } else if (scale == 1) {
+            this.timerRunnable =  new Runnable()
+            {
+                public void run()
+                {
+                    xSeries.setTitle(String.valueOf(Math.round(scale * currentX) / scale));
+                    ySeries.setTitle(String.valueOf(Math.round(scale * currentY) / scale));
+                    zSeries.setTitle(String.valueOf(Math.round(scale * currentZ) / scale));
                 }
             };
         } else {
@@ -159,9 +187,9 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
             {
                 public void run()
                 {
-                    xSeries.setTitle(String.valueOf((float) Math.round(10 * currentX) / 10));
-                    ySeries.setTitle(String.valueOf((float) Math.round(10 * currentY) / 10));
-                    zSeries.setTitle(String.valueOf((float) Math.round(10 * currentZ) / 10));
+                    xSeries.setTitle(String.valueOf((float) Math.round(scale * currentX) / scale));
+                    ySeries.setTitle(String.valueOf((float) Math.round(scale * currentY) / scale));
+                    zSeries.setTitle(String.valueOf((float) Math.round(scale * currentZ) / scale));
                 }
             };
         }

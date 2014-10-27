@@ -21,10 +21,7 @@ public class ApplicationScopeModule
     @Provides
     Picasso providesPicasso(@ForApplication Context context) {
         Picasso picasso = Picasso.with(context);
-
-        // some app-wide common settings
 //        picasso.setDebugging(BuildConfig.DEBUG);
-
         return picasso;
     }
 }

@@ -11,7 +11,6 @@ import com.jacmobile.sensorpanellite.util.FlipVerticalAnimation;
  */
 public interface Combinable
 {
-
     public void animate();
 
     public long getDuration();

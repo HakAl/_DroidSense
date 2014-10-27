@@ -13,13 +13,13 @@ import com.jacmobile.sensorpanellite.interfaces.Navigator;
  */
 public class SensorActivity extends ABaseActivity implements Navigator
 {
-    private static final String SENSOR_FRAGMENT = "com.jacmobile.droidsense.sensorfragment";
+    private static final String SENSOR_FRAGMENT = "com.jacmobile.sensorpanellite.sensorfragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_sensor);
 
         if (savedInstanceState == null) {
             getFragmentManager()
