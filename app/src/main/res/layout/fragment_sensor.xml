@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"/>
 
     <include
-        layout="@layout/card_sensor"
+        layout="@layout/card_sensor_timer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

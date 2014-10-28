@@ -19,6 +19,7 @@ import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.jacmobile.sensorpanellite.R;
+import com.jacmobile.sensorpanellite.activities.TimerController;
 import com.jacmobile.sensorpanellite.interfaces.ContentView;
 import com.jacmobile.sensorpanellite.interfaces.Navigable;
 import com.squareup.picasso.Picasso;
@@ -50,11 +51,13 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     private SimpleXYSeries xSeries = null;
     private SimpleXYSeries ySeries = null;
     private SimpleXYSeries zSeries = null;
+    private TextView txtTimer;
 
     @Inject Picasso picasso;
     @Inject ContentView contentView;
     @Inject SensorManager sensorManager;
     @Inject ArrayList<Navigable> sensorData;
+    @Inject TimerController timerController;
 
     /**
      * @param sensor the sensor to represent
@@ -87,6 +90,43 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         return view;
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        resumeSensorFeed();
+    }
+
+    @Override
+    public void onPause()
+    {
+        this.timerController.onPause(this);
+        super.onPause();
+        pauseSensorFeed();
+    }
+    private void resumeSensorFeed()
+    {
+        this.sensorManager.registerListener(this, this.mSensor.getSensor(), SensorManager.SENSOR_DELAY_UI);
+        this.drawer.start();
+        setRunnable();
+        this.setTimer();
+    }
+
+    private void pauseSensorFeed()
+    {
+        this.sensorManager.unregisterListener(this, this.mSensor.getSensor());
+        this.drawer.pause();
+        this.timer.cancel();
+        this.timerRunnable = null;
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        this.drawer.finish();
+    }
+
     private void setSeries(XYPlot sensorPlot)
     {
         if (isSingleSeries()) {
@@ -108,7 +148,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
 
     private void setScale()
     {
-        Log.wtf("RANGE: ", this.range[1]+"");
+        Log.wtf("RANGE: ", this.range[1] + "");
         if (this.range[1] >= 99) {
             this.scale = 1;
             return;
@@ -118,7 +158,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         } else {
             this.scale = 100;
         }
-        Log.wtf("SCALE: ", this.scale+"");
+        Log.wtf("SCALE: ", this.scale + "");
     }
 
     private int[] getRange()
@@ -128,15 +168,53 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
                 Integer.valueOf(mSensor.getSensorRange()[1]) };
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState)
+    {
+        super.onActivityCreated(savedInstanceState);
+
+        this.timerController.onResume(this);
+        this.timerController.restartTimer();
+    }
+
     private void setSensorCard(View parent)
     {
         ((TextView) parent.findViewById(R.id.tv_sensor_title)).setText(this.mSensor.getName());
         ((TextView) parent.findViewById(R.id.tv_sensor_sub_title)).setText(this.mSensor.getSensor().getVendor());
         ((TextView) parent.findViewById(R.id.tv_sensor_descript)).setText(this.mSensor.getSensor().getName());
+        this.txtTimer = ((TextView) parent.findViewById(R.id.tv_sensor_timer));
+        parent.findViewById(R.id.iv_sensor_switch).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                setTimerButton(v);
+            }
+        });
         this.picasso.load(
                 this.mSensor.getIconUrl())
                 .placeholder(R.drawable.gear)
                 .into(((ImageView) parent.findViewById(R.id.iv_sensor_icon)));
+    }
+
+
+    boolean paused = false;
+    private void setTimerButton(View view)
+    {
+        int resId;
+        if (paused) {
+            timerController.onResume(this);
+            timerController.restartTimer();
+            resId = R.drawable.ic__pause;
+            paused = false;
+            resumeSensorFeed();
+        } else {
+            timerController.onPause(this);
+            resId = R.drawable.ic_action_ic_media_play;
+            paused = true;
+            pauseSensorFeed();
+        }
+        this.picasso.load(resId).into((ImageView) view);
     }
 
     private void setTimer()
@@ -149,16 +227,6 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
                 updateGUI();
             }
         }, 0, 167);
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        this.sensorManager.registerListener(this, this.mSensor.getSensor(), SensorManager.SENSOR_DELAY_UI);
-        this.drawer.start();
-        setRunnable();
-        this.setTimer();
     }
 
     private void setRunnable()
@@ -193,23 +261,6 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
                 }
             };
         }
-    }
-
-    @Override
-    public void onPause()
-    {
-        super.onPause();
-        this.sensorManager.unregisterListener(this, this.mSensor.getSensor());
-        this.drawer.pause();
-        this.timer.cancel();
-        this.timerRunnable = null;
-    }
-
-    @Override
-    public void onDestroy()
-    {
-        super.onDestroy();
-        this.drawer.finish();
     }
 
     private void updateGUI()
@@ -321,5 +372,10 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     private boolean isAmbientTemperature()
     {
         return this.mSensor.getName().equals("Ambient Temperature");
+    }
+
+    public void setElapsedNanos(long elapsedNanos)
+    {
+        txtTimer.setText(String.format("%.2f", elapsedNanos / 1000000000d));
     }
 }

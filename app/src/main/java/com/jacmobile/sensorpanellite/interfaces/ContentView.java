@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYStepMode;
@@ -17,8 +19,11 @@ import com.jacmobile.sensorpanellite.R;
 import com.jacmobile.sensorpanellite.util.Animation;
 import com.jacmobile.sensorpanellite.util.FlipVerticalAnimation;
 import com.jacmobile.sensorpanellite.util.SensorListAdapter;
+import com.jacmobile.sensorpanellite.util.SystemInfo;
 
 import java.text.DecimalFormat;
+
+import javax.inject.Inject;
 
 /**
  * An indirection which allows controlling the root container used for each activity.

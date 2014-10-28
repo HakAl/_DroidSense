@@ -27,16 +27,14 @@ import javax.inject.Inject;
 /**
  * Created by alex on 10/12/14.
  */
-public class SensorListFragment extends ABaseFragment
+public class SensorListFragment extends AListFragment
 {
-    private int length;
-    private ListView listView;
     private Navigator navigatorListener;
     private FlipVerticalAnimation animation;
 
     @Inject Picasso picasso;
+    @Inject SensorListAdapter adapter;
     @Inject LayoutInflater layoutInflater;
-    @Inject ArrayList<Navigable> sensorData;
 
     public static SensorListFragment newInstance()
     {
@@ -57,40 +55,11 @@ public class SensorListFragment extends ABaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        return inflater.inflate(R.layout.fragment_sensor_list, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState)
-    {
-        super.onViewCreated(view, savedInstanceState);
-
-        this.listView = getView(R.id.list_sensors);
-        this.listView.addFooterView(this.getFooterView());
-        this.length=this.sensorData.size();
-        this.listView.setAdapter(new SensorListAdapter(this.picasso, this.layoutInflater, this.sensorData));
-        this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id)
-            {
-                if (position != length) {
-                    animation = new FlipVerticalAnimation(view);
-                    animation.setListener(new AnimationListener()
-                    {
-                        @Override
-                        public void onAnimationEnd(Animation animation)
-                        {
-                            navigatorListener.onTransition(position);
-                        }
-                    });
-                } else {
-                    //todo navigate to vendor url
-                    animation = new FlipVerticalAnimation(view, 180);
-                }
-                animation.animate();
-            }
-        });
+        View view = inflater.inflate(R.layout.fragment_sensor_list, container, false);
+        ListView listView = (ListView) view.findViewById(R.id.list_sensors);
+        listView.addFooterView(this.getFooterView());
+        listView.setAdapter(adapter);
+        return view;
     }
 
     private View getFooterView()
@@ -100,5 +69,34 @@ public class SensorListFragment extends ABaseFragment
         ((TextView) result.findViewById(R.id.tv_os_version)).setText(SystemInfo.getVMName());
         this.picasso.load(R.drawable.gear).into((ImageView) result.findViewById(R.id.iv_device_icon));
         return result;
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View view, final int position, long id)
+    {
+        super.onListItemClick(l, view, position, id);
+        animation = new FlipVerticalAnimation(view);
+        if (position != adapter.getCount()) {
+            animation.setListener(new AnimationListener()
+            {
+                @Override
+                public void onAnimationEnd(Animation animation)
+                {
+                    navigatorListener.onTransition(position);
+                }
+            });
+        } else {
+            //todo navigate to vendor url
+            animation.setListener(new AnimationListener()
+            {
+                @Override
+                public void onAnimationEnd(Animation animation)
+                {
+                    int[] temp = {position,0};
+                    navigatorListener.onTransition(temp);
+                }
+            });
+        }
+        animation.animate();
     }
 }

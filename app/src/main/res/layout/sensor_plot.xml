@@ -30,4 +30,4 @@
     androidPlot.titleWidget.marginTop="6dp"
     androidPlot.titleWidget.labelPaint.color="@color/black"
     androidplot.renderMode="use_background_thread"
-    androidPlot.domainLabel="Domain"/>
+    androidPlot.domainLabel="Sensor Event"/>

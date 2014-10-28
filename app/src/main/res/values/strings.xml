@@ -22,7 +22,7 @@
     <string-array name="sensor_ranges">
         <item></item>
         <item>-20,20</item>
-        <item>0,99</item>
+        <item>0,30</item>
         <item>-180,359</item>
         <item>-99,99</item>
         <item>0,999</item>

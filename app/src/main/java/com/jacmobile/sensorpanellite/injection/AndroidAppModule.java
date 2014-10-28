@@ -3,6 +3,8 @@ package com.jacmobile.sensorpanellite.injection;
 import android.app.Activity;
 import android.content.Context;
 import android.hardware.SensorManager;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 
 import com.jacmobile.sensorpanellite.R;
@@ -15,6 +17,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.inject.Singleton;
 
@@ -49,6 +53,16 @@ public class AndroidAppModule
     @Provides @Singleton SensorManager provideSensorManager()
     {
         return (SensorManager) sApplicationContext.getSystemService(Activity.SENSOR_SERVICE);
+    }
+
+    @Provides @Singleton Handler provideHandler() {
+        return new Handler(Looper.getMainLooper());
+    }
+
+
+    @Provides @Singleton
+    ExecutorService provideExecutorService() {
+        return Executors.newCachedThreadPool();
     }
 
     @Provides @Singleton ArrayList<Navigable> provideSensorData(SensorManager sensorManager)

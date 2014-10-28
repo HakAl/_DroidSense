@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="6dp"
+    android:background="@drawable/list_selector"
+    android:id="@+id/parent_device_card">
+
+    <TextView
+        android:id="@+id/tv_sensor_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_toRightOf="@+id/iv_sensor_icon"
+        android:textSize="@dimen/device_icon_label"
+        android:textColor="#000"/>
+
+    <TextView
+        android:id="@+id/tv_sensor_sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/iv_sensor_icon"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="12dp"
+        android:layout_below="@id/tv_sensor_title"
+        android:textSize="@dimen/device_icon_text"
+        android:textColor="#000"/>
+
+    <TextView
+        android:id="@+id/tv_sensor_descript"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/iv_sensor_icon"
+        android:layout_alignBottom="@+id/iv_sensor_icon"
+        android:layout_marginLeft="12dp"
+        android:textSize="@dimen/device_icon_text"
+        android:textColor="#000"/>
+
+    <ImageView
+        android:id="@+id/iv_sensor_icon"
+        android:layout_width="@dimen/device_icon"
+        android:layout_height="@dimen/device_icon"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/tv_sensor_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:textSize="@dimen/sensor_timer_text"
+        android:textColor="#000"/>
+
+
+    <ImageView
+        android:id="@+id/iv_sensor_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:paddingTop="@dimen/activity_four"
+        android:paddingLeft="@dimen/activity_four"
+        android:layout_alignBottom="@+id/iv_sensor_icon"
+        android:src="@drawable/ic__pause"/>
+
+</RelativeLayout>
