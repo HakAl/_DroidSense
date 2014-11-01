@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,7 +20,7 @@ import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.jacmobile.sensorpanellite.R;
-import com.jacmobile.sensorpanellite.activities.TimerController;
+import com.jacmobile.sensorpanellite.activities.SensorController;
 import com.jacmobile.sensorpanellite.interfaces.ContentView;
 import com.jacmobile.sensorpanellite.interfaces.Navigable;
 import com.squareup.picasso.Picasso;
@@ -35,29 +36,26 @@ import javax.inject.Inject;
  */
 public class SensorFragment extends ABaseFragment implements SensorEventListener
 {
-    private static final String SENSOR = "sensor";
-    private static final float ALPHA = .9f;
-    public static final float STANDARD_GRAVITY = 9.80665f;
-    private static final int HISTORY_SIZE = 100;
+    private static final String WHICH_SENSOR = "sensor";
 
     private Navigable mSensor;
-    private int[] range;
-    private int scale;
-    private float currentX, currentY, currentZ;
 
-    private Timer timer;
     private Redrawer drawer;
-    private Runnable timerRunnable;
+    private TextView txtTimer;
+    private ImageView imgTimerBtn;
     private SimpleXYSeries xSeries = null;
     private SimpleXYSeries ySeries = null;
     private SimpleXYSeries zSeries = null;
-    private TextView txtTimer;
+
+    private int scale;
+    public int[] range;
+    private boolean paused = false;
 
     @Inject Picasso picasso;
     @Inject ContentView contentView;
     @Inject SensorManager sensorManager;
     @Inject ArrayList<Navigable> sensorData;
-    @Inject TimerController timerController;
+    @Inject SensorController sensorController;
 
     /**
      * @param sensor the sensor to represent
@@ -66,7 +64,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     public static SensorFragment newInstance(int sensor)
     {
         Bundle args = new Bundle();
-        args.putInt(SENSOR, sensor);
+        args.putInt(WHICH_SENSOR, sensor);
         SensorFragment result = new SensorFragment();
         result.setArguments(args);
         return result;
@@ -75,49 +73,32 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        ViewGroup view = contentView.getPlot(getActivity());
-        this.mSensor = this.sensorData.get(getArguments().getInt(SENSOR));
-        XYPlot sensorPlot = (XYPlot) view.findViewById(R.id.sensor_plot);
-        this.range = getRange();
-        this.setScale();
-        sensorPlot.setRangeBoundaries(range[0], range[1], BoundaryMode.FIXED);
-        sensorPlot.setRangeLabel(this.mSensor.getUnitLabel());
-        sensorPlot.setDomainBoundaries(0, HISTORY_SIZE, BoundaryMode.FIXED);
-        sensorPlot.setTitle(this.mSensor.getName());
-        this.setSeries(sensorPlot);
-        drawer = new Redrawer(sensorPlot, HISTORY_SIZE, false);
-        this.setSensorCard(view);
-        return view;
+        this.mSensor = this.sensorData.get(getArguments().getInt(WHICH_SENSOR));
+        this.sensorManager.registerListener(this, this.mSensor.getSensor(), SensorManager.SENSOR_DELAY_UI);
+        this.sensorController.onResumeSensorFeed(this, mSensor);
+        return this.getSensorView();
     }
 
     @Override
     public void onResume()
     {
         super.onResume();
-        resumeSensorFeed();
+        this.mSensor = this.sensorData.get(getArguments().getInt(WHICH_SENSOR));
+        this.sensorManager.registerListener(this, this.mSensor.getSensor(), SensorManager.SENSOR_DELAY_UI);
+        sensorController.restartTimer();
+        this.drawer.start();
+        this.setTimerButtonImage();
     }
 
     @Override
     public void onPause()
     {
-        this.timerController.onPause(this);
-        super.onPause();
-        pauseSensorFeed();
-    }
-    private void resumeSensorFeed()
-    {
-        this.sensorManager.registerListener(this, this.mSensor.getSensor(), SensorManager.SENSOR_DELAY_UI);
-        this.drawer.start();
-        setRunnable();
-        this.setTimer();
-    }
-
-    private void pauseSensorFeed()
-    {
+        paused = true;
+        this.sensorController.onPauseSensorFeed();
         this.sensorManager.unregisterListener(this, this.mSensor.getSensor());
+        this.mSensor = null;
         this.drawer.pause();
-        this.timer.cancel();
-        this.timerRunnable = null;
+        super.onPause();
     }
 
     @Override
@@ -127,9 +108,25 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         this.drawer.finish();
     }
 
+    private View getSensorView()
+    {
+        this.range = getRange();
+        this.setScale();
+        ViewGroup view = contentView.getPlot(getActivity());
+        XYPlot sensorPlot = (XYPlot) view.findViewById(R.id.sensor_plot);
+        sensorPlot.setRangeBoundaries(range[0], range[1], BoundaryMode.FIXED);
+        sensorPlot.setRangeLabel(this.mSensor.getUnitLabel());
+        sensorPlot.setDomainBoundaries(0, SensorController.HISTORY_SIZE, BoundaryMode.FIXED);
+        sensorPlot.setTitle(this.mSensor.getName());
+        this.setSeries(sensorPlot);
+        drawer = new Redrawer(sensorPlot, SensorController.HISTORY_SIZE, false);
+        this.setSensorCard(view);
+        return view;
+    }
+
     private void setSeries(XYPlot sensorPlot)
     {
-        if (isSingleSeries()) {
+        if (sensorController.isSingleSeries()) {
             xSeries = new SimpleXYSeries("X");
             xSeries.useImplicitXVals();
             sensorPlot.addSeries(xSeries, new LineAndPointFormatter(Color.RED, null, null, null));
@@ -146,44 +143,14 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         }
     }
 
-    private void setScale()
-    {
-        Log.wtf("RANGE: ", this.range[1] + "");
-        if (this.range[1] >= 99) {
-            this.scale = 1;
-            return;
-        } else if (this.range[1] >= 20) {
-            this.scale = 10;
-            return;
-        } else {
-            this.scale = 100;
-        }
-        Log.wtf("SCALE: ", this.scale + "");
-    }
-
-    private int[] getRange()
-    {
-        return new int[] {
-                Integer.valueOf(mSensor.getSensorRange()[0]),
-                Integer.valueOf(mSensor.getSensorRange()[1]) };
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState)
-    {
-        super.onActivityCreated(savedInstanceState);
-
-        this.timerController.onResume(this);
-        this.timerController.restartTimer();
-    }
-
     private void setSensorCard(View parent)
     {
+        this.txtTimer = ((TextView) parent.findViewById(R.id.tv_sensor_timer));
         ((TextView) parent.findViewById(R.id.tv_sensor_title)).setText(this.mSensor.getName());
         ((TextView) parent.findViewById(R.id.tv_sensor_sub_title)).setText(this.mSensor.getSensor().getVendor());
         ((TextView) parent.findViewById(R.id.tv_sensor_descript)).setText(this.mSensor.getSensor().getName());
-        this.txtTimer = ((TextView) parent.findViewById(R.id.tv_sensor_timer));
-        parent.findViewById(R.id.iv_sensor_switch).setOnClickListener(new View.OnClickListener()
+        this.imgTimerBtn = (ImageView) parent.findViewById(R.id.iv_sensor_switch);
+        this.imgTimerBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -197,185 +164,90 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
                 .into(((ImageView) parent.findViewById(R.id.iv_sensor_icon)));
     }
 
+    private void setTimerButtonImage() {
+        this.picasso.load(
+                paused ?
+                        R.drawable.ic_action_ic_media_play
+                        : R.drawable.ic__pause).into(this.imgTimerBtn);
+    }
 
-    boolean paused = false;
     private void setTimerButton(View view)
     {
-        int resId;
         if (paused) {
-            timerController.onResume(this);
-            timerController.restartTimer();
-            resId = R.drawable.ic__pause;
             paused = false;
-            resumeSensorFeed();
+            sensorController.onResumeSensorFeed(this, this.mSensor);
+            sensorController.restartTimer();
         } else {
-            timerController.onPause(this);
-            resId = R.drawable.ic_action_ic_media_play;
             paused = true;
-            pauseSensorFeed();
+            sensorController.onPauseSensorFeed();
         }
-        this.picasso.load(resId).into((ImageView) view);
+        setTimerButtonImage();
     }
 
-    private void setTimer()
+
+    public void updateSeries(float... data)
     {
-        this.timer = new Timer("timer");
-        this.timer.scheduleAtFixedRate(new TimerTask()
-        {
-            public void run()
-            {
-                updateGUI();
+        if (sensorController.isSingleSeries()) {
+            xSeries.setTitle(String.valueOf((float) Math.round(scale * data[0]) / scale));
+            if (xSeries.size() > sensorController.HISTORY_SIZE) {
+                xSeries.removeFirst();
             }
-        }, 0, 167);
-    }
-
-    private void setRunnable()
-    {
-        if (isSingleSeries()) {
-            this.scale = 100;
-            this.timerRunnable =  new Runnable()
-            {
-                public void run()
-                {
-                    xSeries.setTitle(String.valueOf((float) Math.round(scale * currentX) / scale));
-                }
-            };
-        } else if (scale == 1) {
-            this.timerRunnable =  new Runnable()
-            {
-                public void run()
-                {
-                    xSeries.setTitle(String.valueOf(Math.round(scale * currentX) / scale));
-                    ySeries.setTitle(String.valueOf(Math.round(scale * currentY) / scale));
-                    zSeries.setTitle(String.valueOf(Math.round(scale * currentZ) / scale));
-                }
-            };
+            xSeries.addLast(null, data[0]);
         } else {
-            this.timerRunnable =  new Runnable()
-            {
-                public void run()
-                {
-                    xSeries.setTitle(String.valueOf((float) Math.round(scale * currentX) / scale));
-                    ySeries.setTitle(String.valueOf((float) Math.round(scale * currentY) / scale));
-                    zSeries.setTitle(String.valueOf((float) Math.round(scale * currentZ) / scale));
-                }
-            };
+            if (scale == 1) {
+                xSeries.setTitle(String.valueOf(Math.round(scale * data[0]) / scale));
+                ySeries.setTitle(String.valueOf(Math.round(scale * data[1]) / scale));
+                zSeries.setTitle(String.valueOf(Math.round(scale * data[2]) / scale));
+            } else {
+                xSeries.setTitle(String.valueOf((float) Math.round(scale * data[0]) / scale));
+                ySeries.setTitle(String.valueOf((float) Math.round(scale * data[1]) / scale));
+                zSeries.setTitle(String.valueOf((float) Math.round(scale * data[2]) / scale));
+            }
+            if (zSeries.size() > sensorController.HISTORY_SIZE) {
+                zSeries.removeFirst();
+                ySeries.removeFirst();
+                xSeries.removeFirst();
+            }
+            xSeries.addLast(null, data[0]);
+            ySeries.addLast(null, data[1]);
+            zSeries.addLast(null, data[2]);
+
         }
     }
 
-    private void updateGUI()
+    private void setScale()
     {
-        getActivity().runOnUiThread(this.timerRunnable);
-    }
-
-    @Override
-    public synchronized void onSensorChanged(SensorEvent event)
-    {
-        useFilteredData(event);
-    }
-
-    private void useFilteredData(SensorEvent event)
-    {
-         if (isLight() || isProximity() || isHumidity() || isDeviceTemperature() || isAmbientTemperature() || isPressure()) {
-             setSingleSeries(event);
-             return;
-        } else if (isMagnetometer()) {
-             setMagnetometerData(event);
-        } else if(isGravity()) {
-             setGravityData(event);
-             setSingleSeries(event);
-             return;
-         } else {
-            currentX = ALPHA * currentX + (1 - ALPHA) * event.values[0];
-            currentY = ALPHA * currentY + (1 - ALPHA) * event.values[1];
-            currentZ = ALPHA * currentZ + (1 - ALPHA) * event.values[2];
+        if (this.range[1] >= 99) {
+            this.scale = 1;
+            return;
+        } else if (this.range[1] >= 20) {
+            this.scale = 10;
+            return;
+        } else {
+            this.scale = 100;
         }
-        if (zSeries.size() > HISTORY_SIZE) {
-            zSeries.removeFirst();
-            ySeries.removeFirst();
-            xSeries.removeFirst();
-        }
-        xSeries.addLast(null, currentX);
-        ySeries.addLast(null, currentY);
-        zSeries.addLast(null, currentZ);
     }
 
-    private void setMagnetometerData(SensorEvent event)
+    private int[] getRange()
     {
-        currentX = Math.abs(ALPHA * currentX + (1 - ALPHA) * event.values[0]);
-        currentY = Math.abs(ALPHA * currentX + (1 - ALPHA) * event.values[1]);
-        currentZ = Math.abs(ALPHA * currentX + (1 - ALPHA) * event.values[2]);
-    }
-
-    private void setGravityData(SensorEvent event)
-    {
-        double a = Math.round(Math.sqrt(Math.pow(event.values[0], 2)
-                + Math.pow(event.values[1], 2)
-                + Math.pow(event.values[2], 2)));
-        currentX = (float) ( Math.abs((float) (a - STANDARD_GRAVITY)) / 9.81 );
-    }
-
-    private void setSingleSeries(SensorEvent event)
-    {
-        currentX = ALPHA * currentX + (1 - ALPHA) * event.values[0];
-        if (xSeries.size() > HISTORY_SIZE) {
-            xSeries.removeFirst();
-        }
-        xSeries.addLast(null, currentX);
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy)
-    {
-    }
-
-    private boolean isMagnetometer()
-    {
-        return this.mSensor.getName().equals("Magnetometer");
-    }
-
-    private boolean isSingleSeries()
-    {
-        return (isLight() || isProximity() || isGravity() || isAmbientTemperature() || isDeviceTemperature() || isHumidity() || isPressure());
-    }
-
-    private boolean isLight()
-    {
-        return this.mSensor.getName().equals("Light");
-    }
-
-    private boolean isProximity()
-    {
-        return this.mSensor.getName().equals("Proximity");
-    }
-
-    private boolean isGravity()
-    {
-        return this.mSensor.getName().equals("Gravity");
-    }
-
-    private boolean isPressure()
-    {
-        return this.mSensor.getName().equals("Pressure");
-    }
-
-    private boolean isHumidity()
-    {
-        return this.mSensor.getName().equals("Humidity");
-    }
-
-    private boolean isDeviceTemperature()
-    {
-        return this.mSensor.getName().equals("Device Temperature");
-    }
-
-    private boolean isAmbientTemperature()
-    {
-        return this.mSensor.getName().equals("Ambient Temperature");
+        return new int[]{
+                Integer.valueOf(mSensor.getSensorRange()[0]),
+                Integer.valueOf(mSensor.getSensorRange()[1])};
     }
 
     public void setElapsedNanos(long elapsedNanos)
     {
         txtTimer.setText(String.format("%.2f", elapsedNanos / 1000000000d));
+    }
+
+    @Override
+    public synchronized void onSensorChanged(SensorEvent event)
+    {
+        sensorController.useFilteredData(event);
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy)
+    {
     }
 }

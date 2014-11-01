@@ -16,7 +16,7 @@ import javax.inject.Inject;
 public class SensorActivity extends ABaseActivity implements Navigator
 {
     @Inject
-    TimerController timerController;
+    SensorController sensorController;
 
     private static final String SENSOR_FRAGMENT = "com.jacmobile.sensorpanellite.sensorfragment";
     private static final String SENSOR_LIST_FRAGMENT = "com.jacmobile.sensorpanellite.sensorlistfragment";
