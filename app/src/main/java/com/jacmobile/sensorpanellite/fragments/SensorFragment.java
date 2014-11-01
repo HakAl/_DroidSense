@@ -211,7 +211,6 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
             xSeries.addLast(null, data[0]);
             ySeries.addLast(null, data[1]);
             zSeries.addLast(null, data[2]);
-
         }
     }
 

@@ -107,11 +107,6 @@ public final class SensorController
         return this.mSensor.getName().equals("Magnetometer");
     }
 
-    public boolean isSingleSeries()
-    {
-        return (isLight() || isProximity() || isGravity() || isAmbientTemperature() || isDeviceTemperature() || isHumidity() || isPressure());
-    }
-
     private boolean isLight()
     {
         return this.mSensor.getName().equals("Light");
@@ -145,5 +140,10 @@ public final class SensorController
     private boolean isAmbientTemperature()
     {
         return this.mSensor.getName().equals("Ambient Temperature");
+    }
+
+    public boolean isSingleSeries()
+    {
+        return (isLight() || isProximity() || isGravity() || isAmbientTemperature() || isDeviceTemperature() || isHumidity() || isPressure());
     }
 }
