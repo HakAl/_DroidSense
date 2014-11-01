@@ -7,7 +7,6 @@ import com.jacmobile.sensorpanellite.activities.ABaseActivity;
 import com.jacmobile.sensorpanellite.activities.SensorActivity;
 import com.jacmobile.sensorpanellite.fragments.SensorFragment;
 import com.jacmobile.sensorpanellite.fragments.SensorListFragment;
-import com.jacmobile.sensorpanellite.injection.annotations.ForActivity;
 import com.jacmobile.sensorpanellite.interfaces.ContentView;
 
 import javax.inject.Singleton;

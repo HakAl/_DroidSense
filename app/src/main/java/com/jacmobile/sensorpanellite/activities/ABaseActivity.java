@@ -3,20 +3,18 @@ package com.jacmobile.sensorpanellite.activities;
 import android.app.Activity;
 import android.os.Bundle;
 
+import com.jacmobile.sensorpanellite.app.DaggerApplication;
 import com.jacmobile.sensorpanellite.injection.ActivityScopeModule;
-import com.jacmobile.sensorpanellite.injection.DaggerApplication;
 import com.jacmobile.sensorpanellite.interfaces.DaggerInjector;
 
 import dagger.ObjectGraph;
 
 
-public abstract class ABaseActivity extends Activity implements DaggerInjector
-{
+public abstract class ABaseActivity extends Activity implements DaggerInjector {
     private ObjectGraph mActivityGraph;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         // Create the activity graph by .plus-ing our modules onto the application graph.
         mActivityGraph = ((DaggerApplication) getApplication()).getObjectGraph().plus(geActivitytModules());
         // Inject ourselves so subclasses will have dependencies fulfilled when this method returns.
@@ -25,8 +23,7 @@ public abstract class ABaseActivity extends Activity implements DaggerInjector
     }
 
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         // Eagerly clear the reference to the activity graph to allow it to be garbage collected ASAP
         mActivityGraph = null;
         super.onDestroy();
@@ -36,25 +33,21 @@ public abstract class ABaseActivity extends Activity implements DaggerInjector
      * Inject the supplied {@code object} using the activity-specific graph.
      */
     @Override
-    public void inject(Object object)
-    {
+    public void inject(Object object) {
         mActivityGraph.inject(object);
     }
 
-    public ObjectGraph getObjectGraph()
-    {
+    public ObjectGraph getObjectGraph() {
         return mActivityGraph;
     }
 
-    protected Object[] geActivitytModules()
-    {
-        return new Object[] {
+    protected Object[] geActivitytModules() {
+        return new Object[]{
                 new ActivityScopeModule(this)
         };
     }
 
-    protected <T> T getView(int id)
-    {
+    protected <T> T getView(int id) {
         return (T) findViewById(id);
     }
 }

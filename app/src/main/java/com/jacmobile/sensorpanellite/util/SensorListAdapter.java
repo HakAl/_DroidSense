@@ -16,14 +16,12 @@ import java.util.ArrayList;
 /**
  * Created by alex on 10/12/14.
  */
-public class SensorListAdapter extends BaseAdapter
-{
+public class SensorListAdapter extends BaseAdapter {
     private Picasso picasso;
     private LayoutInflater inflater;
     private ArrayList<Navigable> data = null;
 
-    public SensorListAdapter(Picasso picasso, LayoutInflater inflater, ArrayList<Navigable> data)
-    {
+    public SensorListAdapter(Picasso picasso, LayoutInflater inflater, ArrayList<Navigable> data) {
         super();
         this.data = data;
         this.inflater = inflater;
@@ -31,8 +29,7 @@ public class SensorListAdapter extends BaseAdapter
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent)
-    {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
@@ -54,25 +51,21 @@ public class SensorListAdapter extends BaseAdapter
     }
 
     @Override
-    public int getCount()
-    {
+    public int getCount() {
         return this.data.size();
     }
 
     @Override
-    public Object getItem(int position)
-    {
+    public Object getItem(int position) {
         return this.data.get(position);
     }
 
     @Override
-    public long getItemId(int position)
-    {
+    public long getItemId(int position) {
         return position;
     }
 
-    static class ViewHolder
-    {
+    static class ViewHolder {
         ImageView icon;
         TextView title;
         TextView subTitle;

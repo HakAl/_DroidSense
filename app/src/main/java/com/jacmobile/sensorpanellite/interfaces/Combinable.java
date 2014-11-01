@@ -9,8 +9,7 @@ import com.jacmobile.sensorpanellite.util.FlipVerticalAnimation;
  * This interface is implemented only by animation classes that can be combined
  * to animate together.
  */
-public interface Combinable
-{
+public interface Combinable {
     public void animate();
 
     public long getDuration();

@@ -86,7 +86,6 @@ public class SensorListFragment extends AListFragment
                 }
             });
         } else {
-            //todo navigate to vendor url
             animation.setListener(new AnimationListener()
             {
                 @Override

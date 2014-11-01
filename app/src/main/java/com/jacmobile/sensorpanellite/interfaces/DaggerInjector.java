@@ -5,8 +5,7 @@ import dagger.ObjectGraph;
 /**
  * An instance which is capable of injecting dependencies.
  */
-public interface DaggerInjector
-{
+public interface DaggerInjector {
     /**
      * Inject to <code>object</code>
      *

@@ -12,7 +12,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:name="com.jacmobile.sensorpanellite.injection.DaggerApplication">
+        android:name=".app.DaggerApplication">
         <activity
             android:name="com.jacmobile.sensorpanellite.activities.SensorActivity"
             android:label="@string/app_name"

@@ -1,4 +1,4 @@
-package com.jacmobile.sensorpanellite.injection.annotations;
+package com.jacmobile.sensorpanellite.injection;
 
 import javax.inject.Qualifier;
 import java.lang.annotation.Retention;

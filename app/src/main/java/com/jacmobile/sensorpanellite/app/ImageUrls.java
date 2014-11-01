@@ -1,4 +1,4 @@
-package com.jacmobile.sensorpanellite.config;
+package com.jacmobile.sensorpanellite.app;
 
 /**
  * Created by alex on 10/12/14.

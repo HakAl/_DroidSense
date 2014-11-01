@@ -6,30 +6,18 @@ package com.jacmobile.sensorpanellite.interfaces;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYStepMode;
 import com.jacmobile.sensorpanellite.R;
-import com.jacmobile.sensorpanellite.util.Animation;
-import com.jacmobile.sensorpanellite.util.FlipVerticalAnimation;
-import com.jacmobile.sensorpanellite.util.SensorListAdapter;
-import com.jacmobile.sensorpanellite.util.SystemInfo;
 
 import java.text.DecimalFormat;
-
-import javax.inject.Inject;
 
 /**
  * An indirection which allows controlling the root container used for each activity.
  */
-public interface ContentView
-{
+public interface ContentView {
     /**
      * The root {@link android.view.ViewGroup} into which the activity should place its contents.
      */
@@ -40,17 +28,14 @@ public interface ContentView
     /**
      * An {@link ContentView} which returns the normal activity content view.
      */
-    ContentView DEFAULT = new ContentView()
-    {
+    ContentView DEFAULT = new ContentView() {
         @Override
-        public ViewGroup get(Activity activity)
-        {
+        public ViewGroup get(Activity activity) {
             return (ViewGroup) activity.findViewById(android.R.id.content);
         }
 
         @Override
-        public ViewGroup getPlot(Activity activity)
-        {
+        public ViewGroup getPlot(Activity activity) {
             LayoutInflater layoutInflater = LayoutInflater.from(activity);
             ViewGroup view = (ViewGroup) layoutInflater.inflate(R.layout.fragment_sensor, get(activity), false);
             XYPlot xyPlot = (XYPlot) view.findViewById(R.id.sensor_plot);

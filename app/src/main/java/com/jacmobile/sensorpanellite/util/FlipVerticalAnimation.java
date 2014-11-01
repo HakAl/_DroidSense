@@ -12,8 +12,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import com.jacmobile.sensorpanellite.interfaces.AnimationListener;
 import com.jacmobile.sensorpanellite.interfaces.Combinable;
 
-public class FlipVerticalAnimation extends Animation implements Combinable
-{
+public class FlipVerticalAnimation extends Animation implements Combinable {
     public static final int PIVOT_CENTER = 0, PIVOT_TOP = 1, PIVOT_BOTTOM = 2;
 
     float degrees;
@@ -28,8 +27,7 @@ public class FlipVerticalAnimation extends Animation implements Combinable
      *
      * @param view The view to be animated.
      */
-    public FlipVerticalAnimation(View view)
-    {
+    public FlipVerticalAnimation(View view) {
         this.view = view;
         degrees = 360;
         pivot = PIVOT_CENTER;
@@ -37,8 +35,8 @@ public class FlipVerticalAnimation extends Animation implements Combinable
         duration = DURATION;
         listener = null;
     }
-    public FlipVerticalAnimation(View view, float degrees)
-    {
+
+    public FlipVerticalAnimation(View view, float degrees) {
         this.view = view;
         this.degrees = degrees;
         pivot = PIVOT_CENTER;
@@ -48,14 +46,12 @@ public class FlipVerticalAnimation extends Animation implements Combinable
     }
 
     @Override
-    public void animate()
-    {
+    public void animate() {
         getAnimatorSet().start();
     }
 
     @Override
-    public AnimatorSet getAnimatorSet()
-    {
+    public AnimatorSet getAnimatorSet() {
         ViewGroup parentView = (ViewGroup) view.getParent(), rootView = (ViewGroup) view
                 .getRootView();
         while (parentView != rootView) {
@@ -88,12 +84,10 @@ public class FlipVerticalAnimation extends Animation implements Combinable
                 view.getRotationX() + degrees));
         flipSet.setInterpolator(interpolator);
         flipSet.setDuration(duration);
-        flipSet.addListener(new AnimatorListenerAdapter()
-        {
+        flipSet.addListener(new AnimatorListenerAdapter() {
 
             @Override
-            public void onAnimationEnd(Animator animation)
-            {
+            public void onAnimationEnd(Animator animation) {
                 if (getListener() != null) {
                     getListener().onAnimationEnd(FlipVerticalAnimation.this);
                 }
@@ -105,8 +99,7 @@ public class FlipVerticalAnimation extends Animation implements Combinable
     /**
      * @return The number of degrees to flip by.
      */
-    public float getDegrees()
-    {
+    public float getDegrees() {
         return degrees;
     }
 
@@ -118,8 +111,7 @@ public class FlipVerticalAnimation extends Animation implements Combinable
      * @return This object, allowing calls to methods in this class to be
      * chained.
      */
-    public FlipVerticalAnimation setDegrees(float degrees)
-    {
+    public FlipVerticalAnimation setDegrees(float degrees) {
         this.degrees = degrees;
         return this;
     }
@@ -130,8 +122,7 @@ public class FlipVerticalAnimation extends Animation implements Combinable
      *
      * @return The pivot point for flipping.
      */
-    public int getPivot()
-    {
+    public int getPivot() {
         return pivot;
     }
 
@@ -143,8 +134,7 @@ public class FlipVerticalAnimation extends Animation implements Combinable
      * @return This object, allowing calls to methods in this class to be
      * chained.
      */
-    public FlipVerticalAnimation setPivot(int pivot)
-    {
+    public FlipVerticalAnimation setPivot(int pivot) {
         this.pivot = pivot;
         return this;
     }
@@ -152,16 +142,14 @@ public class FlipVerticalAnimation extends Animation implements Combinable
     /**
      * @return The interpolator of the entire animation.
      */
-    public TimeInterpolator getInterpolator()
-    {
+    public TimeInterpolator getInterpolator() {
         return interpolator;
     }
 
     /**
      * @param interpolator The interpolator of the entire animation to set.
      */
-    public FlipVerticalAnimation setInterpolator(TimeInterpolator interpolator)
-    {
+    public FlipVerticalAnimation setInterpolator(TimeInterpolator interpolator) {
         this.interpolator = interpolator;
         return this;
     }
@@ -169,8 +157,7 @@ public class FlipVerticalAnimation extends Animation implements Combinable
     /**
      * @return The duration of the entire animation.
      */
-    public long getDuration()
-    {
+    public long getDuration() {
         return duration;
     }
 
@@ -179,8 +166,7 @@ public class FlipVerticalAnimation extends Animation implements Combinable
      * @return This object, allowing calls to methods in this class to be
      * chained.
      */
-    public FlipVerticalAnimation setDuration(long duration)
-    {
+    public FlipVerticalAnimation setDuration(long duration) {
         this.duration = duration;
         return this;
     }
@@ -188,8 +174,7 @@ public class FlipVerticalAnimation extends Animation implements Combinable
     /**
      * @return The listener for the end of the animation.
      */
-    public AnimationListener getListener()
-    {
+    public AnimationListener getListener() {
         return listener;
     }
 
@@ -198,8 +183,7 @@ public class FlipVerticalAnimation extends Animation implements Combinable
      * @return This object, allowing calls to methods in this class to be
      * chained.
      */
-    public FlipVerticalAnimation setListener(AnimationListener listener)
-    {
+    public FlipVerticalAnimation setListener(AnimationListener listener) {
         this.listener = listener;
         return this;
     }

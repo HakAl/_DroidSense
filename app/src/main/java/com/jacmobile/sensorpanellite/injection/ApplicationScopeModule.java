@@ -2,7 +2,8 @@ package com.jacmobile.sensorpanellite.injection;
 
 import android.content.Context;
 
-import com.jacmobile.sensorpanellite.injection.annotations.ForApplication;
+import com.jacmobile.sensorpanellite.app.AndroidAppModule;
+import com.jacmobile.sensorpanellite.app.DaggerApplication;
 import com.squareup.picasso.Picasso;
 
 import dagger.Module;

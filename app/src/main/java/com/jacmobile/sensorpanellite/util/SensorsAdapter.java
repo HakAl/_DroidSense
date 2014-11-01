@@ -10,36 +10,30 @@ import java.util.ArrayList;
 /**
  * Created by alex on 10/19/14.
  */
-public class SensorsAdapter extends BaseAdapter
-{
+public class SensorsAdapter extends BaseAdapter {
     private ArrayList<Sensor> sensors;
 
-    public SensorsAdapter()
-    {
+    public SensorsAdapter() {
         super();
     }
 
     @Override
-    public int getCount()
-    {
+    public int getCount() {
         return this.sensors.size();
     }
 
     @Override
-    public Object getItem(int position)
-    {
+    public Object getItem(int position) {
         return this.sensors.get(position);
     }
 
     @Override
-    public long getItemId(int position)
-    {
+    public long getItemId(int position) {
         return position;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
-    {
+    public View getView(int position, View convertView, ViewGroup parent) {
         return null;
     }
 }

@@ -18,7 +18,7 @@ import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.jacmobile.sensorpanellite.R;
-import com.jacmobile.sensorpanellite.activities.SensorController;
+import com.jacmobile.sensorpanellite.util.SensorController;
 import com.jacmobile.sensorpanellite.interfaces.ContentView;
 import com.jacmobile.sensorpanellite.interfaces.Navigable;
 import com.squareup.picasso.Picasso;
@@ -30,8 +30,7 @@ import javax.inject.Inject;
 /**
  * Created by alex on 10/19/14.
  */
-public class SensorFragment extends ABaseFragment implements SensorEventListener
-{
+public class SensorFragment extends ABaseFragment implements SensorEventListener {
     private static final String WHICH_SENSOR = "sensor";
 
     private Navigable mSensor;
@@ -57,8 +56,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
      * @param sensor the sensor to represent
      * @return new SensorFragment for the chosen sensor
      */
-    public static SensorFragment newInstance(int sensor)
-    {
+    public static SensorFragment newInstance(int sensor) {
         Bundle args = new Bundle();
         args.putInt(WHICH_SENSOR, sensor);
         SensorFragment result = new SensorFragment();
@@ -67,8 +65,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.mSensor = this.sensorData.get(getArguments().getInt(WHICH_SENSOR));
         this.sensorManager.registerListener(this, this.mSensor.getSensor(), SensorManager.SENSOR_DELAY_UI);
         this.sensorController.onResumeSensorFeed(this, mSensor);
@@ -76,8 +73,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         this.mSensor = this.sensorData.get(getArguments().getInt(WHICH_SENSOR));
         this.sensorManager.registerListener(this, this.mSensor.getSensor(), SensorManager.SENSOR_DELAY_UI);
@@ -87,8 +83,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     }
 
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         paused = true;
         this.sensorController.onPauseSensorFeed();
         this.sensorManager.unregisterListener(this, this.mSensor.getSensor());
@@ -98,14 +93,12 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     }
 
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         super.onDestroy();
         this.drawer.finish();
     }
 
-    private View getSensorView()
-    {
+    private View getSensorView() {
         this.range = getRange();
         this.setScale();
         ViewGroup view = contentView.getPlot(getActivity());
@@ -120,8 +113,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         return view;
     }
 
-    private void setSeries(XYPlot sensorPlot)
-    {
+    private void setSeries(XYPlot sensorPlot) {
         if (sensorController.isSingleSeries()) {
             xSeries = new SimpleXYSeries("X");
             xSeries.useImplicitXVals();
@@ -139,19 +131,16 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         }
     }
 
-    private void setSensorCard(View parent)
-    {
+    private void setSensorCard(View parent) {
         this.txtTimer = ((TextView) parent.findViewById(R.id.tv_sensor_timer));
         ((TextView) parent.findViewById(R.id.tv_sensor_title)).setText(this.mSensor.getName());
         ((TextView) parent.findViewById(R.id.tv_sensor_sub_title)).setText(this.mSensor.getSensor().getVendor());
         ((TextView) parent.findViewById(R.id.tv_sensor_descript)).setText(this.mSensor.getSensor().getName());
         this.imgTimerBtn = (ImageView) parent.findViewById(R.id.iv_sensor_switch);
-        this.imgTimerBtn.setOnClickListener(new View.OnClickListener()
-        {
+        this.imgTimerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                setTimerButton(v);
+            public void onClick(View v) {
+                setTimer();
             }
         });
         this.picasso.load(
@@ -167,8 +156,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
                         : R.drawable.ic__pause).into(this.imgTimerBtn);
     }
 
-    private void setTimerButton(View view)
-    {
+    private void setTimer() {
         if (paused) {
             paused = false;
             sensorController.onResumeSensorFeed(this, this.mSensor);
@@ -181,8 +169,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     }
 
 
-    public void updateSeries(float... data)
-    {
+    public void updateSeries(float... data) {
         if (sensorController.isSingleSeries()) {
             xSeries.setTitle(String.valueOf((float) Math.round(scale * data[0]) / scale));
             if (xSeries.size() > sensorController.HISTORY_SIZE) {
@@ -210,8 +197,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         }
     }
 
-    private void setScale()
-    {
+    private void setScale() {
         if (this.range[1] >= 99) {
             this.scale = 1;
             return;
@@ -223,26 +209,22 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         }
     }
 
-    private int[] getRange()
-    {
+    private int[] getRange() {
         return new int[]{
                 Integer.valueOf(mSensor.getSensorRange()[0]),
                 Integer.valueOf(mSensor.getSensorRange()[1])};
     }
 
-    public void setElapsedNanos(long elapsedNanos)
-    {
+    public void setElapsedNanos(long elapsedNanos) {
         txtTimer.setText(String.format("%.2f", elapsedNanos / 1000000000d));
     }
 
     @Override
-    public synchronized void onSensorChanged(SensorEvent event)
-    {
+    public synchronized void onSensorChanged(SensorEvent event) {
         sensorController.useFilteredData(event);
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy)
-    {
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 }

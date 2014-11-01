@@ -1,7 +1,9 @@
-package com.jacmobile.sensorpanellite.injection;
+package com.jacmobile.sensorpanellite.app;
 
 import android.app.Application;
 
+import com.jacmobile.sensorpanellite.app.AndroidAppModule;
+import com.jacmobile.sensorpanellite.injection.ApplicationScopeModule;
 import com.jacmobile.sensorpanellite.interfaces.DaggerInjector;
 
 import java.util.ArrayList;

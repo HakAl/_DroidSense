@@ -1,5 +1,4 @@
-package com.jacmobile.sensorpanellite.activities;
-
+package com.jacmobile.sensorpanellite.util;
 
 import android.hardware.SensorEvent;
 import android.os.Handler;
@@ -11,8 +10,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public final class SensorController
-{
+public final class SensorController {
     private static final float ALPHA = .9f;
     public static final int HISTORY_SIZE = 100;
     public static final float STANDARD_GRAVITY = 9.80665f;
@@ -22,11 +20,9 @@ public final class SensorController
 
     private Navigable mSensor;
 
-    private Runnable runnable = new Runnable()
-    {
+    private Runnable runnable = new Runnable() {
         @Override
-        public void run()
-        {
+        public void run() {
             if (fragment == null || !timerRunning) return;
             fragment.setElapsedNanos(System.nanoTime() - timerStartNanos);
             fragment.updateSeries(currentX, currentY, currentZ);
@@ -38,21 +34,18 @@ public final class SensorController
     private long timerStartNanos;
     private boolean timerRunning;
 
-    public void onResumeSensorFeed(SensorFragment fragment, Navigable sensor)
-    {
+    public void onResumeSensorFeed(SensorFragment fragment, Navigable sensor) {
         this.mSensor = sensor;
         this.fragment = fragment;
         handler.post(runnable);
     }
 
-    public void onPauseSensorFeed()
-    {
+    public void onPauseSensorFeed() {
         this.fragment = null;
         handler.removeCallbacks(runnable);
     }
 
-    public void restartTimer()
-    {
+    public void restartTimer() {
         if (!timerRunning) {
             timerRunning = true;
             handler.post(runnable);
@@ -60,16 +53,15 @@ public final class SensorController
         timerStartNanos = System.nanoTime();
     }
 
-    public void useFilteredData(SensorEvent event)
-    {
-        if (isLight() || isProximity() || isHumidity() || isDeviceTemperature() || isAmbientTemperature() || isPressure()) {
-            setSingleSeries(event);
+    public void useFilteredData(SensorEvent event) {
+        if (isSingleSeries()) {
+            setSingleSeriesData(event);
             return;
         } else if (isMagnetometer()) {
             setMagnetometerData(event);
-        } else if(isGravity()) {
+            return;
+        } else if (isGravity()) {
             setGravityData(event);
-            setSingleSeries(event);
             return;
         } else {
             currentX = ALPHA * currentX + (1 - ALPHA) * event.values[0];
@@ -78,69 +70,57 @@ public final class SensorController
         }
     }
 
-    private void setSingleSeries(SensorEvent event)
-    {
+    private void setSingleSeriesData(SensorEvent event) {
         currentX = ALPHA * currentX + (1 - ALPHA) * event.values[0];
         Math.abs(currentX);
     }
 
-    private void setMagnetometerData(SensorEvent event)
-    {
+    private void setMagnetometerData(SensorEvent event) {
         currentX = Math.abs(ALPHA * currentX + (1 - ALPHA) * event.values[0]);
         currentY = Math.abs(ALPHA * currentX + (1 - ALPHA) * event.values[1]);
         currentZ = Math.abs(ALPHA * currentX + (1 - ALPHA) * event.values[2]);
     }
 
-    private void setGravityData(SensorEvent event)
-    {
+    private void setGravityData(SensorEvent event) {
         double a = Math.round(Math.sqrt(Math.pow(event.values[0], 2)
                 + Math.pow(event.values[1], 2)
                 + Math.pow(event.values[2], 2)));
-        currentX = (float) ( Math.abs((float) (a - STANDARD_GRAVITY)) / 9.81 );
+        currentX = (float) (Math.abs((float) (a - STANDARD_GRAVITY)) / 9.81);
     }
 
-    private boolean isMagnetometer()
-    {
+    private boolean isMagnetometer() {
         return this.mSensor.getName().equals("Magnetometer");
     }
 
-    private boolean isLight()
-    {
+    private boolean isLight() {
         return this.mSensor.getName().equals("Light");
     }
 
-    private boolean isProximity()
-    {
+    private boolean isProximity() {
         return this.mSensor.getName().equals("Proximity");
     }
 
-    private boolean isGravity()
-    {
+    private boolean isGravity() {
         return this.mSensor.getName().equals("Gravity");
     }
 
-    private boolean isPressure()
-    {
+    private boolean isPressure() {
         return this.mSensor.getName().equals("Pressure");
     }
 
-    private boolean isHumidity()
-    {
+    private boolean isHumidity() {
         return this.mSensor.getName().equals("Humidity");
     }
 
-    private boolean isDeviceTemperature()
-    {
+    private boolean isDeviceTemperature() {
         return this.mSensor.getName().equals("Device Temperature");
     }
 
-    private boolean isAmbientTemperature()
-    {
+    private boolean isAmbientTemperature() {
         return this.mSensor.getName().equals("Ambient Temperature");
     }
 
-    public boolean isSingleSeries()
-    {
+    public boolean isSingleSeries() {
         return (isLight() || isProximity() || isGravity() || isAmbientTemperature() || isDeviceTemperature() || isHumidity() || isPressure());
     }
 }

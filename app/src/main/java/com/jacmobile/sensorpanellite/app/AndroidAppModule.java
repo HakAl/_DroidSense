@@ -1,4 +1,4 @@
-package com.jacmobile.sensorpanellite.injection;
+package com.jacmobile.sensorpanellite.app;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,8 +8,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 
 import com.jacmobile.sensorpanellite.R;
-import com.jacmobile.sensorpanellite.config.ImageUrls;
-import com.jacmobile.sensorpanellite.injection.annotations.ForApplication;
+import com.jacmobile.sensorpanellite.injection.ForApplication;
 import com.jacmobile.sensorpanellite.interfaces.Navigable;
 import com.jacmobile.sensorpanellite.util.SensorListAdapter;
 import com.jacmobile.sensorpanellite.util.SensorListItem;
@@ -38,7 +37,7 @@ public class AndroidAppModule
 
     /**
      * Allow the application context to be injected but require that it be annotated with
-     * {@link com.jacmobile.sensorpanellite.injection.annotations.ForApplication @Annotation} to explicitly differentiate it from an activity context.
+     * {@link com.jacmobile.sensorpanellite.injection.ForApplication @Annotation} to explicitly differentiate it from an activity context.
      */
     @Provides @Singleton @ForApplication Context provideApplicationContext()
     {

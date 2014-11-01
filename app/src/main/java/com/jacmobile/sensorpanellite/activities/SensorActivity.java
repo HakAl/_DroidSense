@@ -7,24 +7,19 @@ import com.jacmobile.sensorpanellite.R;
 import com.jacmobile.sensorpanellite.fragments.SensorFragment;
 import com.jacmobile.sensorpanellite.fragments.SensorListFragment;
 import com.jacmobile.sensorpanellite.interfaces.Navigator;
+import com.jacmobile.sensorpanellite.util.SensorController;
 
 import javax.inject.Inject;
 
 /**
  * Created by alex on 10/12/14.
  */
-public class SensorActivity extends ABaseActivity implements Navigator
-{
-    @Inject
-    SensorController sensorController;
-
+public class SensorActivity extends ABaseActivity implements Navigator {
     private static final String SENSOR_FRAGMENT = "com.jacmobile.sensorpanellite.sensorfragment";
     private static final String SENSOR_LIST_FRAGMENT = "com.jacmobile.sensorpanellite.sensorlistfragment";
-    private static final String TIMER_ACTIVITY = "com.jacmobile.sensorpanellite.timeractivity";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sensor);
 
@@ -37,17 +32,15 @@ public class SensorActivity extends ABaseActivity implements Navigator
     }
 
     @Override
-    public void onTransition(int... which)
-    {
+    public void onTransition(int... which) {
         if (which.length < 2) {
             this.newSensorFragment(which[0]);
         } else {
-//            startActivity(new Intent(this, TimerActivity.class));
+//            startActivity(new Intent(this, Activity.class));
         }
     }
 
-    private void newSensorFragment(int sensor)
-    {
+    private void newSensorFragment(int sensor) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.container, SensorFragment.newInstance(sensor), SENSOR_FRAGMENT);
         transaction.addToBackStack(null).commitAllowingStateLoss();
