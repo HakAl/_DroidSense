@@ -1,11 +1,8 @@
 package com.jacmobile.sensorpanellite.activities;
 
 
-import android.hardware.Sensor;
 import android.hardware.SensorEvent;
-import android.hardware.SensorManager;
 import android.os.Handler;
-import android.util.Log;
 
 import com.jacmobile.sensorpanellite.fragments.SensorFragment;
 import com.jacmobile.sensorpanellite.interfaces.Navigable;

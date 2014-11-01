@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DroidSense.iml" filepath="$PROJECT_DIR$/DroidSense.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Sensor Panel Lite.iml" filepath="$PROJECT_DIR$/Sensor Panel Lite.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
