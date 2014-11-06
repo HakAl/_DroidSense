@@ -43,7 +43,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     private SimpleXYSeries zSeries = null;
 
     private int scale;
-    public int[] range;
+    private int[] range;
     private boolean paused = false;
 
     @Inject Picasso picasso;
@@ -145,7 +145,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         });
         this.picasso.load(
                 this.mSensor.getIconUrl())
-                .placeholder(R.drawable.gear)
+                .placeholder(R.drawable.ic_launcher)
                 .into(((ImageView) parent.findViewById(R.id.iv_sensor_icon)));
     }
 

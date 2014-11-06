@@ -2,6 +2,10 @@
 <resources>
 
     <string name="app_name">Sensor Panel Lite</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Closed</string>
+    <string name="action_settings">Settings</string>
+
     <string-array name="sensors_array">
         <item>Touch</item>
         <item>Accelerometer</item>

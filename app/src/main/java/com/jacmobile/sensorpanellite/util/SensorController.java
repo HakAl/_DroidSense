@@ -19,6 +19,9 @@ public final class SensorController {
     @Inject Handler handler;
 
     private Navigable mSensor;
+    private SensorFragment fragment;
+    private long timerStartNanos;
+    private boolean timerRunning;
 
     private Runnable runnable = new Runnable() {
         @Override
@@ -29,10 +32,6 @@ public final class SensorController {
             handler.postDelayed(this, 33);
         }
     };
-
-    private SensorFragment fragment;
-    private long timerStartNanos;
-    private boolean timerRunning;
 
     public void onResumeSensorFeed(SensorFragment fragment, Navigable sensor) {
         this.mSensor = sensor;

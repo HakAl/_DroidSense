@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import com.jacmobile.sensorpanellite.R;
 import com.jacmobile.sensorpanellite.injection.ForApplication;
 import com.jacmobile.sensorpanellite.interfaces.Navigable;
+import com.jacmobile.sensorpanellite.util.ImageUrls;
 import com.jacmobile.sensorpanellite.util.SensorListAdapter;
 import com.jacmobile.sensorpanellite.util.SensorListItem;
 import com.squareup.picasso.Picasso;

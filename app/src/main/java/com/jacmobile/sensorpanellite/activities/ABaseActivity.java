@@ -2,6 +2,7 @@ package com.jacmobile.sensorpanellite.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 
 import com.jacmobile.sensorpanellite.app.DaggerApplication;
 import com.jacmobile.sensorpanellite.injection.ActivityScopeModule;
@@ -10,7 +11,7 @@ import com.jacmobile.sensorpanellite.interfaces.DaggerInjector;
 import dagger.ObjectGraph;
 
 
-public abstract class ABaseActivity extends Activity implements DaggerInjector {
+public abstract class ABaseActivity extends ActionBarActivity implements DaggerInjector {
     private ObjectGraph mActivityGraph;
 
     @Override
@@ -45,9 +46,5 @@ public abstract class ABaseActivity extends Activity implements DaggerInjector {
         return new Object[]{
                 new ActivityScopeModule(this)
         };
-    }
-
-    protected <T> T getView(int id) {
-        return (T) findViewById(id);
     }
 }

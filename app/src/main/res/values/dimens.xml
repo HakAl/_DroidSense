@@ -3,7 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="device_icon">72dp</dimen>
+    <dimen name="device_icon">80dp</dimen>
     <dimen name="device_icon_padding">8dp</dimen>
     <dimen name="device_list_item_padding">12dp</dimen>
     <dimen name="device_icon_label">21sp</dimen>

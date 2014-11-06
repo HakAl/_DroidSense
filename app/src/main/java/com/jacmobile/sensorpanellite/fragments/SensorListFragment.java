@@ -5,22 +5,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jacmobile.sensorpanellite.R;
-import com.jacmobile.sensorpanellite.interfaces.Navigable;
+import com.jacmobile.sensorpanellite.interfaces.AnimationListener;
 import com.jacmobile.sensorpanellite.interfaces.Navigator;
 import com.jacmobile.sensorpanellite.util.Animation;
-import com.jacmobile.sensorpanellite.interfaces.AnimationListener;
 import com.jacmobile.sensorpanellite.util.FlipVerticalAnimation;
 import com.jacmobile.sensorpanellite.util.SensorListAdapter;
 import com.jacmobile.sensorpanellite.util.SystemInfo;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -67,7 +63,7 @@ public class SensorListFragment extends AListFragment
         View result = this.layoutInflater.inflate(R.layout.card_device, null);
         ((TextView) result.findViewById(R.id.tv_device_name)).setText(SystemInfo.getVendor());
         ((TextView) result.findViewById(R.id.tv_os_version)).setText(SystemInfo.getVMName());
-        this.picasso.load(R.drawable.gear).into((ImageView) result.findViewById(R.id.iv_device_icon));
+        this.picasso.load(R.drawable.ic_launcher).into((ImageView) result.findViewById(R.id.iv_device_icon));
         return result;
     }
 

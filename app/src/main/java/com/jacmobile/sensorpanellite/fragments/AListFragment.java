@@ -1,6 +1,5 @@
 package com.jacmobile.sensorpanellite.fragments;
 
-import android.app.Fragment;
 import android.app.ListFragment;
 import android.os.Bundle;
 

@@ -31,7 +31,7 @@ public interface ContentView {
     ContentView DEFAULT = new ContentView() {
         @Override
         public ViewGroup get(Activity activity) {
-            return (ViewGroup) activity.findViewById(android.R.id.content);
+            return (ViewGroup) activity.findViewById(R.id.container);
         }
 
         @Override

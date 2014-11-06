@@ -45,7 +45,7 @@ public class SensorListAdapter extends BaseAdapter {
         holder.subTitle.setText(this.data.get(position).getSensor().getVendor());
         holder.title.setText(this.data.get(position).getName());
         holder.descript.setText(this.data.get(position).getSensor().getName());
-        this.picasso.load(this.data.get(position).getIconUrl()).placeholder(R.drawable.gear).into(holder.icon);
+        this.picasso.load(this.data.get(position).getIconUrl()).placeholder(R.drawable.ic_launcher).into(holder.icon);
 
         return convertView;
     }

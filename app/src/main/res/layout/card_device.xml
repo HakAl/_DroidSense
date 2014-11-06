@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:padding="6dp"
     android:background="@drawable/box"
+    android:elevation="5dp"
     android:id="@+id/parent_device_card">
 
     <TextView

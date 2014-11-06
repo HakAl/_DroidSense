@@ -23,9 +23,4 @@ public abstract class ABaseFragment extends Fragment
             mFirstAttach = false;
         }
     }
-
-    protected <T> T getView(int id)
-    {
-        return (T) getView().findViewById(id);
-    }
 }
