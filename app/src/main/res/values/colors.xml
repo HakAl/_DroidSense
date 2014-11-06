@@ -12,6 +12,7 @@
 
     <color name="orange">#ffffdc7e</color>
     <color name="green">#ff8dd304</color>
+    <color name="neon_green">#0f0</color>
     <color name="light_green">#76ff03</color>
     <color name="blue">#0091ea</color>
     <color name="pressed_blue">#0277bd</color>

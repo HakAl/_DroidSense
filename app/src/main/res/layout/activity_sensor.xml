@@ -1,34 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include layout="@layout/toolbar"/>
+
     <android.support.v4.widget.DrawerLayout
-        android:fitsSystemWindows="true"
-        android:background="@color/off_white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/sensor_toolbar"
         android:id="@+id/drawer_layout">
-
-        <include
-            layout="@layout/toolbar"
-            android:id="@+id/sensor_toolbar"/>
 
         <RelativeLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <ListView
-            android:id="@+id/left_drawer"
-            android:layout_width="240dp"
+        <RelativeLayout
             android:layout_height="match_parent"
+            android:layout_width="260dp"
             android:layout_gravity="start"
-            android:choiceMode="singleChoice"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0dp"
-            android:background="@color/fog"/>
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:id="@+id/parent_list_drawer">
 
+            <Switch android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="?android:attr/listPreferredItemHeightSmall"
+                    android:id="@+id/drawer_autoupload"
+                    android:layout_alignParentTop="true"
+                    android:text="Advertisements: "
+                    android:textSize="18sp"
+                    android:textStyle="normal"
+                    android:textColor="@color/black"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"/>
+
+            <ListView
+                android:id="@+id/list_drawer"
+                android:layout_below="@+id/drawer_autoupload"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:choiceMode="singleChoice"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="0dp"
+                android:visibility="invisible"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_four"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:textSize="19sp"
+                android:text="http://jacmobile.com"
+                android:textColor="@color/black"
+                android:autoLink="all"/>
+        </RelativeLayout>
     </android.support.v4.widget.DrawerLayout>
-</FrameLayout>
+</RelativeLayout>
