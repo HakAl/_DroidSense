@@ -31,8 +31,7 @@
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 
 -keep public class * extends android.app.Activity
--keep public class * extends android.app.A
-ctivity
+-keep public class * extends android.app.Activity
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
@@ -118,13 +117,11 @@ ctivity
 -keep class com.google.common.** { *; }
 -keep class com.squareup.dagger.** { *; }
 -keep class com.android.support.appcompat-v7.** { *; }
+-keep class com.android.support.v7.** { *; }
 -keep class org.json.** { *; }
 -keep class com.android.support.v4.content.** { *; }
 -keep class com.androidplot.**
 -keepclassmembers class com.androidplot.** { *; }
-
-
-
 
 # # # # # # # # # # # # # # # # # # # # # # Constants  # # # # # # # # # # # # # # # # # # # # # #
 -keepclassmembers public class * {

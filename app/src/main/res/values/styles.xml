@@ -3,8 +3,13 @@
 
     <style name="AppTheme" parent="BaseTheme"/>
 
+    <style name="AboutTheme" parent="AppTheme">
+        <item name="windowActionBar">true</item>
+    </style>
+
     <style name="BaseTheme" parent="Theme.AppCompat">
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="colorAccent">@color/yellow</item>
         <item name="colorPrimary">@color/grey</item>
         <item name="colorPrimaryDark">@color/dark_grey</item>
         <item name="android:windowNoTitle">true</item>
@@ -13,7 +18,7 @@
     </style>
 
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="spinBars">false</item>
+        <item name="spinBars">true</item>
         <item name="color">@android:color/white</item>
     </style>
 
