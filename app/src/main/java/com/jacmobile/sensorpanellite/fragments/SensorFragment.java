@@ -257,7 +257,6 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
 
                 break;
             case SensorManager.SENSOR_STATUS_ACCURACY_LOW:
-//                sensorPlot.setTitle(this.mSensor.getName());
                 sensorPlot.setTitle("Accuracy: " + accuracyList[1]);
 
                 break;
