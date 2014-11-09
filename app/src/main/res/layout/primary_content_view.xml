@@ -31,28 +31,47 @@
             android:background="@color/white"
             android:id="@+id/parent_list_drawer">
 
+            <RelativeLayout
+                android:id="@+id/rl_list_header"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:layout_alignParentTop="true"
+                android:background="@color/dark_grey">
+
+                    <TextView
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:textSize="18sp"
+                        android:layout_width="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_eight"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:gravity="center_vertical"
+                        android:drawableLeft="@drawable/ic_feature"
+                        android:drawablePadding="16dp"
+                        android:id="@+id/tv_drawer_header"/>
+
+                </RelativeLayout>
+
             <ListView
                 android:id="@+id/list_drawer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@+id/rl_list_header"
                 android:choiceMode="singleChoice"
                 android:divider="@null"
-                android:layout_alignParentTop="true"
                 android:dividerHeight="0dp"/>
 
             <TextView
                 android:id="@+id/drawer_url"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:padding="@dimen/activity_four"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginBottom="@dimen/activity_margin"
-                android:layout_marginLeft="@dimen/activity_margin"
                 android:textSize="19sp"
-                android:text="http://jacmobile.com"
-                android:textColor="@color/black"
+                android:text="http://www.jacmobile.com"
                 android:autoLink="all"/>
 
             <android.support.v7.widget.SwitchCompat

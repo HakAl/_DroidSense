@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:name=".app.DaggerApplication">
         <activity
-            android:name="com.jacmobile.sensorpanellite.activities.SensorActivity"
+            android:name=".activities.PrimaryActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>

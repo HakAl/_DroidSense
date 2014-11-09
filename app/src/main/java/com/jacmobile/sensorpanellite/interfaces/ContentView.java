@@ -23,8 +23,6 @@ public interface ContentView {
      */
     ViewGroup get(Activity activity);
 
-    ViewGroup getPlot(Activity activity);
-
     /**
      * An {@link ContentView} which returns the normal activity content view.
      */
@@ -32,21 +30,6 @@ public interface ContentView {
         @Override
         public ViewGroup get(Activity activity) {
             return (ViewGroup) activity.findViewById(R.id.container);
-        }
-
-        @Override
-        public ViewGroup getPlot(Activity activity) {
-            LayoutInflater layoutInflater = LayoutInflater.from(activity);
-            ViewGroup view = (ViewGroup) layoutInflater.inflate(R.layout.fragment_sensor, get(activity), false);
-            XYPlot xyPlot = (XYPlot) view.findViewById(R.id.sensor_plot);
-            // Set drawing speed
-            xyPlot.setDomainStepMode(XYStepMode.INCREMENT_BY_VAL);
-            xyPlot.setDomainStepValue(10 / 1);
-            xyPlot.setTicksPerRangeLabel(3);
-            // Number format
-            xyPlot.setDomainValueFormat(new DecimalFormat("#"));
-            xyPlot.setRangeValueFormat(new DecimalFormat("#"));
-            return view;
         }
     };
 }

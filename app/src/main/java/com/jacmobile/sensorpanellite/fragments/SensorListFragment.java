@@ -10,10 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jacmobile.sensorpanellite.R;
-import com.jacmobile.sensorpanellite.interfaces.AnimationListener;
 import com.jacmobile.sensorpanellite.interfaces.Navigator;
-import com.jacmobile.sensorpanellite.util.Animation;
-import com.jacmobile.sensorpanellite.util.FlipVerticalAnimation;
 import com.jacmobile.sensorpanellite.util.SensorListAdapter;
 import com.jacmobile.sensorpanellite.util.SystemInfo;
 import com.squareup.picasso.Picasso;
@@ -26,7 +23,6 @@ import javax.inject.Inject;
 public class SensorListFragment extends AListFragment
 {
     private Navigator navigatorListener;
-    private FlipVerticalAnimation animation;
 
     @Inject Picasso picasso;
     @Inject SensorListAdapter adapter;
@@ -71,27 +67,12 @@ public class SensorListFragment extends AListFragment
     public void onListItemClick(ListView l, View view, final int position, long id)
     {
         super.onListItemClick(l, view, position, id);
-        animation = new FlipVerticalAnimation(view);
         if (position != adapter.getCount()) {
-            animation.setListener(new AnimationListener()
-            {
-                @Override
-                public void onAnimationEnd(Animation animation)
-                {
-                    navigatorListener.onTransition(position);
-                }
-            });
+            navigatorListener.onTransition(position);
+
         } else {
-            animation.setListener(new AnimationListener()
-            {
-                @Override
-                public void onAnimationEnd(Animation animation)
-                {
-                    int[] temp = {position,0};
-                    navigatorListener.onTransition(temp);
-                }
-            });
+            int[] temp = {position, 0};
+            navigatorListener.onTransition(temp);
         }
-        animation.animate();
     }
 }

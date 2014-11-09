@@ -64,7 +64,7 @@ public class SensorProfileFragment extends ABaseFragment
         }
 
         // specify an adapter (see also next example)
-        mAdapter = new RecyclerAdapter(sensorTitles, sensorDescriptions);
+        mAdapter = RecyclerAdapter.newInstance(sensorTitles, sensorDescriptions);
         mRecyclerView.setAdapter(mAdapter);
         return list;
     }

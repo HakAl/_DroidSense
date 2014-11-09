@@ -16,33 +16,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 {
     private String[] sensorTitles;
     private String[] sensorDescriptions;
-//    private OnItemClickListener mListener;
 
-    /**
-     * Interface for receiving click events from cells.
-     */
-    public interface OnItemClickListener
+    public static RecyclerAdapter newInstance(String[] sensorTitles, String[] sensorDescriptions)
     {
-        public void onClick(View view, int position);
+        return new RecyclerAdapter(sensorTitles, sensorDescriptions);
     }
 
-    /**
-     * Custom viewholder for our planet views.
-     */
-    public static class ViewHolder extends RecyclerView.ViewHolder
-    {
-        public final TextView title, description;
 
-        public ViewHolder(View v)
-        {
-            super(v);
-            title = (TextView) v.findViewById(R.id.card_title);
-            description = (TextView) v.findViewById(R.id.card_description);
-        }
-
-    }
-
-    public RecyclerAdapter(String[] sensorTitles, String[] sensorDescriptions)
+    private RecyclerAdapter(String[] sensorTitles, String[] sensorDescriptions)
     {
         this.sensorTitles = sensorTitles;
         this.sensorDescriptions = sensorDescriptions;
@@ -63,8 +44,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         if (position == 0) {
             holder.title.setText("Total device sensors: " + sensorTitles.length);
         } else {
-            holder.title.setText(sensorTitles[position-1]);
-            holder.description.setText(sensorDescriptions[position-1]);
+            holder.title.setText(sensorTitles[position - 1]);
+            holder.description.setText(sensorDescriptions[position - 1]);
         }
 //        holder.mTextView.setOnClickListener(new View.OnClickListener()
 //        {
@@ -79,6 +60,29 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public int getItemCount()
     {
-        return sensorTitles.length+1;
+        return sensorTitles.length + 1;
     }
+//    private OnItemClickListener mListener;
+
+    /**
+     * Interface for receiving click events from cells.
+     */
+    public interface OnItemClickListener
+    {
+        public void onClick(View view, int position);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder
+    {
+        public final TextView title, description;
+
+        public ViewHolder(View v)
+        {
+            super(v);
+            title = (TextView) v.findViewById(R.id.card_title);
+            description = (TextView) v.findViewById(R.id.card_description);
+        }
+
+    }
+
 }

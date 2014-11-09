@@ -1,6 +1,7 @@
 package com.jacmobile.sensorpanellite.util;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,26 +16,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jacmobile.sensorpanellite.R;
-import com.jacmobile.sensorpanellite.activities.SensorActivity;
+import com.jacmobile.sensorpanellite.activities.PrimaryActivity;
 
 /**
  * Created by alex on 11/9/14.
  */
 public class DrawerController
 {
-    private String[] tempDrawer = {"Sensor Feed List", "Sensor Profile", "More", "Features", "Coming", "Soon"};
-    private ActionBarActivity activity;
+    private String[] tempDrawer = {"Sensor Feed List", "Sensor Profile", "System Properties", "More", "Features", "Coming", "Soon"};
+    private PrimaryActivity activity;
 
     private DrawerLayout drawer;
     private View actionBar;
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
-    public DrawerController(ActionBarActivity activity)
+    public DrawerController(PrimaryActivity activity)
     {
         this.activity = activity;
     }
 
-    public DrawerController(ActionBarActivity activity, String[] list)
+    public DrawerController(PrimaryActivity activity, String[] list)
     {
         this.activity = activity;
         this.tempDrawer = list;
@@ -55,6 +56,11 @@ public class DrawerController
         actionBarDrawerToggle.syncState();
         drawer.setDrawerListener(actionBarDrawerToggle);
 
+        TextView textView = (TextView) activity.findViewById(R.id.tv_drawer_header);
+        String brand = Build.BRAND.substring(0, 1).toUpperCase() + Build.BRAND.substring(1);
+        String title = brand + " " + Build.MODEL;
+        textView.setText(title);
+
         final ListView mDrawerList = (ListView) activity.findViewById(R.id.list_drawer);
         mDrawerList.setAdapter(new ArrayAdapter<String>(activity, R.layout.list_item, tempDrawer));
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -63,7 +69,7 @@ public class DrawerController
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 drawer.closeDrawers();
-                ((SensorActivity) activity).onDrawerClick(position);
+                activity.onDrawerClick(position);
             }
         });
         ((SwitchCompat) activity.findViewById(R.id.drawer_autoupload)).setChecked(true);

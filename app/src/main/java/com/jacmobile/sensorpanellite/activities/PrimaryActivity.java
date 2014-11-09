@@ -2,21 +2,24 @@ package com.jacmobile.sensorpanellite.activities;
 
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.os.Handler;
 
 import com.jacmobile.sensorpanellite.R;
 import com.jacmobile.sensorpanellite.fragments.SensorFragment;
 import com.jacmobile.sensorpanellite.fragments.SensorListFragment;
 import com.jacmobile.sensorpanellite.fragments.SensorProfileFragment;
+import com.jacmobile.sensorpanellite.fragments.SystemInfoFragment;
 import com.jacmobile.sensorpanellite.interfaces.Navigator;
 import com.jacmobile.sensorpanellite.util.DrawerController;
 
 /**
  * Created by alex on 10/12/14.
  */
-public class SensorActivity extends ABaseActivity implements Navigator
+public class PrimaryActivity extends ABaseActivity implements Navigator
 {
     private static final String SENSOR_FRAGMENT = "com.jacmobile.sensorpanellite.sensorfragment";
     private static final String SENSOR_PROFILE_FRAGMENT = "com.jacmobile.sensorpanellite.sensorprofilefragment";
+    private static final String SYSTEM_INFO_FRAGMENT = "com.jacmobile.sensorpanellite.systeminfofragment";
 
     private boolean isChild = false;
     private DrawerController drawerController;
@@ -26,7 +29,7 @@ public class SensorActivity extends ABaseActivity implements Navigator
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.primary_content_view);
-        drawerController = new DrawerController(SensorActivity.this);
+        drawerController = new DrawerController(PrimaryActivity.this);
         drawerController.onCreate();
         if (savedInstanceState == null) {
             this.newSensortList();
@@ -60,12 +63,15 @@ public class SensorActivity extends ABaseActivity implements Navigator
 
     public void onDrawerClick(int position)
     {
-        switch(position) {
+        switch (position) {
             case 0:
                 this.newSensortList();
                 break;
             case 1:
                 this.newSensorProfile();
+                break;
+            case 2:
+                this.newSystemInfo();
                 break;
             default:
                 break;
@@ -73,11 +79,12 @@ public class SensorActivity extends ABaseActivity implements Navigator
     }
 
     @Override
-    public void onTransition(int... which)
+    public void onTransition(final int... which)
     {
         if (which.length < 2) {
-            this.newSensorFragment(which[0]);
-
+            newSensorFragment(which[0]);
+        } else {
+            newSystemInfo();
         }
     }
 
@@ -99,6 +106,15 @@ public class SensorActivity extends ABaseActivity implements Navigator
         drawerController.setActionBarTitle(getString(R.string.sensor_profile));
     }
 
+    private void newSystemInfo()
+    {
+        isChild = true;
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, SystemInfoFragment.newInstance(), SYSTEM_INFO_FRAGMENT);
+        transaction.addToBackStack(null).commitAllowingStateLoss();
+        drawerController.setActionBarTitle(getString(R.string.sensor_profile));
+    }
+
     private void newSensorFragment(int sensor)
     {
         isChild = true;
@@ -106,6 +122,6 @@ public class SensorActivity extends ABaseActivity implements Navigator
         transaction.replace(R.id.container, SensorFragment.newInstance(sensor), SENSOR_FRAGMENT);
         transaction.addToBackStack(null).commitAllowingStateLoss();
         String[] sensorTitles = getResources().getStringArray(R.array.sensors_array);
-        drawerController.setActionBarTitle(sensorTitles[sensor+1]);
+        drawerController.setActionBarTitle(sensorTitles[sensor + 1]);
     }
 }

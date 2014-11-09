@@ -7,6 +7,26 @@
     <string name="drawer_close">Closed</string>
     <string name="action_settings">Settings</string>
 
+    <string-array name="build_array">
+        <item>BOARD</item>
+        <item>BOOTLOADER</item>
+        <item>BRAND</item>
+        <item>DEVICE</item>
+        <item>DISPLAY</item>
+        <item>FINGERPRINT</item>
+        <item>HARDWARE</item>
+        <item>HOST</item>
+        <item>ID</item>
+        <item>MANUFACTURER</item>
+        <item>MODEL</item>
+        <item>PRODUCT</item>
+        <item>RADIO</item>
+        <item>SERIAL</item>
+        <item>TAGS</item>
+        <item>TIME</item>
+        <item>USER</item>
+    </string-array>
+
     <string-array name="sensors_array">
         <item>Touch</item>
         <item>Accelerometer</item>
@@ -31,7 +51,7 @@
         <item>-180,359</item>
         <item>-99,99</item>
         <item>0,999</item>
-        <item>0,2100</item>
+        <item>0,1200</item>
         <item>0,100</item>
         <item>0,100</item>
         <item>0,9</item>

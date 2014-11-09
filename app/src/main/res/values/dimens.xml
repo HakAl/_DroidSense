@@ -20,6 +20,8 @@
     <dimen name="domain_tick_label_font_size">15sp</dimen>
     <dimen name="legend_text_font_size">20dp</dimen>
 
+    <dimen name="rippleStrokeWidth">2dp</dimen>
+    <dimen name="rippleRadius">64dp</dimen>
 
     <dimen name="activity_margin">16dp</dimen>
     <dimen name="activity_eight">8dp</dimen>
