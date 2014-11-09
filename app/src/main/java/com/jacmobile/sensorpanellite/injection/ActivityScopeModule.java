@@ -4,11 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.jacmobile.sensorpanellite.activities.ABaseActivity;
-import com.jacmobile.sensorpanellite.activities.RecyclerActivity;
+import com.jacmobile.sensorpanellite.fragments.SensorProfileFragment;
 import com.jacmobile.sensorpanellite.activities.SensorActivity;
 import com.jacmobile.sensorpanellite.fragments.SensorFragment;
 import com.jacmobile.sensorpanellite.fragments.SensorListFragment;
 import com.jacmobile.sensorpanellite.interfaces.ContentView;
+import com.jacmobile.sensorpanellite.util.DrawerController;
 
 import javax.inject.Singleton;
 
@@ -23,7 +24,7 @@ import dagger.Provides;
                 SensorActivity.class,
                 SensorFragment.class,
                 SensorListFragment.class,
-                RecyclerActivity.class
+                SensorProfileFragment.class
         }
 )
 public class ActivityScopeModule {

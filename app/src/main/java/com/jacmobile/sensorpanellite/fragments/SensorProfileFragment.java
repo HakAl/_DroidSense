@@ -1,24 +1,26 @@
-package com.jacmobile.sensorpanellite.activities;
+package com.jacmobile.sensorpanellite.fragments;
 
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.jacmobile.sensorpanellite.R;
+import com.jacmobile.sensorpanellite.fragments.ABaseFragment;
 import com.jacmobile.sensorpanellite.util.RecyclerAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 /**
  * Created by alex on 11/8/14.
  */
-public class RecyclerActivity extends ABaseActivity
+public class SensorProfileFragment extends ABaseFragment
 {
     @Inject SensorManager sensorManager;
 
@@ -26,19 +28,25 @@ public class RecyclerActivity extends ABaseActivity
     private RecyclerView.Adapter mAdapter;
     private LinearLayoutManager mLayoutManager;
 
+    public static SensorProfileFragment newInstance()
+    {
+        return new SensorProfileFragment();
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recycler);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View list = inflater.inflate(R.layout.fragment_recycler, container, false);
+        mRecyclerView = (RecyclerView) list.findViewById(R.id.recycler);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
 
-        mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager = new LinearLayoutManager(getActivity());
 //        mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
+
 
 
         List<Sensor> allSensors = this.sensorManager.getSensorList(Sensor.TYPE_ALL);
@@ -58,5 +66,6 @@ public class RecyclerActivity extends ABaseActivity
         // specify an adapter (see also next example)
         mAdapter = new RecyclerAdapter(sensorTitles, sensorDescriptions);
         mRecyclerView.setAdapter(mAdapter);
+        return list;
     }
 }

@@ -6,6 +6,9 @@ import android.support.v7.app.ActionBarActivity;
 import com.jacmobile.sensorpanellite.app.DaggerApplication;
 import com.jacmobile.sensorpanellite.injection.ActivityScopeModule;
 import com.jacmobile.sensorpanellite.interfaces.DaggerInjector;
+import com.jacmobile.sensorpanellite.util.DrawerController;
+
+import javax.inject.Inject;
 
 import dagger.ObjectGraph;
 

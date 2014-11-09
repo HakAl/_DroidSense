@@ -1,25 +1,14 @@
 package com.jacmobile.sensorpanellite.activities;
 
 import android.app.FragmentTransaction;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.SwitchCompat;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.jacmobile.sensorpanellite.R;
 import com.jacmobile.sensorpanellite.fragments.SensorFragment;
 import com.jacmobile.sensorpanellite.fragments.SensorListFragment;
+import com.jacmobile.sensorpanellite.fragments.SensorProfileFragment;
 import com.jacmobile.sensorpanellite.interfaces.Navigator;
+import com.jacmobile.sensorpanellite.util.DrawerController;
 
 /**
  * Created by alex on 10/12/14.
@@ -27,75 +16,35 @@ import com.jacmobile.sensorpanellite.interfaces.Navigator;
 public class SensorActivity extends ABaseActivity implements Navigator
 {
     private static final String SENSOR_FRAGMENT = "com.jacmobile.sensorpanellite.sensorfragment";
+    private static final String SENSOR_PROFILE_FRAGMENT = "com.jacmobile.sensorpanellite.sensorprofilefragment";
 
     private boolean isChild = false;
-    ActionBarDrawerToggle actionBarDrawerToggle;
-    private String[] tempDrawer = { "Device Profile", "More", "Features", "Coming", "Soon"};
+    private DrawerController drawerController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sensor);
-
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.sensor_toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        View actionBar = inflater.inflate(R.layout.action_bar, mToolbar, false);
-        mToolbar.addView(actionBar);
-
-        DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerLayout.setScrimColor(Color.parseColor("#66000000"));
-
-//        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-//                activity, transitionView, DetailActivity.EXTRA_IMAGE);
-//        ActivityCompat.startActivity(activity, new Intent(activity, DetailActivity.class),
-//                options.toBundle());
-
-        this.actionBarDrawerToggle = new ActionBarDrawerToggle(this,
-                mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close);
-        actionBarDrawerToggle.syncState();
-        mDrawerLayout.setDrawerListener(actionBarDrawerToggle);
-
-        final ListView mDrawerList = (ListView) findViewById(R.id.list_drawer);
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item, tempDrawer));
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                if (position == 0) {
-                    startActivity(new Intent(SensorActivity.this, RecyclerActivity.class));
-                }
-            }
-        });
-        ((SwitchCompat) findViewById(R.id.drawer_autoupload)).setChecked(true);
-        findViewById(R.id.drawer_autoupload).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Toast.makeText(SensorActivity.this, "There are no ads.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        setContentView(R.layout.primary_content_view);
+        drawerController = new DrawerController(SensorActivity.this);
+        drawerController.onCreate();
         if (savedInstanceState == null) {
-            getFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.container, SensorListFragment.newInstance())
-                    .commit();
+            this.newSensortList();
         }
+    }
 
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+        drawerController.onStop();
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState)
     {
         super.onPostCreate(savedInstanceState);
-        actionBarDrawerToggle.syncState();
+        drawerController.onPostCreate();
     }
 
     @Override
@@ -103,12 +52,23 @@ public class SensorActivity extends ABaseActivity implements Navigator
     {
         if (isChild) {
             isChild = false;
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.container, SensorListFragment.newInstance())
-                    .commit();
+            this.newSensortList();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    public void onDrawerClick(int position)
+    {
+        switch(position) {
+            case 0:
+                this.newSensortList();
+                break;
+            case 1:
+                this.newSensorProfile();
+                break;
+            default:
+                break;
         }
     }
 
@@ -117,17 +77,35 @@ public class SensorActivity extends ABaseActivity implements Navigator
     {
         if (which.length < 2) {
             this.newSensorFragment(which[0]);
-            isChild = true;
 
-        } else {
-//            startActivity(new Intent(this, Activity.class));
         }
+    }
+
+    private void newSensortList()
+    {
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, SensorListFragment.newInstance())
+                .commit();
+        drawerController.setActionBarTitle(getString(R.string.app_name));
+    }
+
+    private void newSensorProfile()
+    {
+        isChild = true;
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, SensorProfileFragment.newInstance(), SENSOR_PROFILE_FRAGMENT);
+        transaction.addToBackStack(null).commitAllowingStateLoss();
+        drawerController.setActionBarTitle(getString(R.string.sensor_profile));
     }
 
     private void newSensorFragment(int sensor)
     {
+        isChild = true;
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.container, SensorFragment.newInstance(sensor), SENSOR_FRAGMENT);
         transaction.addToBackStack(null).commitAllowingStateLoss();
+        String[] sensorTitles = getResources().getStringArray(R.array.sensors_array);
+        drawerController.setActionBarTitle(sensorTitles[sensor+1]);
     }
 }

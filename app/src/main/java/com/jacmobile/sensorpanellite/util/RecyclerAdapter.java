@@ -54,15 +54,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View v = inflater.inflate(R.layout.recycler_item, parent, false);
-//        TextView tv = (TextView) v.findViewById(R.id.card_title);
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position)
     {
-        holder.title.setText(sensorTitles[position]);
-        holder.description.setText(sensorDescriptions[position]);
+        if (position == 0) {
+            holder.title.setText("Total device sensors: " + sensorTitles.length);
+        } else {
+            holder.title.setText(sensorTitles[position-1]);
+            holder.description.setText(sensorDescriptions[position-1]);
+        }
 //        holder.mTextView.setOnClickListener(new View.OnClickListener()
 //        {
 //            @Override
@@ -76,6 +79,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public int getItemCount()
     {
-        return sensorTitles.length;
+        return sensorTitles.length+1;
     }
 }
