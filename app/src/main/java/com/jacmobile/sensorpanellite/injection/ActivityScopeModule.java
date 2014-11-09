@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.jacmobile.sensorpanellite.activities.ABaseActivity;
+import com.jacmobile.sensorpanellite.activities.RecyclerActivity;
 import com.jacmobile.sensorpanellite.activities.SensorActivity;
 import com.jacmobile.sensorpanellite.fragments.SensorFragment;
 import com.jacmobile.sensorpanellite.fragments.SensorListFragment;
@@ -21,7 +22,8 @@ import dagger.Provides;
         injects = {
                 SensorActivity.class,
                 SensorFragment.class,
-                SensorListFragment.class
+                SensorListFragment.class,
+                RecyclerActivity.class
         }
 )
 public class ActivityScopeModule {

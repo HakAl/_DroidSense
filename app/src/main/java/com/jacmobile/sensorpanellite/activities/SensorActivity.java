@@ -5,14 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -28,26 +27,10 @@ import com.jacmobile.sensorpanellite.interfaces.Navigator;
 public class SensorActivity extends ABaseActivity implements Navigator
 {
     private static final String SENSOR_FRAGMENT = "com.jacmobile.sensorpanellite.sensorfragment";
-    private static final String SENSOR_LIST_FRAGMENT = "com.jacmobile.sensorpanellite.sensorlistfragment";
 
-//    private Toolbar mToolbar;
     private boolean isChild = false;
-    private boolean adsOn = false;
-    private String[] tempDrawer = { "More", "Features", "Coming", "Soon"};
-
-    @Override
-    public void onBackPressed()
-    {
-        if (isChild) {
-            isChild = false;
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.container, SensorListFragment.newInstance())
-                    .commit();
-        } else {
-            super.onBackPressed();
-        }
-    }
+    ActionBarDrawerToggle actionBarDrawerToggle;
+    private String[] tempDrawer = { "Device Profile", "More", "Features", "Coming", "Soon"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -72,14 +55,24 @@ public class SensorActivity extends ABaseActivity implements Navigator
 //        ActivityCompat.startActivity(activity, new Intent(activity, DetailActivity.class),
 //                options.toBundle());
 
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,
-                mDrawerLayout, mToolbar, R.string.accept, R.string.action_settings);
+        this.actionBarDrawerToggle = new ActionBarDrawerToggle(this,
+                mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close);
         actionBarDrawerToggle.syncState();
         mDrawerLayout.setDrawerListener(actionBarDrawerToggle);
 
         final ListView mDrawerList = (ListView) findViewById(R.id.list_drawer);
         mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item, tempDrawer));
-        ((SwitchCompat) findViewById(R.id.drawer_autoupload)).setChecked(adsOn);
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                if (position == 0) {
+                    startActivity(new Intent(SensorActivity.this, RecyclerActivity.class));
+                }
+            }
+        });
+        ((SwitchCompat) findViewById(R.id.drawer_autoupload)).setChecked(true);
         findViewById(R.id.drawer_autoupload).setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -96,6 +89,27 @@ public class SensorActivity extends ABaseActivity implements Navigator
                     .commit();
         }
 
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState)
+    {
+        super.onPostCreate(savedInstanceState);
+        actionBarDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        if (isChild) {
+            isChild = false;
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, SensorListFragment.newInstance())
+                    .commit();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override

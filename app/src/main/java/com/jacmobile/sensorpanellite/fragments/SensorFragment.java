@@ -6,9 +6,11 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,9 +20,9 @@ import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.jacmobile.sensorpanellite.R;
-import com.jacmobile.sensorpanellite.util.SensorController;
 import com.jacmobile.sensorpanellite.interfaces.ContentView;
 import com.jacmobile.sensorpanellite.interfaces.Navigable;
+import com.jacmobile.sensorpanellite.util.SensorController;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -37,14 +39,13 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
 
     private Redrawer drawer;
     private TextView txtTimer;
-    private ImageView imgTimerBtn;
+    private SwitchCompat switchTimer;
     private SimpleXYSeries xSeries = null;
     private SimpleXYSeries ySeries = null;
     private SimpleXYSeries zSeries = null;
 
     private int scale;
     private int[] range;
-    private boolean paused = false;
 
     @Inject Picasso picasso;
     @Inject ContentView contentView;
@@ -79,12 +80,10 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         this.sensorManager.registerListener(this, this.mSensor.getSensor(), SensorManager.SENSOR_DELAY_UI);
         sensorController.restartTimer();
         this.drawer.start();
-        this.setTimerButtonImage();
     }
 
     @Override
     public void onPause() {
-        paused = true;
         this.sensorController.onPauseSensorFeed();
         this.sensorManager.unregisterListener(this, this.mSensor.getSensor());
         this.mSensor = null;
@@ -136,36 +135,29 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         ((TextView) parent.findViewById(R.id.tv_sensor_title)).setText(this.mSensor.getName());
         ((TextView) parent.findViewById(R.id.tv_sensor_sub_title)).setText(this.mSensor.getSensor().getVendor());
         ((TextView) parent.findViewById(R.id.tv_sensor_descript)).setText(this.mSensor.getSensor().getName());
-        this.imgTimerBtn = (ImageView) parent.findViewById(R.id.iv_sensor_switch);
-        this.imgTimerBtn.setOnClickListener(new View.OnClickListener() {
+        this.switchTimer = (SwitchCompat) parent.findViewById(R.id.switch_sensor_timer);
+        this.switchTimer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
             @Override
-            public void onClick(View v) {
-                setTimer();
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                setTimer(isChecked);
             }
         });
+
         this.picasso.load(
                 this.mSensor.getIconUrl())
                 .placeholder(R.drawable.ic_launcher)
                 .into(((ImageView) parent.findViewById(R.id.iv_sensor_icon)));
     }
 
-    private void setTimerButtonImage() {
-        this.picasso.load(
-                paused ?
-                        R.drawable.ic_action_ic_media_play
-                        : R.drawable.ic__pause).into(this.imgTimerBtn);
-    }
-
-    private void setTimer() {
-        if (paused) {
-            paused = false;
+    private void setTimer(boolean isChecked) {
+        if (isChecked) {
             sensorController.onResumeSensorFeed(this, this.mSensor);
             sensorController.restartTimer();
         } else {
-            paused = true;
             sensorController.onPauseSensorFeed();
         }
-        setTimerButtonImage();
     }
 
 
