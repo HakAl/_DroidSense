@@ -78,7 +78,7 @@ public class SystemInfoFragment extends ABaseFragment
 //            sensorDescriptions[i] = sensorDescriptions[i].replace("=", ":   ");
 //        }
         // specify an adapter (see also next example)
-        mAdapter = RecyclerAdapter.newInstance(buildArray, sensorDescriptions);
+        mAdapter = RecyclerAdapter.newInstance(buildArray, sensorDescriptions, true);
         mRecyclerView.setAdapter(mAdapter);
         return list;
     }

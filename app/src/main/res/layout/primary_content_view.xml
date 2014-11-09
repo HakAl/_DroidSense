@@ -38,20 +38,20 @@
                 android:layout_alignParentTop="true"
                 android:background="@color/dark_grey">
 
-                    <TextView
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:textSize="18sp"
-                        android:layout_width="wrap_content"
-                        android:layout_marginLeft="@dimen/activity_eight"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/white"
-                        android:gravity="center_vertical"
-                        android:drawableLeft="@drawable/ic_feature"
-                        android:drawablePadding="16dp"
-                        android:id="@+id/tv_drawer_header"/>
+                <TextView
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:textSize="18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_eight"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical"
+                    android:drawableLeft="@drawable/ic_drawer_circle"
+                    android:drawablePadding="16dp"
+                    android:id="@+id/tv_drawer_header"/>
 
-                </RelativeLayout>
+            </RelativeLayout>
 
             <ListView
                 android:id="@+id/list_drawer"
@@ -59,6 +59,7 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/rl_list_header"
                 android:choiceMode="singleChoice"
+                android:layout_marginTop="@dimen/activity_eight"
                 android:divider="@null"
                 android:dividerHeight="0dp"/>
 
@@ -69,15 +70,24 @@
                 android:padding="@dimen/activity_four"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/activity_margin"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/activity_four"
+                android:layout_marginBottom="12dp"
                 android:textSize="19sp"
                 android:text="http://www.jacmobile.com"
                 android:autoLink="all"/>
 
+            <include
+                layout="@layout/grey_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_above="@+id/drawer_url"
+                android:id="@+id/grey_thin_divider"/>
+
             <android.support.v7.widget.SwitchCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/drawer_url"
+                android:layout_above="@+id/grey_thin_divider"
                 android:minHeight="?android:attr/listPreferredItemHeightSmall"
                 android:id="@+id/drawer_autoupload"
                 android:text="Awesome"

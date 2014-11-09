@@ -16,17 +16,30 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 {
     private String[] sensorTitles;
     private String[] sensorDescriptions;
+    private boolean isSystemInstance;
 
     public static RecyclerAdapter newInstance(String[] sensorTitles, String[] sensorDescriptions)
     {
         return new RecyclerAdapter(sensorTitles, sensorDescriptions);
     }
 
+    public static RecyclerAdapter newInstance(String[] sensorTitles, String[] sensorDescriptions, boolean isSystemInstance)
+    {
+        return new RecyclerAdapter(sensorTitles, sensorDescriptions, true);
+    }
 
     private RecyclerAdapter(String[] sensorTitles, String[] sensorDescriptions)
     {
         this.sensorTitles = sensorTitles;
         this.sensorDescriptions = sensorDescriptions;
+//        mListener = listener;
+    }
+
+    private RecyclerAdapter(String[] sensorTitles, String[] sensorDescriptions, boolean isSystemInstance)
+    {
+        this.sensorTitles = sensorTitles;
+        this.sensorDescriptions = sensorDescriptions;
+        this.isSystemInstance = true;
 //        mListener = listener;
     }
 
@@ -39,14 +52,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position)
+    public void onBindViewHolder(ViewHolder holder, int position)
     {
         if (position == 0) {
-            holder.title.setText("Total device sensors: " + sensorTitles.length);
+            if (isSystemInstance) {
+                holder.title.setText("System Properties");
+            } else {
+                holder.title.setText("Total device sensors: " + sensorTitles.length);
+            }
+            holder.description.setText("");
         } else {
             holder.title.setText(sensorTitles[position - 1]);
             holder.description.setText(sensorDescriptions[position - 1]);
         }
+
 //        holder.mTextView.setOnClickListener(new View.OnClickListener()
 //        {
 //            @Override

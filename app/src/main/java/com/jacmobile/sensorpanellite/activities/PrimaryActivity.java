@@ -112,7 +112,7 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.container, SystemInfoFragment.newInstance(), SYSTEM_INFO_FRAGMENT);
         transaction.addToBackStack(null).commitAllowingStateLoss();
-        drawerController.setActionBarTitle(getString(R.string.sensor_profile));
+        drawerController.setActionBarTitle(getString(R.string.system_profile));
     }
 
     private void newSensorFragment(int sensor)

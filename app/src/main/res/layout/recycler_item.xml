@@ -29,13 +29,10 @@
             android:textSize="20sp"
             android:textColor="#000"/>
 
-       <View
+        <include layout="@layout/grey_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/card_title"
-            android:layout_marginRight="12dp"
-            android:layout_marginLeft="12dp"
-            android:background="@color/grey"/>
+            android:layout_below="@+id/card_title"/>
 
         <TextView
             android:id="@+id/card_description"

@@ -23,7 +23,7 @@ import com.jacmobile.sensorpanellite.activities.PrimaryActivity;
  */
 public class DrawerController
 {
-    private String[] tempDrawer = {"Sensor Feed List", "Sensor Profile", "System Properties", "More", "Features", "Coming", "Soon"};
+    private String[] tempDrawer = {"Sensor Feed List", "Sensor Profile", "System Properties"};
     private PrimaryActivity activity;
 
     private DrawerLayout drawer;
