@@ -3,6 +3,7 @@ package com.jacmobile.sensorpanellite.app;
 import android.app.Activity;
 import android.content.Context;
 import android.hardware.SensorManager;
+import android.location.LocationManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -43,6 +44,11 @@ public class AndroidAppModule
     @Provides @Singleton @ForApplication Context provideApplicationContext()
     {
         return sApplicationContext;
+    }
+
+    @Provides @Singleton LocationManager provideLocationManager()
+    {
+        return (LocationManager) sApplicationContext.getSystemService(Context.LOCATION_SERVICE);
     }
 
     @Provides @Singleton LayoutInflater provideLayoutInflater()

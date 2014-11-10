@@ -5,9 +5,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.jacmobile.sensorpanellite.R;
 import com.jacmobile.sensorpanellite.util.RecyclerAdapter;
@@ -22,9 +24,8 @@ import java.util.List;
 public class SystemInfoFragment extends ABaseFragment
 {
 //    private SystemInfo systemInfo;
-    private RecyclerView mRecyclerView;
+//    private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private LinearLayoutManager mLayoutManager;
 
     public static SystemInfoFragment newInstance()
     {
@@ -35,15 +36,14 @@ public class SystemInfoFragment extends ABaseFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View list = inflater.inflate(R.layout.fragment_recycler, container, false);
-        mRecyclerView = (RecyclerView) list.findViewById(R.id.recycler);
+        RecyclerView recyclerView = (RecyclerView) list.findViewById(R.id.recycler);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
 
-        mLayoutManager = new LinearLayoutManager(getActivity());
-//        mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        StaggeredGridLayoutManager staggeredLM = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(staggeredLM);
 
 
 //        this.systemInfo = new SystemInfo();
@@ -79,7 +79,7 @@ public class SystemInfoFragment extends ABaseFragment
 //        }
         // specify an adapter (see also next example)
         mAdapter = RecyclerAdapter.newInstance(buildArray, sensorDescriptions, true);
-        mRecyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(mAdapter);
         return list;
     }
 }

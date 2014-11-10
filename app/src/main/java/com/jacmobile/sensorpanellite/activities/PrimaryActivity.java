@@ -53,6 +53,7 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
     @Override
     public void onBackPressed()
     {
+        drawerController.onStop();
         if (isChild) {
             isChild = false;
             this.newSensortList();

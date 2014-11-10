@@ -5,6 +5,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +25,7 @@ public class SensorProfileFragment extends ABaseFragment
 {
     @Inject SensorManager sensorManager;
 
-    private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private LinearLayoutManager mLayoutManager;
 
     public static SensorProfileFragment newInstance()
     {
@@ -37,15 +36,15 @@ public class SensorProfileFragment extends ABaseFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View list = inflater.inflate(R.layout.fragment_recycler, container, false);
-        mRecyclerView = (RecyclerView) list.findViewById(R.id.recycler);
+        RecyclerView recyclerView = (RecyclerView) list.findViewById(R.id.recycler);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
 
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
 //        mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setLayoutManager(layoutManager);
 
 
 
@@ -61,11 +60,12 @@ public class SensorProfileFragment extends ABaseFragment
             sensorDescriptions[i] = sensorDescriptions[i].replace("{","");
             sensorDescriptions[i] = sensorDescriptions[i].replace("}","");
             sensorDescriptions[i] = sensorDescriptions[i].replace("=", ":   ");
+            sensorDescriptions[i] = sensorDescriptions[i].replace("\"", "");
         }
 
         // specify an adapter (see also next example)
         mAdapter = RecyclerAdapter.newInstance(sensorTitles, sensorDescriptions);
-        mRecyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(mAdapter);
         return list;
     }
 }

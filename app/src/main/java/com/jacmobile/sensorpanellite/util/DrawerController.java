@@ -3,7 +3,6 @@ package com.jacmobile.sensorpanellite.util;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
@@ -62,7 +61,7 @@ public class DrawerController
         textView.setText(title);
 
         final ListView mDrawerList = (ListView) activity.findViewById(R.id.list_drawer);
-        mDrawerList.setAdapter(new ArrayAdapter<String>(activity, R.layout.list_item, tempDrawer));
+        mDrawerList.setAdapter(new ArrayAdapter<String>(activity, R.layout.drawer_list_item, tempDrawer));
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override

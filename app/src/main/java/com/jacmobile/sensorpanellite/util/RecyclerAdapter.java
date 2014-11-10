@@ -56,14 +56,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     {
         if (position == 0) {
             if (isSystemInstance) {
-                holder.title.setText("System Properties");
+                holder.title.setText(sensorTitles[position]);
+                holder.description.setText(sensorDescriptions[position]);
             } else {
                 holder.title.setText("Total device sensors: " + sensorTitles.length);
+                holder.description.setText("");
             }
-            holder.description.setText("");
         } else {
-            holder.title.setText(sensorTitles[position - 1]);
-            holder.description.setText(sensorDescriptions[position - 1]);
+            if (isSystemInstance) {
+                holder.title.setText(sensorTitles[position]);
+                holder.description.setText(sensorDescriptions[position]);
+            } else {
+                holder.title.setText(sensorTitles[position - 1]);
+                holder.description.setText(sensorDescriptions[position - 1]);
+            }
         }
 
 //        holder.mTextView.setOnClickListener(new View.OnClickListener()
@@ -79,7 +85,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public int getItemCount()
     {
-        return sensorTitles.length + 1;
+        return isSystemInstance ? sensorTitles.length : sensorTitles.length + 1;
     }
 //    private OnItemClickListener mListener;
 
