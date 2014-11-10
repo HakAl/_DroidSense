@@ -2,6 +2,7 @@ package com.jacmobile.sensorpanellite.util;
 
 import android.graphics.Color;
 import android.os.Build;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SwitchCompat;
@@ -101,5 +102,10 @@ public class DrawerController
     {
         TextView txtTitle = (TextView) this.actionBar.findViewById(R.id.action_bar_title);
         txtTitle.setText(title);
+    }
+
+    public boolean isDrawerOpen()
+    {
+        return drawer.isDrawerOpen(GravityCompat.START);
     }
 }
