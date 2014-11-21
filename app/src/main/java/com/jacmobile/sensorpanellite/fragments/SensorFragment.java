@@ -1,6 +1,5 @@
 package com.jacmobile.sensorpanellite.fragments;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;

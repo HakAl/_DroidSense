@@ -33,20 +33,16 @@ public class SensorProfileFragment extends ABaseFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         View list = inflater.inflate(R.layout.fragment_recycler, container, false);
         RecyclerView recyclerView = (RecyclerView) list.findViewById(R.id.recycler);
-
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         recyclerView.setHasFixedSize(true);
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
 //        mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(layoutManager);
-
-
 
         List<Sensor> allSensors = this.sensorManager.getSensorList(Sensor.TYPE_ALL);
         String[] sensorTitles = new String[allSensors.size()];
@@ -55,16 +51,16 @@ public class SensorProfileFragment extends ABaseFragment
             sensorTitles[i] = allSensors.get(i).getName();
             sensorDescriptions[i] = allSensors.get(i).toString();
         }
-        for (int i = 0; i < sensorDescriptions.length; i++){
+        for (int i = 0; i < sensorDescriptions.length; i++) {
             sensorDescriptions[i] = sensorDescriptions[i].replace(",", "\n");
-            sensorDescriptions[i] = sensorDescriptions[i].replace("{","");
-            sensorDescriptions[i] = sensorDescriptions[i].replace("}","");
+            sensorDescriptions[i] = sensorDescriptions[i].replace("{", "");
+            sensorDescriptions[i] = sensorDescriptions[i].replace("}", "");
             sensorDescriptions[i] = sensorDescriptions[i].replace("=", ":   ");
             sensorDescriptions[i] = sensorDescriptions[i].replace("\"", "");
         }
 
         // specify an adapter (see also next example)
-        mAdapter = RecyclerAdapter.newInstance(sensorTitles, sensorDescriptions);
+        mAdapter = RecyclerAdapter.newInstance(sensorTitles, sensorDescriptions, RecyclerAdapter.SENSOR_INSTANCE);
         recyclerView.setAdapter(mAdapter);
         return list;
     }

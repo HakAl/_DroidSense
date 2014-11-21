@@ -21,21 +21,24 @@ import com.jacmobile.sensorpanellite.activities.PrimaryActivity;
 /**
  * Created by alex on 11/9/14.
  */
-public class DrawerController
+public class ActionBarManager
 {
-    private String[] tempDrawer = {"Sensor Feed List", "Sensor Profile", "System Properties"};
+
+    private boolean adsOn = true;
+    private String[] tempDrawer = {"Sensor Feed List", "Sensor Profile", "System Properties", "OMNI"};
     private PrimaryActivity activity;
+    private LayoutInflater layoutInflater;
 
     private DrawerLayout drawer;
     private View actionBar;
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
-    public DrawerController(PrimaryActivity activity)
+    public ActionBarManager(PrimaryActivity activity)
     {
         this.activity = activity;
     }
 
-    public DrawerController(PrimaryActivity activity, String[] list)
+    public ActionBarManager(PrimaryActivity activity, String[] list)
     {
         this.activity = activity;
         this.tempDrawer = list;
@@ -43,11 +46,10 @@ public class DrawerController
 
     private void initDrawer()
     {
-        LayoutInflater inflater = LayoutInflater.from(activity);
         Toolbar mToolbar = (Toolbar) activity.findViewById(R.id.sensor_toolbar);
         activity.setSupportActionBar(mToolbar);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        this.actionBar = inflater.inflate(R.layout.action_bar, mToolbar, false);
+        this.actionBar = layoutInflater.inflate(R.layout.action_bar, mToolbar, false);
         mToolbar.addView(actionBar);
         drawer = (DrawerLayout) activity.findViewById(R.id.drawer_layout);
         drawer.setScrimColor(Color.parseColor("#66000000"));
@@ -55,12 +57,9 @@ public class DrawerController
                 drawer, mToolbar, R.string.drawer_open, R.string.drawer_close);
         actionBarDrawerToggle.syncState();
         drawer.setDrawerListener(actionBarDrawerToggle);
-
-        TextView textView = (TextView) activity.findViewById(R.id.tv_drawer_header);
         String brand = Build.BRAND.substring(0, 1).toUpperCase() + Build.BRAND.substring(1);
         String title = brand + " " + Build.MODEL;
-        textView.setText(title);
-
+        ((TextView) activity.findViewById(R.id.tv_drawer_header)).setText(title);
         final ListView mDrawerList = (ListView) activity.findViewById(R.id.list_drawer);
         mDrawerList.setAdapter(new ArrayAdapter<String>(activity, R.layout.drawer_list_item, tempDrawer));
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -72,13 +71,13 @@ public class DrawerController
                 activity.onDrawerClick(position);
             }
         });
-        ((SwitchCompat) activity.findViewById(R.id.drawer_autoupload)).setChecked(true);
+        ((SwitchCompat) activity.findViewById(R.id.drawer_autoupload)).setChecked(adsOn);
         activity.findViewById(R.id.drawer_autoupload).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                Toast.makeText(activity, "There are no ads.", Toast.LENGTH_SHORT).show();
+                setAds();
             }
         });
     }
@@ -91,6 +90,7 @@ public class DrawerController
     public void onCreate()
     {
         this.initDrawer();
+        layoutInflater = LayoutInflater.from(activity);
     }
 
     public void onStop()
@@ -100,12 +100,23 @@ public class DrawerController
 
     public void setActionBarTitle(String title)
     {
-        TextView txtTitle = (TextView) this.actionBar.findViewById(R.id.action_bar_title);
-        txtTitle.setText(title);
+        ((TextView) actionBar.findViewById(R.id.action_bar_title)).setText(title);
     }
 
     public boolean isDrawerOpen()
     {
         return drawer.isDrawerOpen(GravityCompat.START);
+    }
+
+    private void setAds()
+    {
+        if (adsOn) {
+            Toast.makeText(activity, "Ads Off", Toast.LENGTH_SHORT).show();
+            adsOn = false;
+        }
+        else {
+            Toast.makeText(activity, "Ads On", Toast.LENGTH_LONG).show();
+            adsOn = true;
+        }
     }
 }

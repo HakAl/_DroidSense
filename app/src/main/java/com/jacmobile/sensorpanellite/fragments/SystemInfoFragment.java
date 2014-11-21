@@ -23,8 +23,6 @@ import java.util.List;
  */
 public class SystemInfoFragment extends ABaseFragment
 {
-//    private SystemInfo systemInfo;
-//    private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
 
     public static SystemInfoFragment newInstance()
@@ -37,19 +35,10 @@ public class SystemInfoFragment extends ABaseFragment
 
         View list = inflater.inflate(R.layout.fragment_recycler, container, false);
         RecyclerView recyclerView = (RecyclerView) list.findViewById(R.id.recycler);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
         recyclerView.setHasFixedSize(true);
 
         StaggeredGridLayoutManager staggeredLM = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(staggeredLM);
-
-
-//        this.systemInfo = new SystemInfo();
-//        ArrayList<String> systemList = systemInfo.getAllProperties();
-
-//        List<Sensor> allSensors = this.sensorManager.getSensorList(Sensor.TYPE_ALL);
 
         String[] buildArray = getActivity().getResources().getStringArray(R.array.build_array);
 
@@ -71,14 +60,8 @@ public class SystemInfoFragment extends ABaseFragment
         sensorDescriptions[14] = ""+Build.TIME;
         sensorDescriptions[15] = Build.TYPE;
         sensorDescriptions[16] = Build.USER;
-//        for (int i = 0; i < sensorDescriptions.length; i++){
-//            sensorDescriptions[i] = sensorDescriptions[i].replace(",", "\n");
-//            sensorDescriptions[i] = sensorDescriptions[i].replace("{","");
-//            sensorDescriptions[i] = sensorDescriptions[i].replace("}","");
-//            sensorDescriptions[i] = sensorDescriptions[i].replace("=", ":   ");
-//        }
-        // specify an adapter (see also next example)
-        mAdapter = RecyclerAdapter.newInstance(buildArray, sensorDescriptions, true);
+
+        mAdapter = RecyclerAdapter.newInstance(buildArray, sensorDescriptions, RecyclerAdapter.SYSTEM_INSTANCE);
         recyclerView.setAdapter(mAdapter);
         return list;
     }

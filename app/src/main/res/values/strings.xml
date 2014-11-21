@@ -4,6 +4,7 @@
     <string name="app_name">Sensor Panel Lite</string>
     <string name="sensor_profile">Sensor Profile</string>
     <string name="system_profile">System Info</string>
+    <string name="omni">OMNI</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Closed</string>
     <string name="action_settings">Settings</string>
