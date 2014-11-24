@@ -11,7 +11,6 @@ import javax.inject.Singleton;
 
 @Singleton
 public final class SensorController {
-
     private static final float ALPHA = .9f;
     public static final int HISTORY_SIZE = 100;
     public static final float STANDARD_GRAVITY = 9.80665f;
