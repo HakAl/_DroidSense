@@ -1,11 +1,15 @@
 package com.jacmobile.sensorpanellite.fragments;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +25,12 @@ import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYStepMode;
 import com.jacmobile.sensorpanellite.R;
+import com.jacmobile.sensorpanellite.activities.PrimaryActivity;
 import com.jacmobile.sensorpanellite.interfaces.ContentView;
 import com.jacmobile.sensorpanellite.interfaces.Navigable;
 import com.jacmobile.sensorpanellite.util.SensorController;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -47,6 +53,8 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     private SimpleXYSeries ySeries = null;
     private SimpleXYSeries zSeries = null;
     private XYPlot sensorPlot;
+    private ImageView ivSensor;
+    private boolean isSingleSeries = false;
 
     private int scale;
     private int[] range;
@@ -76,6 +84,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         this.mSensor = this.sensorData.get(getArguments().getInt(WHICH_SENSOR));
         this.sensorManager.registerListener(this, this.mSensor.getSensor(), SensorManager.SENSOR_DELAY_UI);
         this.sensorController.onResumeSensorFeed(this, mSensor);
+        ((PrimaryActivity)getActivity()).setActionBarTitle(mSensor.getName());
         return this.getSensorView();
     }
 
@@ -112,7 +121,6 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         this.setScale();
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         ViewGroup view = (ViewGroup) layoutInflater.inflate(R.layout.fragment_sensor, contentView.get(getActivity()), false);
-
         this.sensorPlot = (XYPlot) view.findViewById(R.id.sensor_plot);
         sensorPlot.setDomainStepMode(XYStepMode.INCREMENT_BY_VAL);
         sensorPlot.setDomainStepValue(10 / 1);
@@ -126,6 +134,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         this.setSeries(sensorPlot);
         drawer = new Redrawer(sensorPlot, SensorController.HISTORY_SIZE, false);
         this.setSensorCard(view);
+        getPallette();
         return view;
     }
 
@@ -135,7 +144,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         if (sensorController.isSingleSeries()) {
             xSeries = new SimpleXYSeries("X");
             xSeries.useImplicitXVals();
-            sensorPlot.addSeries(xSeries, new LineAndPointFormatter(Color.RED, null, null, null));
+            isSingleSeries = true;
         } else {
             xSeries = new SimpleXYSeries("X");
             ySeries = new SimpleXYSeries("Y");
@@ -143,11 +152,49 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
             xSeries.useImplicitXVals();
             ySeries.useImplicitXVals();
             zSeries.useImplicitXVals();
-            sensorPlot.addSeries(xSeries, new LineAndPointFormatter(Color.RED, null, null, null));
-            sensorPlot.addSeries(ySeries, new LineAndPointFormatter(Color.CYAN, null, null, null));
-            sensorPlot.addSeries(zSeries, new LineAndPointFormatter(Color.YELLOW, null, null, null));
         }
     }
+
+    private void getPallette()
+    {
+        Palette.generateAsync(sensorBitmap, new Palette.PaletteAsyncListener() {
+            public void onGenerated(Palette palette) {
+                setColor(palette);
+            }
+        });
+    }
+
+    private void setColor(Palette palette)
+    {
+        if (isSingleSeries) {
+            sensorPlot.addSeries(xSeries, new LineAndPointFormatter(palette.getVibrantColor(Color.RED), null, null, null));
+        } else {
+            sensorPlot.addSeries(xSeries, new LineAndPointFormatter(palette.getVibrantColor(Color.RED), null, null, null));
+            sensorPlot.addSeries(ySeries, new LineAndPointFormatter(palette.getLightVibrantColor(Color.CYAN), null, null, null));
+            sensorPlot.addSeries(zSeries, new LineAndPointFormatter(palette.getDarkVibrantColor(Color.YELLOW), null, null, null));
+        }
+    }
+
+    Bitmap sensorBitmap;
+    private Target target = new Target() {
+        @Override
+        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+            sensorBitmap = bitmap;
+            ivSensor.setImageBitmap(bitmap);
+        }
+
+        @Override
+        public void onBitmapFailed(Drawable errorDrawable)
+        {
+
+        }
+
+        @Override
+        public void onPrepareLoad(Drawable placeHolderDrawable)
+        {
+
+        }
+    };
 
     private void setSensorCard(View parent)
     {
@@ -165,10 +212,12 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
             }
         });
 
+        this.ivSensor = ((ImageView) parent.findViewById(R.id.iv_sensor_icon));
+
         this.picasso.load(
                 this.mSensor.getIconUrl())
                 .placeholder(R.drawable.ic_launcher)
-                .into(((ImageView) parent.findViewById(R.id.iv_sensor_icon)));
+                .into(target);
     }
 
     private void setTimer(boolean isChecked)

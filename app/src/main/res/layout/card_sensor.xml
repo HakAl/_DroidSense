@@ -6,14 +6,12 @@
     android:layout_height="wrap_content"
     app:cardElevation="3dp"
     app:cardUseCompatPadding="true"
-    android:id="@+id/card_sensor_frame"
-    android:background="?android:attr/selectableItemBackground">
+    android:id="@+id/card_sensor_frame">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:background="@drawable/list_selector"
         android:id="@+id/parent_sensor_card">
 
         <TextView

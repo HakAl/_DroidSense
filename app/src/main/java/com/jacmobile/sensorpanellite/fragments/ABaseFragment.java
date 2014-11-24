@@ -34,18 +34,18 @@ public abstract class ABaseFragment extends Fragment
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
         // make sure it's the first time through; we don't want to re-inject a retained
         // fragment that is going through a detach/attach sequence.
         if (mFirstAttach) {
             ((ABaseActivity) getActivity()).inject(this);
             mFirstAttach = false;
         }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
     }
 
     @Override

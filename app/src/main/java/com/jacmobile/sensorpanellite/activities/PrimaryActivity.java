@@ -2,6 +2,7 @@ package com.jacmobile.sensorpanellite.activities;
 
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 
 import com.jacmobile.sensorpanellite.R;
 import com.jacmobile.sensorpanellite.fragments.OmniFragment;
@@ -30,7 +31,7 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.primary_content_view);
-        actionBarManager = new ActionBarManager(PrimaryActivity.this);
+        actionBarManager = new ActionBarManager((Toolbar) this.findViewById(R.id.sensor_toolbar));
         actionBarManager.onCreate();
         if (savedInstanceState == null) {
             this.newSensortList();
@@ -91,16 +92,16 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
     {
         switch (position) {
             case 0:
-                this.newSensortList();
+                newSensortList();
                 break;
             case 1:
-                this.newSensorProfile();
+                newSensorProfile();
                 break;
             case 2:
-                this.newSystemInfo();
+                newSystemInfo();
                 break;
             case 3:
-                this.newOmni();
+                newOmni();
                 break;
             default:
                 break;
@@ -114,7 +115,14 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
             newSensorFragment(which[0]);
         } else {
             newSystemInfo();
+
+
         }
+    }
+
+    public void setActionBarTitle(String title)
+    {
+        actionBarManager.setActionBarTitle(title);
     }
 
     private void newSensortList()
@@ -123,7 +131,6 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
                 .beginTransaction()
                 .replace(R.id.container, SensorListFragment.newInstance())
                 .commit();
-        actionBarManager.setActionBarTitle(getString(R.string.app_name));
     }
 
     private void newSensorProfile()
@@ -159,7 +166,7 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.container, SensorFragment.newInstance(sensor), SENSOR_FRAGMENT);
         transaction.addToBackStack(null).commitAllowingStateLoss();
-        String[] sensorTitles = getResources().getStringArray(R.array.sensors_array);
-        actionBarManager.setActionBarTitle(sensorTitles[sensor + 1]);
+//        String[] sensorTitles = getResources().getStringArray(R.array.sensors_array);
+//        actionBarManager.setActionBarTitle(sensorTitles[sensor + 1]);
     }
 }

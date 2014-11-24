@@ -23,56 +23,51 @@ import com.jacmobile.sensorpanellite.activities.PrimaryActivity;
  */
 public class ActionBarManager
 {
-
     private boolean adsOn = true;
     private String[] tempDrawer = {"Sensor Feed List", "Sensor Profile", "System Properties", "OMNI"};
-    private PrimaryActivity activity;
-    private LayoutInflater layoutInflater;
+    private Toolbar toolbar;
 
     private DrawerLayout drawer;
     private View actionBar;
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
-    public ActionBarManager(PrimaryActivity activity)
+    public ActionBarManager(Toolbar toolbar)
     {
-        this.activity = activity;
+        this.toolbar = toolbar;
     }
 
-    public ActionBarManager(PrimaryActivity activity, String[] list)
+    private PrimaryActivity getActivity()
     {
-        this.activity = activity;
-        this.tempDrawer = list;
+        return  ((PrimaryActivity) this.toolbar.getContext());
     }
 
     private void initDrawer()
     {
-        Toolbar mToolbar = (Toolbar) activity.findViewById(R.id.sensor_toolbar);
-        activity.setSupportActionBar(mToolbar);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        this.actionBar = layoutInflater.inflate(R.layout.action_bar, mToolbar, false);
-        mToolbar.addView(actionBar);
-        drawer = (DrawerLayout) activity.findViewById(R.id.drawer_layout);
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+        getActivity().setSupportActionBar(toolbar);
+        getActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        this.actionBar = layoutInflater.inflate(R.layout.action_bar, toolbar, false);
+        toolbar.addView(actionBar);
+        drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
         drawer.setScrimColor(Color.parseColor("#66000000"));
-        this.actionBarDrawerToggle = new ActionBarDrawerToggle(activity,
-                drawer, mToolbar, R.string.drawer_open, R.string.drawer_close);
+        this.actionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(),
+                drawer, toolbar, R.string.drawer_open, R.string.drawer_close);
         actionBarDrawerToggle.syncState();
         drawer.setDrawerListener(actionBarDrawerToggle);
-        String brand = Build.BRAND.substring(0, 1).toUpperCase() + Build.BRAND.substring(1);
-        String title = brand + " " + Build.MODEL;
-        ((TextView) activity.findViewById(R.id.tv_drawer_header)).setText(title);
-        final ListView mDrawerList = (ListView) activity.findViewById(R.id.list_drawer);
-        mDrawerList.setAdapter(new ArrayAdapter<String>(activity, R.layout.drawer_list_item, tempDrawer));
+        ((TextView) getActivity().findViewById(R.id.tv_drawer_header)).setText(getDrawerTitle());
+        final ListView mDrawerList = (ListView) getActivity().findViewById(R.id.list_drawer);
+        mDrawerList.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.drawer_list_item, tempDrawer));
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 drawer.closeDrawers();
-                activity.onDrawerClick(position);
+                getActivity().onDrawerClick(position);
             }
         });
-        ((SwitchCompat) activity.findViewById(R.id.drawer_autoupload)).setChecked(adsOn);
-        activity.findViewById(R.id.drawer_autoupload).setOnClickListener(new View.OnClickListener()
+        ((SwitchCompat) getActivity().findViewById(R.id.drawer_autoupload)).setChecked(adsOn);
+        getActivity().findViewById(R.id.drawer_autoupload).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -80,6 +75,12 @@ public class ActionBarManager
                 setAds();
             }
         });
+    }
+
+    private String getDrawerTitle()
+    {
+        String brand = Build.BRAND.substring(0, 1).toUpperCase() + Build.BRAND.substring(1);
+        return brand + " " + Build.MODEL;
     }
 
     public void onPostCreate()
@@ -90,7 +91,6 @@ public class ActionBarManager
     public void onCreate()
     {
         this.initDrawer();
-        layoutInflater = LayoutInflater.from(activity);
     }
 
     public void onStop()
@@ -111,11 +111,11 @@ public class ActionBarManager
     private void setAds()
     {
         if (adsOn) {
-            Toast.makeText(activity, "Ads Off", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Ads Off", Toast.LENGTH_SHORT).show();
             adsOn = false;
         }
         else {
-            Toast.makeText(activity, "Ads On", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "Ads On", Toast.LENGTH_LONG).show();
             adsOn = true;
         }
     }

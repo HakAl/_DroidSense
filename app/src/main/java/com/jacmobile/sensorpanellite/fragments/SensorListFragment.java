@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jacmobile.sensorpanellite.R;
+import com.jacmobile.sensorpanellite.activities.PrimaryActivity;
 import com.jacmobile.sensorpanellite.interfaces.Navigator;
 import com.jacmobile.sensorpanellite.util.SensorListAdapter;
 import com.jacmobile.sensorpanellite.util.SystemInfo;
@@ -22,11 +23,10 @@ import javax.inject.Inject;
  */
 public class SensorListFragment extends AListFragment
 {
-    private Navigator navigatorListener;
-
     @Inject Picasso picasso;
     @Inject SensorListAdapter adapter;
     @Inject LayoutInflater layoutInflater;
+    private Navigator navigatorListener;
 
     public static SensorListFragment newInstance()
     {
@@ -51,6 +51,7 @@ public class SensorListFragment extends AListFragment
         ListView listView = (ListView) view.findViewById(R.id.list_sensors);
         listView.addFooterView(this.getFooterView());
         listView.setAdapter(adapter);
+        ((PrimaryActivity)navigatorListener).setActionBarTitle((adapter.getCount()-1)+" Sensors");
         return view;
     }
 
