@@ -61,6 +61,12 @@ public class SystemInfoFragment extends ABaseFragment
         sensorDescriptions[15] = Build.TYPE;
         sensorDescriptions[16] = Build.USER;
 
+        for (int i = 0; i < sensorDescriptions.length; i++) {
+            String temp = sensorDescriptions[i];
+            temp = temp.substring(0, 1).toUpperCase() + temp.substring(1);
+            sensorDescriptions[i] = temp;
+        }
+
         mAdapter = RecyclerAdapter.newInstance(buildArray, sensorDescriptions, RecyclerAdapter.SYSTEM_INSTANCE);
         recyclerView.setAdapter(mAdapter);
         return list;

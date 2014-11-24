@@ -36,7 +36,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View v = inflater.inflate(R.layout.recycler_item, parent, false);
+        View v = null;
+        switch (instance) {
+            case SENSOR_INSTANCE:
+                v = inflater.inflate(R.layout.recycler_item, parent, false);
+                break;
+            case SYSTEM_INSTANCE:
+                v = inflater.inflate(R.layout.recycler_item_inverse, parent, false);
+                break;
+            default:
+                break;
+        }
         return new ViewHolder(v);
     }
 

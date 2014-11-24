@@ -101,6 +101,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     @Override
     public void onPause()
     {
+        this.switchTimer.setChecked(false);
         this.sensorController.onPauseSensorFeed();
         this.sensorManager.unregisterListener(this, this.mSensor.getSensor());
         this.mSensor = null;
@@ -229,7 +230,6 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
             sensorController.onPauseSensorFeed();
         }
     }
-
 
     public void updateSeries(float... data)
     {

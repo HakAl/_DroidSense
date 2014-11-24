@@ -10,23 +10,23 @@
     <string name="action_settings">Settings</string>
 
     <string-array name="build_array">
-        <item>BOARD</item>
-        <item>BOOTLOADER</item>
-        <item>BRAND</item>
-        <item>DEVICE</item>
-        <item>DISPLAY</item>
-        <item>FINGERPRINT</item>
-        <item>HARDWARE</item>
-        <item>HOST</item>
+        <item>Board</item>
+        <item>Bootloader</item>
+        <item>Brand</item>
+        <item>Device</item>
+        <item>Display</item>
+        <item>Fingerprint</item>
+        <item>Hardware</item>
+        <item>Host</item>
         <item>ID</item>
-        <item>MANUFACTURER</item>
-        <item>MODEL</item>
-        <item>PRODUCT</item>
-        <item>RADIO</item>
-        <item>SERIAL</item>
-        <item>TAGS</item>
-        <item>TIME</item>
-        <item>USER</item>
+        <item>Manufacturer</item>
+        <item>Model</item>
+        <item>Product</item>
+        <item>Radio</item>
+        <item>Serial</item>
+        <item>Tags</item>
+        <item>Time</item>
+        <item>User</item>
     </string-array>
 
     <string-array name="sensors_array">

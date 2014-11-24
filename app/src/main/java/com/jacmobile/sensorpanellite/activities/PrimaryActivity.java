@@ -18,6 +18,7 @@ import com.jacmobile.sensorpanellite.util.ActionBarManager;
  */
 public class PrimaryActivity extends ABaseActivity implements Navigator
 {
+    private static final String SENSOR_LIST_FRAGMENT = "com.jacmobile.sensorpanellite.sensorlistfragment";
     private static final String SENSOR_FRAGMENT = "com.jacmobile.sensorpanellite.sensorfragment";
     private static final String SENSOR_PROFILE_FRAGMENT = "com.jacmobile.sensorpanellite.sensorprofilefragment";
     private static final String SYSTEM_INFO_FRAGMENT = "com.jacmobile.sensorpanellite.systeminfofragment";
@@ -115,8 +116,6 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
             newSensorFragment(which[0]);
         } else {
             newSystemInfo();
-
-
         }
     }
 
@@ -129,44 +128,46 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
     {
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, SensorListFragment.newInstance())
+                .replace(R.id.container, SensorListFragment.newInstance(), SENSOR_LIST_FRAGMENT)
                 .commit();
     }
 
     private void newSensorProfile()
     {
         isChild = true;
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, SensorProfileFragment.newInstance(), SENSOR_PROFILE_FRAGMENT);
-        transaction.addToBackStack(null).commitAllowingStateLoss();
-        actionBarManager.setActionBarTitle(getString(R.string.sensor_profile));
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, SensorProfileFragment.newInstance(), SENSOR_PROFILE_FRAGMENT)
+                .commit();
+        setActionBarTitle(getString(R.string.sensor_profile));
     }
 
     private void newSystemInfo()
     {
         isChild = true;
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, SystemInfoFragment.newInstance(), SYSTEM_INFO_FRAGMENT);
-        transaction.addToBackStack(null).commitAllowingStateLoss();
-        actionBarManager.setActionBarTitle(getString(R.string.system_profile));
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, SystemInfoFragment.newInstance(), SYSTEM_INFO_FRAGMENT)
+                .commit();
+        setActionBarTitle(getString(R.string.system_profile));
     }
 
     private void newOmni()
     {
         isChild = true;
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, OmniFragment.newInstance(), OMNI_FRAGMENT);
-        transaction.addToBackStack(null).commitAllowingStateLoss();
-        actionBarManager.setActionBarTitle(getString(R.string.omni));
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, OmniFragment.newInstance(), OMNI_FRAGMENT)
+                .commit();
+        setActionBarTitle(getString(R.string.omni));
     }
 
     private void newSensorFragment(int sensor)
     {
         isChild = true;
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, SensorFragment.newInstance(sensor), SENSOR_FRAGMENT);
-        transaction.addToBackStack(null).commitAllowingStateLoss();
-//        String[] sensorTitles = getResources().getStringArray(R.array.sensors_array);
-//        actionBarManager.setActionBarTitle(sensorTitles[sensor + 1]);
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, SensorFragment.newInstance(sensor), SENSOR_FRAGMENT)
+                .commit();
     }
 }
