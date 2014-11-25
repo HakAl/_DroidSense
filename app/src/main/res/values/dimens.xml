@@ -6,7 +6,7 @@
     <dimen name="device_icon">72dp</dimen>
     <dimen name="device_icon_padding">8dp</dimen>
     <dimen name="device_list_item_padding">12dp</dimen>
-    <dimen name="device_icon_label">21sp</dimen>
+    <dimen name="device_icon_label">19sp</dimen>
     <dimen name="sensor_timer_text">17sp</dimen>
     <dimen name="device_icon_text">13sp</dimen>
     <dimen name="device_list_item_height">112dp</dimen>

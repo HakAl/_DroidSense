@@ -31,7 +31,7 @@ public final class SensorController {
             if (fragment == null || !timerRunning) return;
             fragment.setElapsedNanos(System.nanoTime() - timerStartNanos);
             fragment.updateSeries(currentX, currentY, currentZ);
-            handler.postDelayed(this, 100);
+            handler.postDelayed(this, 50);
         }
     };
 

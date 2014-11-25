@@ -1,6 +1,10 @@
 package com.jacmobile.sensorpanellite.fragments;
 
 import android.app.Activity;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +16,12 @@ import android.widget.TextView;
 import com.jacmobile.sensorpanellite.R;
 import com.jacmobile.sensorpanellite.activities.PrimaryActivity;
 import com.jacmobile.sensorpanellite.interfaces.Navigator;
+import com.jacmobile.sensorpanellite.util.OmniController;
 import com.jacmobile.sensorpanellite.util.SensorListAdapter;
 import com.jacmobile.sensorpanellite.util.SystemInfo;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -26,7 +33,9 @@ public class SensorListFragment extends AListFragment
     @Inject Picasso picasso;
     @Inject SensorListAdapter adapter;
     @Inject LayoutInflater layoutInflater;
+
     private Navigator navigatorListener;
+    private OmniController omniController;
 
     public static SensorListFragment newInstance()
     {
@@ -45,6 +54,40 @@ public class SensorListFragment extends AListFragment
     }
 
     @Override
+    public void onDetach()
+    {
+        super.onDetach();
+        this.navigatorListener = null;
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        omniController.onPause();
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        omniController.onResume();
+    }
+
+//    @Override
+//    public void onStart()
+//    {
+//        super.onStart();
+//    }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        omniController.onStop();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_sensor_list, container, false);
@@ -52,6 +95,8 @@ public class SensorListFragment extends AListFragment
         listView.addFooterView(this.getFooterView());
         listView.setAdapter(adapter);
         ((PrimaryActivity)navigatorListener).setActionBarTitle((adapter.getCount()-1)+" Sensors");
+        this.omniController = new OmniController(listView);
+        omniController.onStart();
         return view;
     }
 

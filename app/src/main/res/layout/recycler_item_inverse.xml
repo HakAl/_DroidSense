@@ -26,7 +26,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/activity_four"
             android:layout_marginTop="@dimen/activity_eight"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textColor="#fff"/>
 
         <include layout="@layout/grey_divider"

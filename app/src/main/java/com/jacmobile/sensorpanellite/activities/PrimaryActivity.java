@@ -1,11 +1,9 @@
 package com.jacmobile.sensorpanellite.activities;
 
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.jacmobile.sensorpanellite.R;
-import com.jacmobile.sensorpanellite.fragments.OmniFragment;
 import com.jacmobile.sensorpanellite.fragments.SensorFragment;
 import com.jacmobile.sensorpanellite.fragments.SensorListFragment;
 import com.jacmobile.sensorpanellite.fragments.SensorProfileFragment;
@@ -37,27 +35,6 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
         if (savedInstanceState == null) {
             this.newSensortList();
         }
-    }
-
-    //TODO: prepare to display
-    @Override
-    protected void onRestart()
-    {
-        super.onRestart();
-    }
-
-    //TODO: init listeners
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
-    }
-
-    //TODO: kill listeners
-    @Override
-    protected void onPause()
-    {
-        super.onResume();
     }
 
     @Override
@@ -102,7 +79,7 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
                 newSystemInfo();
                 break;
             case 3:
-                newOmni();
+//                todo settings();
                 break;
             default:
                 break;
@@ -150,16 +127,6 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
                 .replace(R.id.container, SystemInfoFragment.newInstance(), SYSTEM_INFO_FRAGMENT)
                 .commit();
         setActionBarTitle(getString(R.string.system_profile));
-    }
-
-    private void newOmni()
-    {
-        isChild = true;
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, OmniFragment.newInstance(), OMNI_FRAGMENT)
-                .commit();
-        setActionBarTitle(getString(R.string.omni));
     }
 
     private void newSensorFragment(int sensor)

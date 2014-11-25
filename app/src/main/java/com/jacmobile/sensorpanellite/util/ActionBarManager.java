@@ -3,6 +3,7 @@ package com.jacmobile.sensorpanellite.util;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SwitchCompat;
@@ -24,9 +25,8 @@ import com.jacmobile.sensorpanellite.activities.PrimaryActivity;
 public class ActionBarManager
 {
     private boolean adsOn = true;
-    private String[] tempDrawer = {"Sensor Feed List", "Sensor Profile", "System Properties", "OMNI"};
+    private String[] drawerStrings = {"Sensor Feed List", "Sensor Profile", "System Properties", "Settings"};
     private Toolbar toolbar;
-
     private DrawerLayout drawer;
     private View actionBar;
     private ActionBarDrawerToggle actionBarDrawerToggle;
@@ -45,9 +45,11 @@ public class ActionBarManager
     {
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         getActivity().setSupportActionBar(toolbar);
-        getActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.actionBar = layoutInflater.inflate(R.layout.action_bar, toolbar, false);
         toolbar.addView(actionBar);
+
+        ViewCompat.setElevation(toolbar, 5f);
         drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
         drawer.setScrimColor(Color.parseColor("#66000000"));
         this.actionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(),
@@ -56,7 +58,7 @@ public class ActionBarManager
         drawer.setDrawerListener(actionBarDrawerToggle);
         ((TextView) getActivity().findViewById(R.id.tv_drawer_header)).setText(getDrawerTitle());
         final ListView mDrawerList = (ListView) getActivity().findViewById(R.id.list_drawer);
-        mDrawerList.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.drawer_list_item, tempDrawer));
+        mDrawerList.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.drawer_list_item, drawerStrings));
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override

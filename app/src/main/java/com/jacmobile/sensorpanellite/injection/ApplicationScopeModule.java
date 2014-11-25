@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.jacmobile.sensorpanellite.app.AndroidAppModule;
 import com.jacmobile.sensorpanellite.app.DaggerApplication;
+import com.jacmobile.sensorpanellite.util.OmniController;
 import com.squareup.picasso.Picasso;
 
 import dagger.Module;

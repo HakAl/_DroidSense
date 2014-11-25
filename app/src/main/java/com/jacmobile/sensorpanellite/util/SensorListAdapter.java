@@ -36,7 +36,7 @@ public class SensorListAdapter extends BaseAdapter {
             convertView = this.inflater.inflate(R.layout.card_sensor, parent, false);
             holder.title = (TextView) convertView.findViewById(R.id.tv_sensor_title);
             holder.subTitle = (TextView) convertView.findViewById(R.id.tv_sensor_sub_title);
-            holder.descript = (TextView) convertView.findViewById(R.id.tv_sensor_descript);
+            holder.unit = (TextView) convertView.findViewById(R.id.tv_sensor_unit);
             holder.icon = (ImageView) convertView.findViewById(R.id.iv_sensor_icon);
             convertView.setTag(holder);
         } else {
@@ -44,7 +44,7 @@ public class SensorListAdapter extends BaseAdapter {
         }
         holder.subTitle.setText(this.data.get(position).getSensor().getVendor());
         holder.title.setText(this.data.get(position).getName());
-        holder.descript.setText(this.data.get(position).getSensor().getName());
+        holder.unit.setText(this.data.get(position).getUnitLabel());
         this.picasso.load(this.data.get(position).getIconUrl()).placeholder(R.drawable.ic_launcher).into(holder.icon);
 
         return convertView;
@@ -69,6 +69,6 @@ public class SensorListAdapter extends BaseAdapter {
         ImageView icon;
         TextView title;
         TextView subTitle;
-        TextView descript;
+        TextView unit;
     }
 }

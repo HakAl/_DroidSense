@@ -42,7 +42,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 v = inflater.inflate(R.layout.recycler_item, parent, false);
                 break;
             case SYSTEM_INSTANCE:
-                v = inflater.inflate(R.layout.recycler_item_inverse, parent, false);
+                v = inflater.inflate(R.layout.recycler_item, parent, false);
                 break;
             default:
                 break;
