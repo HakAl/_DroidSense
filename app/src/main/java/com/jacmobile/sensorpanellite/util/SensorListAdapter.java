@@ -1,31 +1,34 @@
 package com.jacmobile.sensorpanellite.util;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.jacmobile.sensorpanellite.R;
+import com.jacmobile.sensorpanellite.app.DaggerApplication;
 import com.jacmobile.sensorpanellite.interfaces.Navigable;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
+import javax.inject.Inject;
 
 /**
  * Created by alex on 10/12/14.
  */
-public class SensorListAdapter extends BaseAdapter {
-    private Picasso picasso;
+public class SensorListAdapter extends ArrayAdapter<Navigable>
+{
+    @Inject Picasso picasso;
     private LayoutInflater inflater;
     private ArrayList<Navigable> data = null;
 
-    public SensorListAdapter(Picasso picasso, LayoutInflater inflater, ArrayList<Navigable> data) {
-        super();
+    public SensorListAdapter(Context context, int resource, ArrayList<Navigable> data)
+    {
+        super(context, resource, data);
+        ((DaggerApplication) context).inject(this);
         this.data = data;
-        this.inflater = inflater;
-        this.picasso = picasso;
+        this.inflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -38,15 +41,20 @@ public class SensorListAdapter extends BaseAdapter {
             holder.subTitle = (TextView) convertView.findViewById(R.id.tv_sensor_sub_title);
             holder.unit = (TextView) convertView.findViewById(R.id.tv_sensor_unit);
             holder.icon = (ImageView) convertView.findViewById(R.id.iv_sensor_icon);
+            holder.x = (TextView) convertView.findViewById(R.id.tv_x);
+            holder.y = (TextView) convertView.findViewById(R.id.tv_y);
+            holder.z = (TextView) convertView.findViewById(R.id.tv_z);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+//        holder.x.setText(update[0]);
+//        holder.y.setText(update[1]);
+//        holder.z.setText(update[2]);
         holder.subTitle.setText(this.data.get(position).getSensor().getVendor());
         holder.title.setText(this.data.get(position).getName());
         holder.unit.setText(this.data.get(position).getUnitLabel());
         this.picasso.load(this.data.get(position).getIconUrl()).placeholder(R.drawable.ic_launcher).into(holder.icon);
-
         return convertView;
     }
 
@@ -56,8 +64,9 @@ public class SensorListAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
-        return this.data.get(position);
+    public Navigable getItem(int position)
+    {
+        return super.getItem(position);
     }
 
     @Override
@@ -70,5 +79,8 @@ public class SensorListAdapter extends BaseAdapter {
         TextView title;
         TextView subTitle;
         TextView unit;
+        TextView x;
+        TextView y;
+        TextView z;
     }
 }

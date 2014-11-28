@@ -1,5 +1,6 @@
 package com.jacmobile.sensorpanellite.fragments;
 
+import android.app.Activity;
 import android.hardware.Sensor;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.jacmobile.sensorpanellite.R;
+import com.jacmobile.sensorpanellite.interfaces.Navigator;
 import com.jacmobile.sensorpanellite.util.RecyclerAdapter;
 import com.jacmobile.sensorpanellite.util.SystemInfo;
 
@@ -23,6 +25,7 @@ import java.util.List;
  */
 public class SystemInfoFragment extends ABaseFragment
 {
+    private Navigator navigator;
     private RecyclerView.Adapter mAdapter;
 
     public static SystemInfoFragment newInstance()
@@ -31,8 +34,9 @@ public class SystemInfoFragment extends ABaseFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        this.navigator.setNavigationTitle(getString(R.string.system_profile));
         View list = inflater.inflate(R.layout.fragment_recycler, container, false);
         RecyclerView recyclerView = (RecyclerView) list.findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
@@ -57,7 +61,7 @@ public class SystemInfoFragment extends ABaseFragment
         sensorDescriptions[11] = Build.RADIO;
         sensorDescriptions[12] = Build.SERIAL;
         sensorDescriptions[13] = Build.TAGS;
-        sensorDescriptions[14] = ""+Build.TIME;
+        sensorDescriptions[14] = "" + Build.TIME;
         sensorDescriptions[15] = Build.TYPE;
         sensorDescriptions[16] = Build.USER;
 
@@ -70,5 +74,23 @@ public class SystemInfoFragment extends ABaseFragment
         mAdapter = RecyclerAdapter.newInstance(buildArray, sensorDescriptions, RecyclerAdapter.SYSTEM_INSTANCE);
         recyclerView.setAdapter(mAdapter);
         return list;
+    }
+
+    @Override
+    public void onDetach()
+    {
+        super.onDetach();
+        navigator = null;
+    }
+
+    @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+        try {
+            this.navigator = (Navigator) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement Navigator");
+        }
     }
 }

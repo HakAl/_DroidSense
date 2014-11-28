@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.jacmobile.sensorpanellite.R;
+import com.jacmobile.sensorpanellite.fragments.PaletteExample;
 import com.jacmobile.sensorpanellite.fragments.SensorFragment;
 import com.jacmobile.sensorpanellite.fragments.SensorListFragment;
 import com.jacmobile.sensorpanellite.fragments.SensorProfileFragment;
@@ -16,11 +17,10 @@ import com.jacmobile.sensorpanellite.util.ActionBarManager;
  */
 public class PrimaryActivity extends ABaseActivity implements Navigator
 {
-    private static final String SENSOR_LIST_FRAGMENT = "com.jacmobile.sensorpanellite.sensorlistfragment";
-    private static final String SENSOR_FRAGMENT = "com.jacmobile.sensorpanellite.sensorfragment";
-    private static final String SENSOR_PROFILE_FRAGMENT = "com.jacmobile.sensorpanellite.sensorprofilefragment";
-    private static final String SYSTEM_INFO_FRAGMENT = "com.jacmobile.sensorpanellite.systeminfofragment";
-    private static final String OMNI_FRAGMENT = "com.jacmobile.sensorpanellite.omnifragment";
+    private static final String FRAGMENT_SENSOR_LIST = "com.jacmobile.sensorpanellite.sensorlistfragment";
+    private static final String FRAGMENT_SENSOR = "com.jacmobile.sensorpanellite.sensorfragment";
+    private static final String FRAGMENT_SENSOR_PROFILE = "com.jacmobile.sensorpanellite.sensorprofilefragment";
+    private static final String FRAGMENT_SYSTEM_INFO = "com.jacmobile.sensorpanellite.systeminfofragment";
 
     private boolean isChild = false;
     private ActionBarManager actionBarManager;
@@ -35,13 +35,6 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
         if (savedInstanceState == null) {
             this.newSensortList();
         }
-    }
-
-    @Override
-    protected void onStop()
-    {
-        super.onStop();
-        actionBarManager.onStop();
     }
 
     @Override
@@ -66,7 +59,22 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
         }
     }
 
-    public void onDrawerClick(int position)
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+        actionBarManager.onStop();
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        actionBarManager = null;
+    }
+
+    @Override
+    public void navListClick(int position)
     {
         switch (position) {
             case 0:
@@ -79,7 +87,7 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
                 newSystemInfo();
                 break;
             case 3:
-//                todo settings();
+//                newPalette();
                 break;
             default:
                 break;
@@ -96,7 +104,8 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
         }
     }
 
-    public void setActionBarTitle(String title)
+    @Override
+    public void setNavigationTitle(String title)
     {
         actionBarManager.setActionBarTitle(title);
     }
@@ -105,7 +114,7 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
     {
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, SensorListFragment.newInstance(), SENSOR_LIST_FRAGMENT)
+                .replace(R.id.container, SensorListFragment.newInstance(), FRAGMENT_SENSOR_LIST)
                 .commit();
     }
 
@@ -114,9 +123,8 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
         isChild = true;
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, SensorProfileFragment.newInstance(), SENSOR_PROFILE_FRAGMENT)
+                .replace(R.id.container, SensorProfileFragment.newInstance(), FRAGMENT_SENSOR_PROFILE)
                 .commit();
-        setActionBarTitle(getString(R.string.sensor_profile));
     }
 
     private void newSystemInfo()
@@ -124,9 +132,8 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
         isChild = true;
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, SystemInfoFragment.newInstance(), SYSTEM_INFO_FRAGMENT)
+                .replace(R.id.container, SystemInfoFragment.newInstance(), FRAGMENT_SYSTEM_INFO)
                 .commit();
-        setActionBarTitle(getString(R.string.system_profile));
     }
 
     private void newSensorFragment(int sensor)
@@ -134,7 +141,16 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
         isChild = true;
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, SensorFragment.newInstance(sensor), SENSOR_FRAGMENT)
+                .replace(R.id.container, SensorFragment.newInstance(sensor), FRAGMENT_SENSOR)
+                .commit();
+    }
+
+
+    private void newPalette()
+    {
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, PaletteExample.newInstance(), FRAGMENT_SENSOR_LIST)
                 .commit();
     }
 }

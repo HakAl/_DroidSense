@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.jacmobile.sensorpanellite.activities.ABaseActivity;
 import com.jacmobile.sensorpanellite.activities.PrimaryActivity;
+import com.jacmobile.sensorpanellite.fragments.PaletteExample;
 import com.jacmobile.sensorpanellite.fragments.SensorProfileFragment;
 import com.jacmobile.sensorpanellite.fragments.SensorFragment;
 import com.jacmobile.sensorpanellite.fragments.SensorListFragment;
@@ -26,7 +27,8 @@ import dagger.Provides;
                 SensorFragment.class,
                 SensorListFragment.class,
                 SensorProfileFragment.class,
-                SystemInfoFragment.class
+                SystemInfoFragment.class,
+                PaletteExample.class
         }
 )
 public class ActivityScopeModule {

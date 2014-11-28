@@ -1,5 +1,6 @@
 package com.jacmobile.sensorpanellite.fragments;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -27,6 +28,7 @@ import com.jacmobile.sensorpanellite.R;
 import com.jacmobile.sensorpanellite.activities.PrimaryActivity;
 import com.jacmobile.sensorpanellite.interfaces.ContentView;
 import com.jacmobile.sensorpanellite.interfaces.Navigable;
+import com.jacmobile.sensorpanellite.interfaces.Navigator;
 import com.jacmobile.sensorpanellite.util.SensorController;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -43,6 +45,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
 {
     private static final String WHICH_SENSOR = "sensor";
 
+    private Navigator navigator;
     private Navigable mSensor;
 
     private Redrawer drawer;
@@ -83,7 +86,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         this.mSensor = this.sensorData.get(getArguments().getInt(WHICH_SENSOR));
         this.sensorManager.registerListener(this, this.mSensor.getSensor(), SensorManager.SENSOR_DELAY_UI);
         this.sensorController.onResumeSensorFeed(this, mSensor);
-        ((PrimaryActivity)getActivity()).setActionBarTitle(mSensor.getName());
+        this.navigator.setNavigationTitle(mSensor.getName());
         return this.getSensorView();
     }
 
@@ -113,6 +116,24 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     {
         super.onDestroy();
         this.drawer.finish();
+    }
+
+    @Override
+    public void onDetach()
+    {
+        super.onDetach();
+        this.navigator = null;
+    }
+
+    @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+        try {
+            this.navigator = (Navigator) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement Navigator");
+        }
     }
 
     private View getSensorView()

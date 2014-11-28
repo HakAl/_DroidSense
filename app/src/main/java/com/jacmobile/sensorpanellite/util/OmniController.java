@@ -8,9 +8,11 @@ import android.hardware.SensorManager;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
+import com.jacmobile.sensorpanellite.activities.ABaseActivity;
 import com.jacmobile.sensorpanellite.app.DaggerApplication;
 
 import java.util.ArrayList;
+import java.util.logging.Handler;
 
 import javax.inject.Inject;
 
@@ -19,9 +21,9 @@ import javax.inject.Inject;
  */
 public class OmniController implements SensorEventListener
 {
+    @Inject Handler handler;
     @Inject SensorManager sensorManager;
 
-    private Context context;
     private ListView listView;
     private android.widget.HeaderViewListAdapter adapter;
 
@@ -30,7 +32,11 @@ public class OmniController implements SensorEventListener
         ((DaggerApplication)list.getContext().getApplicationContext()).inject(this);
         listView = list;
         adapter = (android.widget.HeaderViewListAdapter) listView.getAdapter();
-        context = listView.getContext();
+    }
+
+    private Context getActivityContext()
+    {
+        return this.listView.getContext();
     }
 
     public void onResume()
@@ -83,6 +89,7 @@ public class OmniController implements SensorEventListener
     {
         switch (event.sensor.getType()) {
             case 1 :
+
                 break;
             case 2 :
                 break;

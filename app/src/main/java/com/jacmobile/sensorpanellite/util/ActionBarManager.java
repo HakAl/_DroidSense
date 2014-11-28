@@ -25,7 +25,7 @@ import com.jacmobile.sensorpanellite.activities.PrimaryActivity;
 public class ActionBarManager
 {
     private boolean adsOn = true;
-    private String[] drawerStrings = {"Sensor Feed List", "Sensor Profile", "System Properties", "Settings"};
+    private String[] drawerStrings = {"Sensor Feed List", "Sensor Profile", "System Properties", "Palette"};
     private Toolbar toolbar;
     private DrawerLayout drawer;
     private View actionBar;

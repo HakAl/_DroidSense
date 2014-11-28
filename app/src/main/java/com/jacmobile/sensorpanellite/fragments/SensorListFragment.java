@@ -1,10 +1,6 @@
 package com.jacmobile.sensorpanellite.fragments;
 
 import android.app.Activity;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,8 +17,6 @@ import com.jacmobile.sensorpanellite.util.SensorListAdapter;
 import com.jacmobile.sensorpanellite.util.SystemInfo;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-
 import javax.inject.Inject;
 
 /**
@@ -34,7 +28,7 @@ public class SensorListFragment extends AListFragment
     @Inject SensorListAdapter adapter;
     @Inject LayoutInflater layoutInflater;
 
-    private Navigator navigatorListener;
+    private Navigator navigator;
     private OmniController omniController;
 
     public static SensorListFragment newInstance()
@@ -47,7 +41,7 @@ public class SensorListFragment extends AListFragment
     {
         super.onAttach(activity);
         try {
-            this.navigatorListener = (Navigator) activity;
+            this.navigator = (Navigator) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement Navigator");
         }
@@ -57,7 +51,7 @@ public class SensorListFragment extends AListFragment
     public void onDetach()
     {
         super.onDetach();
-        this.navigatorListener = null;
+        this.navigator = null;
     }
 
     @Override
@@ -94,7 +88,7 @@ public class SensorListFragment extends AListFragment
         ListView listView = (ListView) view.findViewById(R.id.list_sensors);
         listView.addFooterView(this.getFooterView());
         listView.setAdapter(adapter);
-        ((PrimaryActivity)navigatorListener).setActionBarTitle((adapter.getCount()-1)+" Sensors");
+        navigator.setNavigationTitle((adapter.getCount() - 1) + " Sensors");
         this.omniController = new OmniController(listView);
         omniController.onStart();
         return view;
@@ -114,11 +108,11 @@ public class SensorListFragment extends AListFragment
     {
         super.onListItemClick(l, view, position, id);
         if (position != adapter.getCount()) {
-            navigatorListener.onTransition(position);
+            navigator.onTransition(position);
 
         } else {
             int[] temp = {position, 0};
-            navigatorListener.onTransition(temp);
+            navigator.onTransition(temp);
         }
     }
 }

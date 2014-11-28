@@ -1,5 +1,6 @@
 package com.jacmobile.sensorpanellite.fragments;
 
+import android.app.Activity;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.jacmobile.sensorpanellite.R;
 import com.jacmobile.sensorpanellite.fragments.ABaseFragment;
+import com.jacmobile.sensorpanellite.interfaces.Navigator;
 import com.jacmobile.sensorpanellite.util.RecyclerAdapter;
 
 import java.util.List;
@@ -26,6 +28,7 @@ public class SensorProfileFragment extends ABaseFragment
     @Inject SensorManager sensorManager;
 
     private RecyclerView.Adapter mAdapter;
+    private Navigator navigator;
 
     public static SensorProfileFragment newInstance()
     {
@@ -33,8 +36,27 @@ public class SensorProfileFragment extends ABaseFragment
     }
 
     @Override
+    public void onDetach()
+    {
+        super.onDetach();
+        navigator = null;
+    }
+
+    @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+        try {
+            this.navigator = (Navigator) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement Navigator");
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+        navigator.setNavigationTitle(getString(R.string.sensor_profile));
         View list = inflater.inflate(R.layout.fragment_recycler, container, false);
         RecyclerView recyclerView = (RecyclerView) list.findViewById(R.id.recycler);
         // use this setting to improve performance if you know that changes

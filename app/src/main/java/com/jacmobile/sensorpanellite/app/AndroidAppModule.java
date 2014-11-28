@@ -31,7 +31,8 @@ import dagger.Provides;
         complete = false,
         library = true,
         injects = {
-                OmniController.class
+                OmniController.class,
+                SensorListAdapter.class
         }
 )
 public class AndroidAppModule
@@ -94,8 +95,8 @@ public class AndroidAppModule
         return result;
     }
 
-    @Provides @Singleton SensorListAdapter provideSensorListAdapter(Picasso picasso, LayoutInflater layoutInflater, ArrayList<Navigable> sensorData)
+    @Provides @Singleton SensorListAdapter provideSensorListAdapter(ArrayList<Navigable> sensorData)
     {
-        return new SensorListAdapter(picasso, layoutInflater, sensorData);
+        return new SensorListAdapter(sApplicationContext, R.layout.card_sensor, sensorData);
     }
 }
