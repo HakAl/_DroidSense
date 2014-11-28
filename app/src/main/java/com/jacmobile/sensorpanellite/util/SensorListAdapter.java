@@ -1,6 +1,7 @@
 package com.jacmobile.sensorpanellite.util;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +21,10 @@ import javax.inject.Inject;
 public class SensorListAdapter extends ArrayAdapter<Navigable>
 {
     @Inject Picasso picasso;
+
     private LayoutInflater inflater;
     private ArrayList<Navigable> data = null;
+    private float[][] update;
 
     public SensorListAdapter(Context context, int resource, ArrayList<Navigable> data)
     {
@@ -48,9 +51,17 @@ public class SensorListAdapter extends ArrayAdapter<Navigable>
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-//        holder.x.setText(update[0]);
-//        holder.y.setText(update[1]);
-//        holder.z.setText(update[2]);
+        int offset = data.get(position).getSensor().getType();
+        if (update[offset] != null) {
+            float z = update[offset][2];
+            if (z == 0f) {
+                holder.z.setText(String.valueOf(((float) Math.round(100 * update[offset][0]) / 100)));
+            } else {
+                holder.x.setText(String.valueOf((float) Math.round(100 * update[offset][0]) / 100));
+                holder.y.setText(String.valueOf((float) Math.round(100 * update[offset][1]) / 100));
+                holder.z.setText(String.valueOf((float) Math.round(100 * update[offset][2]) / 100));
+            }
+        }
         holder.subTitle.setText(this.data.get(position).getSensor().getVendor());
         holder.title.setText(this.data.get(position).getName());
         holder.unit.setText(this.data.get(position).getUnitLabel());
@@ -72,6 +83,12 @@ public class SensorListAdapter extends ArrayAdapter<Navigable>
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+    public void updateData(float[][] update)
+    {
+        this.update = update;
+        this.notifyDataSetChanged();
     }
 
     static class ViewHolder {

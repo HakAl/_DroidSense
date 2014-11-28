@@ -56,7 +56,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         switch (instance) {
             case SENSOR_INSTANCE:
                 if (position == 0) {
-                    holder.title.setText("Total device sensors: " + sensorTitles.length);
+                    holder.title.setText("Total device sensors: " + (sensorTitles.length - 1));
                     holder.description.setText("");
                 } else {
                     holder.title.setText(sensorTitles[position - 1]);

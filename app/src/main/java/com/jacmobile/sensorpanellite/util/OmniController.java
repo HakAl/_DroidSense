@@ -1,62 +1,74 @@
 package com.jacmobile.sensorpanellite.util;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.widget.BaseAdapter;
+import android.os.Handler;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
-import com.jacmobile.sensorpanellite.activities.ABaseActivity;
-import com.jacmobile.sensorpanellite.app.DaggerApplication;
-
-import java.util.ArrayList;
-import java.util.logging.Handler;
-
-import javax.inject.Inject;
+import com.jacmobile.sensorpanellite.R;
+import com.jacmobile.sensorpanellite.fragments.SensorListFragment;
+import com.jacmobile.sensorpanellite.interfaces.Navigable;
 
 /**
  * Created by alex on 11/24/14.
  */
+@Singleton
 public class OmniController implements SensorEventListener
 {
     @Inject Handler handler;
     @Inject SensorManager sensorManager;
 
-    private ListView listView;
-    private android.widget.HeaderViewListAdapter adapter;
+    private SensorListAdapter adapter;
+    private SensorListFragment fragment;
+    private boolean isRunning;
 
-    public OmniController(ListView list)
+    private float[][] dataMap;
+
+    private Runnable omniRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (fragment == null || !isRunning) return;
+            adapter.updateData(dataMap);
+            handler.postDelayed(this, 100);
+        }
+    };
+
+    public void restartTimer()
     {
-        ((DaggerApplication)list.getContext().getApplicationContext()).inject(this);
-        listView = list;
-        adapter = (android.widget.HeaderViewListAdapter) listView.getAdapter();
+        if (!isRunning) {
+            isRunning = true;
+            handler.post(omniRunnable);
+        }
     }
 
-    private Context getActivityContext()
+    public void onResume(SensorListFragment fragment, SensorListAdapter adapter)
     {
-        return this.listView.getContext();
-    }
-
-    public void onResume()
-    {
-        registerSensorListeners();
+        this.adapter = adapter;
+        this.fragment = fragment;
+        this.dataMap = new float[14][];
+        this.registerSensorListeners();
     }
 
     public void onPause()
     {
-        unRegisterSensorListeners();
-    }
-
-    public void onStart()
-    {
-
-    }
-
-    public void onStop()
-    {
-
+        this.unRegisterSensorListeners();
+        this.fragment = null;
+        this.adapter = null;
+        this.isRunning = false;
+        handler.removeCallbacks(omniRunnable);
     }
 
     private ArrayList<Sensor> getSensors()
@@ -87,42 +99,11 @@ public class OmniController implements SensorEventListener
     @Override
     public void onSensorChanged(SensorEvent event)
     {
-        switch (event.sensor.getType()) {
-            case 1 :
-
-                break;
-            case 2 :
-                break;
-            case 3 :
-                break;
-            case 4 :
-                break;
-            case 5 :
-                break;
-            case 6 :
-                break;
-            case 7 :
-                break;
-            case 8 :
-                break;
-            case 9 :
-                break;
-            case 10 :
-                break;
-            case 11 :
-                break;
-            case 12 :
-                break;
-            case 13 :
-                break;
-            default:
-                break;
-        }
+        this.dataMap[event.sensor.getType()] = event.values;
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy)
     {
-
     }
 }

@@ -31,18 +31,18 @@ import dagger.Provides;
         complete = false,
         library = true,
         injects = {
-                OmniController.class,
+//                OmniController.class,
                 SensorListAdapter.class
         }
 )
 public class AndroidAppModule
 {
-
     /* package */ static Context sApplicationContext = null;
 
     /**
      * Allow the application context to be injected but require that it be annotated with
-     * {@link com.jacmobile.sensorpanellite.injection.ForApplication @Annotation} to explicitly differentiate it from an activity context.
+     * {@link com.jacmobile.sensorpanellite.injection.ForApplication @Annotation} to explicitly
+     * differentiate it from an activity context.
      */
     @Provides @Singleton @ForApplication Context provideApplicationContext()
     {

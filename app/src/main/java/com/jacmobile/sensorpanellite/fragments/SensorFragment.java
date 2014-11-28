@@ -56,10 +56,10 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     private SimpleXYSeries zSeries = null;
     private XYPlot sensorPlot;
     private ImageView ivSensor;
-    private boolean isSingleSeries = false;
 
     private int scale;
     private int[] range;
+    private boolean isSingleSeries = false;
 
     @Inject Picasso picasso;
     @Inject ContentView contentView;
@@ -96,7 +96,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         super.onResume();
         this.mSensor = this.sensorData.get(getArguments().getInt(WHICH_SENSOR));
         this.sensorManager.registerListener(this, this.mSensor.getSensor(), SensorManager.SENSOR_DELAY_UI);
-        sensorController.restartTimer();
+        this.sensorController.restartTimer();
         this.drawer.start();
     }
 

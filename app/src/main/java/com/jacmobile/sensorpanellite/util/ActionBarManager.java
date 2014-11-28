@@ -25,7 +25,7 @@ import com.jacmobile.sensorpanellite.activities.PrimaryActivity;
 public class ActionBarManager
 {
     private boolean adsOn = true;
-    private String[] drawerStrings = {"Sensor Feed List", "Sensor Profile", "System Properties", "Palette"};
+    private String[] drawerStrings = {"Sensor Feed List", "Sensor Profile", "System Properties"};
     private Toolbar toolbar;
     private DrawerLayout drawer;
     private View actionBar;
@@ -65,7 +65,7 @@ public class ActionBarManager
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 drawer.closeDrawers();
-                getActivity().onDrawerClick(position);
+                getActivity().navListClick(position);
             }
         });
         ((SwitchCompat) getActivity().findViewById(R.id.drawer_autoupload)).setChecked(adsOn);
