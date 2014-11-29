@@ -11,48 +11,54 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="6dp"
-        android:paddingBottom="6dp"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
+        android:padding="8dp"
         android:background="@drawable/list_selector"
         android:id="@+id/parent_sensor_card">
+
+        <ImageView
+            android:id="@+id/iv_sensor_icon"
+            android:layout_width="@dimen/device_omni_icon"
+            android:layout_height="@dimen/device_omni_icon"
+            android:layout_marginRight="4dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"/>
 
         <TextView
             android:id="@+id/tv_sensor_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/iv_sensor_icon"
-            android:textSize="@dimen/device_icon_label"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="4dp"
+            android:textSize="23sp"
             android:textColor="#000"/>
 
         <TextView
             android:id="@+id/tv_sensor_sub_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="7dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:textSize="12dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="4dp"
+            android:layout_below="@+id/tv_sensor_title"
+            android:layout_alignParentLeft="true"
+            android:textSize="16sp"
+            android:textStyle="italic"
             android:textColor="#000"/>
 
-        <ImageView
-            android:id="@+id/iv_sensor_icon"
-            android:layout_width="@dimen/device_icon"
-            android:layout_height="@dimen/device_icon"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:layout_alignParentLeft="true"/>
+        <View
+            android:id="@+id/sensor_divider"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/green"
+            android:layout_below="@+id/iv_sensor_icon"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_toRightOf="@+id/iv_sensor_icon"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
+            android:layout_below="@+id/sensor_divider"
             android:weightSum="4">
             <TextView
                 android:id="@+id/tv_x"
@@ -61,7 +67,7 @@
                 android:layout_weight="1"
                 android:gravity="right"
                 android:textStyle="italic"
-                android:textSize="17sp"
+                android:textSize="18sp"
                 android:textColor="@color/dark_grey"/>
             <TextView
                 android:id="@+id/tv_y"
@@ -70,7 +76,7 @@
                 android:layout_weight="1"
                 android:gravity="right"
                 android:textStyle="italic"
-                android:textSize="17sp"
+                android:textSize="18sp"
                 android:textColor="@color/dark_grey"/>
             <TextView
                 android:id="@+id/tv_z"
@@ -79,7 +85,7 @@
                 android:layout_weight="1"
                 android:gravity="right"
                 android:textStyle="italic"
-                android:textSize="17sp"
+                android:textSize="18sp"
                 android:textColor="@color/dark_grey"/>
 
             <TextView
@@ -89,7 +95,7 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:layout_gravity="bottom"
-                android:textSize="15sp"
+                android:textSize="16sp"
                 android:textColor="#000"
                 android:textStyle="bold"/>
         </LinearLayout>

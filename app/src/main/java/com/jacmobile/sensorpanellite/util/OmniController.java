@@ -1,26 +1,17 @@
 package com.jacmobile.sensorpanellite.util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.HeaderViewListAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.jacmobile.sensorpanellite.R;
 import com.jacmobile.sensorpanellite.fragments.SensorListFragment;
-import com.jacmobile.sensorpanellite.interfaces.Navigable;
+
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Created by alex on 11/24/14.
@@ -42,7 +33,7 @@ public class OmniController implements SensorEventListener
         public void run() {
             if (fragment == null || !isRunning) return;
             adapter.updateData(dataMap);
-            handler.postDelayed(this, 100);
+            handler.postDelayed(this, 333);
         }
     };
 
@@ -90,16 +81,16 @@ public class OmniController implements SensorEventListener
 
     private void unRegisterSensorListeners()
     {
-        //todo : limit
-        for (Sensor sensor : getSensors()) {
-            sensorManager.unregisterListener(this, sensor);
-        }
+        this.sensorManager.unregisterListener(this);
     }
 
     @Override
     public void onSensorChanged(SensorEvent event)
     {
-        this.dataMap[event.sensor.getType()] = event.values;
+        int position = event.sensor.getType();
+        if (position <= 13) {
+            this.dataMap[position] = event.values;
+        }
     }
 
     @Override

@@ -254,20 +254,20 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     public void updateSeries(float... data)
     {
         if (sensorController.isSingleSeries()) {
-            xSeries.setTitle(String.valueOf((float) Math.round(scale * data[0]) / scale));
+            xSeries.setTitle(String.format("%.2f", data[0]));
             if (xSeries.size() > sensorController.HISTORY_SIZE) {
                 xSeries.removeFirst();
             }
             xSeries.addLast(null, data[0]);
         } else {
             if (scale == 1) {
-                xSeries.setTitle(String.valueOf(Math.round(scale * data[0]) / scale));
-                ySeries.setTitle(String.valueOf(Math.round(scale * data[1]) / scale));
-                zSeries.setTitle(String.valueOf(Math.round(scale * data[2]) / scale));
+                xSeries.setTitle(String.format("%.2f", data[0]));
+                ySeries.setTitle(String.format("%.2f", data[1]));
+                zSeries.setTitle(String.format("%.2f", data[2]));
             } else {
-                xSeries.setTitle(String.valueOf((float) Math.round(scale * data[0]) / scale));
-                ySeries.setTitle(String.valueOf((float) Math.round(scale * data[1]) / scale));
-                zSeries.setTitle(String.valueOf((float) Math.round(scale * data[2]) / scale));
+                xSeries.setTitle(String.format("%.2f",  data[0]));
+                ySeries.setTitle(String.format("%.2f", data[1]));
+                zSeries.setTitle(String.format("%.2f", data[2]));
             }
             if (zSeries.size() > sensorController.HISTORY_SIZE) {
                 zSeries.removeFirst();
@@ -320,7 +320,6 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     {
         switch (accuracy) {
             case SensorManager.SENSOR_STATUS_ACCURACY_HIGH:
-//                sensorPlot.setTitle(this.mSensor.getName());
                 sensorPlot.setTitle("Accuracy: " + accuracyList[0]);
 
                 break;

@@ -8,11 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.jacmobile.sensorpanellite.R;
 import com.jacmobile.sensorpanellite.app.DaggerApplication;
 import com.jacmobile.sensorpanellite.interfaces.Navigable;
 import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 /**
@@ -35,7 +38,8 @@ public class SensorListAdapter extends ArrayAdapter<Navigable>
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent)
+    {
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
@@ -53,13 +57,12 @@ public class SensorListAdapter extends ArrayAdapter<Navigable>
         }
         int offset = data.get(position).getSensor().getType();
         if (update[offset] != null) {
-            float z = update[offset][2];
-            if (z == 0f) {
-                holder.z.setText(String.valueOf(((float) Math.round(100 * update[offset][0]) / 100)));
+            if (Math.abs(update[offset][2]) < .01f) {
+                holder.z.setText(String.format("%.1f",update[offset][0]));
             } else {
-                holder.x.setText(String.valueOf((float) Math.round(100 * update[offset][0]) / 100));
-                holder.y.setText(String.valueOf((float) Math.round(100 * update[offset][1]) / 100));
-                holder.z.setText(String.valueOf((float) Math.round(100 * update[offset][2]) / 100));
+                holder.x.setText(String.format("%.1f", update[offset][0]));
+                holder.y.setText(String.format("%.1f",update[offset][1]));
+                holder.z.setText(String.format("%.1f",update[offset][2]));
             }
         }
         holder.subTitle.setText(this.data.get(position).getSensor().getVendor());
@@ -70,7 +73,8 @@ public class SensorListAdapter extends ArrayAdapter<Navigable>
     }
 
     @Override
-    public int getCount() {
+    public int getCount()
+    {
         return this.data.size();
     }
 
@@ -81,7 +85,8 @@ public class SensorListAdapter extends ArrayAdapter<Navigable>
     }
 
     @Override
-    public long getItemId(int position) {
+    public long getItemId(int position)
+    {
         return position;
     }
 
@@ -91,7 +96,8 @@ public class SensorListAdapter extends ArrayAdapter<Navigable>
         this.notifyDataSetChanged();
     }
 
-    static class ViewHolder {
+    static class ViewHolder
+    {
         ImageView icon;
         TextView title;
         TextView subTitle;
