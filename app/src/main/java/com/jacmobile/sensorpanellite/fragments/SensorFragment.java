@@ -25,7 +25,6 @@ import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYStepMode;
 import com.jacmobile.sensorpanellite.R;
-import com.jacmobile.sensorpanellite.activities.PrimaryActivity;
 import com.jacmobile.sensorpanellite.interfaces.ContentView;
 import com.jacmobile.sensorpanellite.interfaces.Navigable;
 import com.jacmobile.sensorpanellite.interfaces.Navigator;
@@ -35,6 +34,7 @@ import com.squareup.picasso.Target;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -56,6 +56,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     private SimpleXYSeries zSeries = null;
     private XYPlot sensorPlot;
     private ImageView ivSensor;
+    private Bitmap sensorBitmap;
 
     private int scale;
     private int[] range;
@@ -84,7 +85,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         this.mSensor = this.sensorData.get(getArguments().getInt(WHICH_SENSOR));
-        this.sensorManager.registerListener(this, this.mSensor.getSensor(), SensorManager.SENSOR_DELAY_UI);
+//        this.sensorManager.registerListener(this, this.mSensor.getSensor(), SensorManager.SENSOR_DELAY_UI);
         this.sensorController.onResumeSensorFeed(this, mSensor);
         this.navigator.setNavigationTitle(mSensor.getName());
         return this.getSensorView();
@@ -196,7 +197,6 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         }
     }
 
-    Bitmap sensorBitmap;
     private Target target = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -261,13 +261,13 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
             xSeries.addLast(null, data[0]);
         } else {
             if (scale == 1) {
-                xSeries.setTitle(String.format("%.2f", data[0]));
-                ySeries.setTitle(String.format("%.2f", data[1]));
-                zSeries.setTitle(String.format("%.2f", data[2]));
+                xSeries.setTitle(String.format("%.0f", data[0]));
+                ySeries.setTitle(String.format("%.0f", data[1]));
+                zSeries.setTitle(String.format("%.0f", data[2]));
             } else {
-                xSeries.setTitle(String.format("%.2f",  data[0]));
-                ySeries.setTitle(String.format("%.2f", data[1]));
-                zSeries.setTitle(String.format("%.2f", data[2]));
+                xSeries.setTitle(String.format("%.0f",  data[0]));
+                ySeries.setTitle(String.format("%.0f", data[1]));
+                zSeries.setTitle(String.format("%.0f", data[2]));
             }
             if (zSeries.size() > sensorController.HISTORY_SIZE) {
                 zSeries.removeFirst();
@@ -302,7 +302,14 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
 
     public void setElapsedNanos(long elapsedNanos)
     {
-        txtTimer.setText(String.format("%.2f", elapsedNanos / 1000000000d));
+        txtTimer.setText(getTimeString(elapsedNanos));
+    }
+
+    private String getTimeString(long nanos)
+    {
+        long second = TimeUnit.NANOSECONDS.toSeconds(nanos);
+        long minute = TimeUnit.NANOSECONDS.toMinutes(nanos);
+        return String.format("%02d:%02d", minute, second);
     }
 
     @Override

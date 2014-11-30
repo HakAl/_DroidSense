@@ -1,6 +1,8 @@
 package com.jacmobile.sensorpanellite.util;
 
+import android.hardware.Sensor;
 import android.hardware.SensorEvent;
+import android.hardware.SensorManager;
 import android.os.Handler;
 
 import com.jacmobile.sensorpanellite.fragments.SensorFragment;
@@ -24,7 +26,7 @@ public final class SensorController
     private SensorFragment fragment;
 
     private long timerStartNanos;
-    private boolean timerRunning;
+    private boolean timerRunning = true;
 
     private Runnable runnable = new Runnable()
     {
@@ -42,6 +44,7 @@ public final class SensorController
     {
         this.mSensor = sensor;
         this.fragment = fragment;
+        timerRunning = false;
         handler.post(runnable);
     }
 
@@ -62,26 +65,48 @@ public final class SensorController
 
     public void useFilteredData(SensorEvent event)
     {
-        if (isSingleSeries()) {
-            setSingleSeriesData(event);
-            return;
-        } else if (isMagnetometer()) {
-            setMagnetometerData(event);
-            return;
-        } else if (isGravity()) {
-            setGravityData(event);
-            return;
-        } else {
-            currentX = ALPHA * currentX + (1 - ALPHA) * event.values[0];
-            currentY = ALPHA * currentY + (1 - ALPHA) * event.values[1];
-            currentZ = ALPHA * currentZ + (1 - ALPHA) * event.values[2];
+        switch (mSensor.getSensor().getType()) {
+            case Sensor.TYPE_MAGNETIC_FIELD:
+                setMagnetometerData(event);
+                break;
+            case Sensor.TYPE_LIGHT:
+                setSingleSeriesData(event);
+                break;
+            case Sensor.TYPE_PRESSURE:
+                setSingleSeriesData(event);
+                break;
+            case Sensor.TYPE_TEMPERATURE:
+                setSingleSeriesData(event);
+                break;
+            case Sensor.TYPE_PROXIMITY:
+                setSingleSeriesData(event);
+                break;
+            case Sensor.TYPE_GRAVITY:
+                setGravityData(event);
+                break;
+            case Sensor.TYPE_RELATIVE_HUMIDITY:
+                setSingleSeriesData(event);
+                break;
+            case Sensor.TYPE_AMBIENT_TEMPERATURE:
+                setSingleSeriesData(event);
+                break;
+            case Sensor.TYPE_ACCELEROMETER:
+            case Sensor.TYPE_ORIENTATION:
+            case Sensor.TYPE_GYROSCOPE:
+            case Sensor.TYPE_LINEAR_ACCELERATION:
+            case Sensor.TYPE_ROTATION_VECTOR:
+                currentX = ALPHA * currentX + (1 - ALPHA) * event.values[0];
+                currentY = ALPHA * currentY + (1 - ALPHA) * event.values[1];
+                currentZ = ALPHA * currentZ + (1 - ALPHA) * event.values[2];
+                break;
         }
     }
 
     private void setSingleSeriesData(SensorEvent event)
     {
         currentX = ALPHA * currentX + (1 - ALPHA) * event.values[0];
-        Math.abs(currentX);
+        currentX = currentX > 0 ? currentX : currentX * -1;
+//        Math.abs(currentX);
     }
 
     private void setMagnetometerData(SensorEvent event)
@@ -100,48 +125,15 @@ public final class SensorController
         currentX = Math.abs(currentX);
     }
 
-    private boolean isMagnetometer()
-    {
-        return this.mSensor.getName().equals("Magnetometer");
-    }
-
-    private boolean isLight()
-    {
-        return this.mSensor.getName().equals("Light");
-    }
-
-    private boolean isProximity()
-    {
-        return this.mSensor.getName().equals("Proximity");
-    }
-
-    private boolean isGravity()
-    {
-        return this.mSensor.getName().equals("Gravity");
-    }
-
-    private boolean isPressure()
-    {
-        return this.mSensor.getName().equals("Pressure");
-    }
-
-    private boolean isHumidity()
-    {
-        return this.mSensor.getName().equals("Humidity");
-    }
-
-    private boolean isDeviceTemperature()
-    {
-        return this.mSensor.getName().equals("Device Temperature");
-    }
-
-    private boolean isAmbientTemperature()
-    {
-        return this.mSensor.getName().equals("Ambient Temperature");
-    }
-
     public boolean isSingleSeries()
     {
-        return (isLight() || isProximity() || isGravity() || isAmbientTemperature() || isDeviceTemperature() || isHumidity() || isPressure());
+        int sensorType = mSensor.getSensor().getType();
+        return (sensorType == Sensor.TYPE_LIGHT ||
+                sensorType == Sensor.TYPE_PROXIMITY ||
+                sensorType == Sensor.TYPE_GRAVITY||
+                sensorType == Sensor.TYPE_AMBIENT_TEMPERATURE ||
+                sensorType == Sensor.TYPE_TEMPERATURE||
+                sensorType == Sensor.TYPE_RELATIVE_HUMIDITY||
+                sensorType == Sensor.TYPE_PRESSURE);
     }
 }

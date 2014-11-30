@@ -13,6 +13,8 @@ import com.jacmobile.sensorpanellite.interfaces.Navigator;
 import com.jacmobile.sensorpanellite.util.ActionBarManager;
 
 /**
+ * Manages navigation.
+ *
  * Created by alex on 10/12/14.
  */
 public class PrimaryActivity extends ABaseActivity implements Navigator
@@ -22,6 +24,8 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
     private static final String FRAGMENT_SENSOR_PROFILE = "com.jacmobile.sensorpanellite.sensorprofilefragment";
     private static final String FRAGMENT_SYSTEM_INFO = "com.jacmobile.sensorpanellite.systeminfofragment";
 
+    private int currentPosition;
+    private boolean firstLoad = true;
     private boolean isChild = false;
     private ActionBarManager actionBarManager;
 
@@ -76,22 +80,28 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
     @Override
     public void navListClick(int position)
     {
-        switch (position) {
-            case 0:
-                newSensortList();
-                break;
-            case 1:
-                newSensorProfile();
-                break;
-            case 2:
-                newSystemInfo();
-                break;
-            case 3:
+//        if (currentPosition == position) {
+//            return;
+//        } else {
+//            currentPosition = position;
+            switch (position) {
+                case 0:
+                    newSensortList();
+                    break;
+                case 1:
+                    newSensorProfile();
+                    break;
+                case 2:
+                    newSystemInfo();
+                    break;
+                case 3:
 //                newPalette();
-                break;
-            default:
-                break;
-        }
+                    break;
+                default:
+                    break;
+            }
+//        }
+        this.firstLoad = false;
     }
 
     @Override
@@ -112,8 +122,16 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
 
     private void newSensortList()
     {
+        if (firstLoad) {
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, SensorListFragment.newInstance(), FRAGMENT_SENSOR_LIST)
+                    .commit();
+            return;
+        }
         getFragmentManager()
                 .beginTransaction()
+                .setCustomAnimations(R.animator.transaction, android.R.animator.fade_out)
                 .replace(R.id.container, SensorListFragment.newInstance(), FRAGMENT_SENSOR_LIST)
                 .commit();
     }
@@ -123,6 +141,7 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
         isChild = true;
         getFragmentManager()
                 .beginTransaction()
+                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
                 .replace(R.id.container, SensorProfileFragment.newInstance(), FRAGMENT_SENSOR_PROFILE)
                 .commit();
     }
@@ -132,6 +151,7 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
         isChild = true;
         getFragmentManager()
                 .beginTransaction()
+                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
                 .replace(R.id.container, SystemInfoFragment.newInstance(), FRAGMENT_SYSTEM_INFO)
                 .commit();
     }
@@ -141,6 +161,7 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
         isChild = true;
         getFragmentManager()
                 .beginTransaction()
+                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
                 .replace(R.id.container, SensorFragment.newInstance(sensor), FRAGMENT_SENSOR)
                 .commit();
     }

@@ -1,6 +1,7 @@
 package com.jacmobile.sensorpanellite.util;
 
 import android.content.Context;
+import android.hardware.Sensor;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,8 +58,10 @@ public class SensorListAdapter extends ArrayAdapter<Navigable>
         }
         int offset = data.get(position).getSensor().getType();
         if (update[offset] != null) {
-            if (Math.abs(update[offset][2]) < .01f) {
+            if (isSingleSeries(data.get(position).getSensor())) {
                 holder.z.setText(String.format("%.1f",update[offset][0]));
+                holder.x.setText("");
+                holder.y.setText("");
             } else {
                 holder.x.setText(String.format("%.1f", update[offset][0]));
                 holder.y.setText(String.format("%.1f",update[offset][1]));
@@ -68,7 +71,9 @@ public class SensorListAdapter extends ArrayAdapter<Navigable>
         holder.subTitle.setText(this.data.get(position).getSensor().getVendor());
         holder.title.setText(this.data.get(position).getName());
         holder.unit.setText(this.data.get(position).getUnitLabel());
-        this.picasso.load(this.data.get(position).getIconUrl()).placeholder(R.drawable.ic_launcher).into(holder.icon);
+        this.picasso.load(this.data.get(position).getIconUrl())
+                .placeholder(R.drawable.ic_launcher)
+                .into(holder.icon);
         return convertView;
     }
 
@@ -94,6 +99,23 @@ public class SensorListAdapter extends ArrayAdapter<Navigable>
     {
         this.update = update;
         this.notifyDataSetChanged();
+    }
+
+    public ArrayList<Navigable> getData()
+    {
+        return data;
+    }
+
+    public boolean isSingleSeries(Sensor sensor)
+    {
+        int sensorType = sensor.getType();
+        return (sensorType == Sensor.TYPE_LIGHT ||
+                sensorType == Sensor.TYPE_PROXIMITY ||
+                sensorType == Sensor.TYPE_GRAVITY||
+                sensorType == Sensor.TYPE_AMBIENT_TEMPERATURE ||
+                sensorType == Sensor.TYPE_TEMPERATURE||
+                sensorType == Sensor.TYPE_RELATIVE_HUMIDITY||
+                sensorType == Sensor.TYPE_PRESSURE);
     }
 
     static class ViewHolder

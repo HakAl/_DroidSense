@@ -7,6 +7,7 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 
 import com.jacmobile.sensorpanellite.fragments.SensorListFragment;
+import com.jacmobile.sensorpanellite.interfaces.Navigable;
 
 import java.util.ArrayList;
 
@@ -22,11 +23,10 @@ public class OmniController implements SensorEventListener
     @Inject Handler handler;
     @Inject SensorManager sensorManager;
 
+    private float[][] dataMap;
+    private boolean isRunning;
     private SensorListAdapter adapter;
     private SensorListFragment fragment;
-    private boolean isRunning;
-
-    private float[][] dataMap;
 
     private Runnable omniRunnable = new Runnable() {
         @Override
@@ -62,17 +62,13 @@ public class OmniController implements SensorEventListener
         handler.removeCallbacks(omniRunnable);
     }
 
-    private ArrayList<Sensor> getSensors()
-    {
-        return new ArrayList<>(sensorManager.getSensorList(Sensor.TYPE_ALL));
-    }
-
     private void registerSensorListeners()
     {
-        ArrayList<Sensor> sensors = getSensors();
+        ArrayList<Navigable> sensors = adapter.getData();
+
         for (int i = 0; i < sensors.size(); i++) {
             if (i <= 13) {
-                sensorManager.registerListener(this, sensors.get(i), Sensor.REPORTING_MODE_ON_CHANGE);
+                sensorManager.registerListener(this, sensors.get(i).getSensor(), 333);
             } else {
                 break;
             }

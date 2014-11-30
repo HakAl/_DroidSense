@@ -70,7 +70,6 @@ public class PaletteExample extends ABaseFragment
         four.setBackgroundColor(palette.getDarkMutedColor(Color.YELLOW));
         five.setBackgroundColor(palette.getLightVibrantColor(Color.YELLOW));
         six.setBackgroundColor(palette.getLightMutedColor(Color.YELLOW));
-
     }
 
     private Target target = new Target()
