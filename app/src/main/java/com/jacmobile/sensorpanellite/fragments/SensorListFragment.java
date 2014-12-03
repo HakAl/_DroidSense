@@ -10,10 +10,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jacmobile.sensorpanellite.R;
-import com.jacmobile.sensorpanellite.activities.PrimaryActivity;
 import com.jacmobile.sensorpanellite.interfaces.Navigator;
 import com.jacmobile.sensorpanellite.util.OmniController;
-import com.jacmobile.sensorpanellite.util.SensorListAdapter;
+import com.jacmobile.sensorpanellite.adapters.SensorListAdapter;
 import com.jacmobile.sensorpanellite.util.SystemInfo;
 import com.squareup.picasso.Picasso;
 

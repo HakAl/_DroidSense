@@ -6,6 +6,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
 
+import com.jacmobile.sensorpanellite.adapters.SensorListAdapter;
 import com.jacmobile.sensorpanellite.fragments.SensorListFragment;
 import com.jacmobile.sensorpanellite.interfaces.Navigable;
 

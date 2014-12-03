@@ -11,7 +11,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
         android:background="@drawable/list_selector"
         android:id="@+id/parent_sensor_card">
 
@@ -19,7 +18,9 @@
             android:id="@+id/iv_sensor_icon"
             android:layout_width="@dimen/device_omni_icon"
             android:layout_height="@dimen/device_omni_icon"
-            android:layout_marginRight="4dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="20dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"/>
 
@@ -29,7 +30,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="4dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             android:textSize="23sp"
             android:textColor="#000"/>
 
@@ -38,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:layout_marginLeft="4dp"
+            android:layout_marginLeft="12dp"
             android:layout_below="@+id/tv_sensor_title"
             android:layout_alignParentLeft="true"
             android:textSize="16sp"
@@ -49,52 +51,59 @@
             android:id="@+id/sensor_divider"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/grey"
-            android:layout_below="@+id/iv_sensor_icon"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"/>
+            android:background="@color/transparent_grey"
+            android:layout_above="@+id/container_omni_output"
+            android:layout_margin="4dp"/>
 
         <LinearLayout
+            android:id="@+id/container_omni_output"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_below="@+id/sensor_divider"
+            android:layout_below="@+id/iv_sensor_icon"
             android:weightSum="4">
             <TextView
                 android:id="@+id/tv_x"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:layout_weight="1"
                 android:gravity="right"
                 android:textStyle="italic"
-                android:textSize="18sp"
+                android:textSize="21sp"
                 android:textColor="@color/dark_grey"/>
             <TextView
                 android:id="@+id/tv_y"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:layout_weight="1"
                 android:gravity="right"
                 android:textStyle="italic"
-                android:textSize="18sp"
+                android:textSize="21sp"
                 android:textColor="@color/dark_grey"/>
             <TextView
                 android:id="@+id/tv_z"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:layout_weight="1"
                 android:gravity="right"
                 android:textStyle="italic"
-                android:textSize="18sp"
+                android:textSize="21sp"
                 android:textColor="@color/dark_grey"/>
 
             <TextView
                 android:id="@+id/tv_sensor_unit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:layout_gravity="bottom"
                 android:textSize="16sp"
                 android:textColor="#000"
                 android:textStyle="bold"/>

@@ -6,15 +6,13 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.jacmobile.sensorpanellite.R;
-import com.jacmobile.sensorpanellite.fragments.ABaseFragment;
 import com.jacmobile.sensorpanellite.interfaces.Navigator;
-import com.jacmobile.sensorpanellite.util.RecyclerAdapter;
+import com.jacmobile.sensorpanellite.adapters.RecyclerAdapter;
 
 import java.util.List;
 

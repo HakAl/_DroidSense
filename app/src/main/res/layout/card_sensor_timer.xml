@@ -24,30 +24,30 @@
             android:textSize="@dimen/device_icon_label"
             android:textColor="#000"/>
 
-        <TextView
-            android:id="@+id/tv_sensor_sub_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/iv_sensor_icon"
-            android:layout_marginTop="2dp"
-            android:layout_marginLeft="12dp"
-            android:layout_below="@id/tv_sensor_title"
-            android:textSize="@dimen/device_icon_text"
-            android:maxLength="20"
-            android:textColor="#000"/>
+        <!--<TextView-->
+            <!--android:id="@+id/tv_sensor_sub_title"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_toRightOf="@+id/iv_sensor_icon"-->
+            <!--android:layout_marginTop="2dp"-->
+            <!--android:layout_marginLeft="12dp"-->
+            <!--android:layout_below="@id/tv_sensor_title"-->
+            <!--android:textSize="@dimen/device_icon_text"-->
+            <!--android:maxLength="20"-->
+            <!--android:textColor="#000"/>-->
 
-        <TextView
-            android:id="@+id/tv_sensor_descript"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/iv_sensor_icon"
-            android:layout_toLeftOf="@+id/switch_sensor_timer"
-            android:layout_alignBottom="@+id/iv_sensor_icon"
-            android:layout_marginLeft="12dp"
-            android:textSize="@dimen/device_icon_text"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:textColor="#000"/>
+        <!--<TextView-->
+            <!--android:id="@+id/tv_sensor_descript"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_toRightOf="@+id/iv_sensor_icon"-->
+            <!--android:layout_toLeftOf="@+id/switch_sensor_timer"-->
+            <!--android:layout_alignBottom="@+id/iv_sensor_icon"-->
+            <!--android:layout_marginLeft="12dp"-->
+            <!--android:textSize="@dimen/device_icon_text"-->
+            <!--android:singleLine="true"-->
+            <!--android:ellipsize="end"-->
+            <!--android:textColor="#000"/>-->
 
         <ImageView
             android:id="@+id/iv_sensor_icon"

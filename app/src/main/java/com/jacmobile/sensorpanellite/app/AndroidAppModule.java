@@ -11,11 +11,9 @@ import android.view.LayoutInflater;
 import com.jacmobile.sensorpanellite.R;
 import com.jacmobile.sensorpanellite.injection.ForApplication;
 import com.jacmobile.sensorpanellite.interfaces.Navigable;
-import com.jacmobile.sensorpanellite.util.ImageUrls;
-import com.jacmobile.sensorpanellite.util.OmniController;
-import com.jacmobile.sensorpanellite.util.SensorListAdapter;
+import com.jacmobile.sensorpanellite.util.Config;
+import com.jacmobile.sensorpanellite.adapters.SensorListAdapter;
 import com.jacmobile.sensorpanellite.util.SensorListItem;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,7 +77,7 @@ public class AndroidAppModule
         String[] sensorRanges = sApplicationContext.getResources().getStringArray(R.array.sensor_ranges);
         ArrayList<String> sensorUnitLabels = new ArrayList<String>(Arrays.asList(sApplicationContext.getResources().getStringArray(R.array.sensor_unit_labels)));
         ArrayList<String> sensorNames = new ArrayList<String>(Arrays.asList(sApplicationContext.getResources().getStringArray(R.array.sensors_array)));
-        String[] imageUrls = ImageUrls.getImageUrls();
+        String[] imageUrls = Config.getImageUrls();
         ArrayList<Navigable> result = new ArrayList<Navigable>();
         for (int i = 1; i < 14; i++) {
             if (sensorManager.getDefaultSensor(i) != null) {

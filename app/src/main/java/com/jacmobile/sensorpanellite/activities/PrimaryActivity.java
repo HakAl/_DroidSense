@@ -1,5 +1,6 @@
 package com.jacmobile.sensorpanellite.activities;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
@@ -14,7 +15,7 @@ import com.jacmobile.sensorpanellite.util.ActionBarManager;
 
 /**
  * Manages navigation.
- *
+ * <p/>
  * Created by alex on 10/12/14.
  */
 public class PrimaryActivity extends ABaseActivity implements Navigator
@@ -49,6 +50,13 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+        actionBarManager.onConfigurationChanged(newConfig);
+    }
+
+    @Override
     public void onBackPressed()
     {
         if (actionBarManager.isDrawerOpen()) {
@@ -80,10 +88,10 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
     @Override
     public void navListClick(int position)
     {
-//        if (currentPosition == position) {
-//            return;
-//        } else {
-//            currentPosition = position;
+        if (currentPosition == position) {
+            return;
+        } else {
+            currentPosition = position;
             switch (position) {
                 case 0:
                     newSensortList();
@@ -100,7 +108,7 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
                 default:
                     break;
             }
-//        }
+        }
         this.firstLoad = false;
     }
 
@@ -131,7 +139,7 @@ public class PrimaryActivity extends ABaseActivity implements Navigator
         }
         getFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(R.animator.transaction, android.R.animator.fade_out)
+                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
                 .replace(R.id.container, SensorListFragment.newInstance(), FRAGMENT_SENSOR_LIST)
                 .commit();
     }

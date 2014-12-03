@@ -4,6 +4,7 @@
     <color name="dim_fog">#cceaeaea</color>
     <color name="grey_fog">#aab3b3b3</color>
     <color name="grey">#8c8c8c</color>
+    <color name="transparent_grey">#8c8c8c</color>
     <color name="dark_grey">#424242</color>
     <color name="steel">#aacdcddd</color>
     <color name="off_white">#eaeaea</color>

@@ -84,19 +84,19 @@
                 android:layout_above="@+id/drawer_url"
                 android:id="@+id/grey_thin_divider"/>
 
-            <android.support.v7.widget.SwitchCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/grey_thin_divider"
-                android:minHeight="?android:attr/listPreferredItemHeightSmall"
-                android:id="@+id/drawer_autoupload"
-                android:text="Awesome"
-                android:textSize="18sp"
-                android:textStyle="normal"
-                android:textColor="@color/black"
-                android:gravity="center_vertical"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"/>
+            <!--<android.support.v7.widget.SwitchCompat-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_above="@+id/grey_thin_divider"-->
+                <!--android:minHeight="?android:attr/listPreferredItemHeightSmall"-->
+                <!--android:id="@+id/drawer_autoupload"-->
+                <!--android:text="Awesome"-->
+                <!--android:textSize="18sp"-->
+                <!--android:textStyle="normal"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:paddingLeft="16dp"-->
+                <!--android:paddingRight="16dp"/>-->
         </RelativeLayout>
     </android.support.v4.widget.DrawerLayout>
 </RelativeLayout>

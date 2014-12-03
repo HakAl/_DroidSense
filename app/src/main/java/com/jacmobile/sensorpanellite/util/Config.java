@@ -3,7 +3,7 @@ package com.jacmobile.sensorpanellite.util;
 /**
  * Created by alex on 10/12/14.
  */
-public class ImageUrls
+public class Config
 {
     private static final String PREFIX = "http://jacmobile.com/ds_images/";
 

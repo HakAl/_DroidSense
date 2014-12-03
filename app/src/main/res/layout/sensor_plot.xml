@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -13,15 +12,9 @@
         android:id="@+id/sensor_plot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        androidPlot.backgroundPaint.color="@color/fog"
-        androidPlot.borderPaint.color="@color/grey_fog"
         androidPlot.domainLabelWidget.labelPaint.textSize="15sp"
-        androidPlot.domainLabelWidget.labelPaint.color="@color/black"
-        androidPlot.graphWidget.backgroundPaint.color="@color/fog"
-        androidPlot.graphWidget.domainLabelPaint.color="@color/black"
         androidPlot.graphWidget.domainLabelPaint.textSize="15sp"
         androidPlot.graphWidget.domainOriginLabelPaint.textSize="15sp"
-        androidPlot.graphWidget.gridBackgroundPaint.color="@color/dim_fog"
         androidPlot.graphWidget.marginBottom="40dp"
         androidPlot.graphWidget.marginRight="15dp"
         androidPlot.graphWidget.marginLeft="20dp"
@@ -33,11 +26,17 @@
         androidPlot.legendWidget.iconSizeMetrics.heightMetric.value="14sp"
         androidPlot.legendWidget.iconSizeMetrics.widthMetric.value="14sp"
         androidPlot.legendWidget.textPaint.textSize="20sp"
-        androidPlot.rangeLabelWidget.labelPaint.color="@color/black"
         androidPlot.rangeLabelWidget.labelPaint.textSize="15sp"
         androidPlot.titleWidget.labelPaint.textSize="@dimen/title_font_size"
         androidPlot.titleWidget.marginTop="6dp"
-        androidPlot.titleWidget.labelPaint.color="@color/black"
         androidplot.renderMode="use_background_thread"
-        androidPlot.domainLabel="Time"/>
+        androidPlot.domainLabel="Time"
+        androidPlot.titleWidget.labelPaint.color="@color/black"
+        androidPlot.domainLabelWidget.labelPaint.color="@color/black"
+        androidPlot.rangeLabelWidget.labelPaint.color="@color/black"
+        androidPlot.graphWidget.domainLabelPaint.color="@color/black"
+        androidPlot.backgroundPaint.color="@color/fog"
+        androidPlot.borderPaint.color="@color/white"
+        androidPlot.graphWidget.backgroundPaint.color="@color/fog"
+        androidPlot.graphWidget.gridBackgroundPaint.color="@color/dim_fog"/>
 </android.support.v7.widget.CardView>

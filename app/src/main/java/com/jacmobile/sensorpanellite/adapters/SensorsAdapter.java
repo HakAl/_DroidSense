@@ -1,4 +1,4 @@
-package com.jacmobile.sensorpanellite.util;
+package com.jacmobile.sensorpanellite.adapters;
 
 import android.hardware.Sensor;
 import android.view.View;

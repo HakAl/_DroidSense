@@ -2,6 +2,7 @@ package com.jacmobile.sensorpanellite.util;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
 
@@ -12,21 +13,21 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public final class SensorController
+public final class SensorController implements SensorEventListener
 {
     private static final float ALPHA = .9f;
     public static final int HISTORY_SIZE = 100;
     public static final float STANDARD_GRAVITY = 9.80665f;
 
-    private float currentX, currentY, currentZ;
-
     @Inject Handler handler;
+    @Inject SensorManager sensorManager;
 
     private Navigable mSensor;
     private SensorFragment fragment;
 
     private long timerStartNanos;
     private boolean timerRunning = true;
+    private float currentX, currentY, currentZ;
 
     private Runnable runnable = new Runnable()
     {
@@ -106,7 +107,6 @@ public final class SensorController
     {
         currentX = ALPHA * currentX + (1 - ALPHA) * event.values[0];
         currentX = currentX > 0 ? currentX : currentX * -1;
-//        Math.abs(currentX);
     }
 
     private void setMagnetometerData(SensorEvent event)
@@ -135,5 +135,17 @@ public final class SensorController
                 sensorType == Sensor.TYPE_TEMPERATURE||
                 sensorType == Sensor.TYPE_RELATIVE_HUMIDITY||
                 sensorType == Sensor.TYPE_PRESSURE);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event)
+    {
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy)
+    {
+
     }
 }

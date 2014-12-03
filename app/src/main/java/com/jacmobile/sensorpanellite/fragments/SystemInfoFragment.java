@@ -1,24 +1,17 @@
 package com.jacmobile.sensorpanellite.fragments;
 
 import android.app.Activity;
-import android.hardware.Sensor;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.jacmobile.sensorpanellite.R;
 import com.jacmobile.sensorpanellite.interfaces.Navigator;
-import com.jacmobile.sensorpanellite.util.RecyclerAdapter;
-import com.jacmobile.sensorpanellite.util.SystemInfo;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.jacmobile.sensorpanellite.adapters.RecyclerAdapter;
 
 /**
  * Created by alex on 11/9/14.

@@ -57,9 +57,6 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     private XYPlot sensorPlot;
     private ImageView ivSensor;
     private Bitmap sensorBitmap;
-
-    private int scale;
-    private int[] range;
     private boolean isSingleSeries = false;
 
     @Inject Picasso picasso;
@@ -139,29 +136,38 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
 
     private View getSensorView()
     {
-        this.range = getRange();
-        this.setScale();
-        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-        ViewGroup view = (ViewGroup) layoutInflater.inflate(R.layout.fragment_sensor, contentView.get(getActivity()), false);
-        this.sensorPlot = (XYPlot) view.findViewById(R.id.sensor_plot);
-        sensorPlot.setDomainStepMode(XYStepMode.INCREMENT_BY_VAL);
-        sensorPlot.setDomainStepValue(10 / 1);
-        sensorPlot.setTicksPerRangeLabel(3);
-        // Number format
-        sensorPlot.setDomainValueFormat(new DecimalFormat("#"));
-        sensorPlot.setRangeValueFormat(new DecimalFormat("#"));
-        sensorPlot.setRangeBoundaries(range[0], range[1], BoundaryMode.FIXED);
-        sensorPlot.setRangeLabel(this.mSensor.getUnitLabel());
-        sensorPlot.setDomainBoundaries(0, SensorController.HISTORY_SIZE, BoundaryMode.FIXED);
-        this.setSeries(sensorPlot);
-        drawer = new Redrawer(sensorPlot, SensorController.HISTORY_SIZE, false);
+//        this.range = getRange();
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_sensor, contentView.get(getActivity()), false);
+        this.setPlot(view);
+        this.setSeries();
         this.setSensorCard(view);
-        getPallette();
         return view;
     }
 
 
-    private void setSeries(XYPlot sensorPlot)
+    private int[] getRange()
+    {
+        return new int[]{
+                Integer.valueOf(mSensor.getSensorRange()[0]),
+                Integer.valueOf(mSensor.getSensorRange()[1])};
+    }
+    private void setPlot(ViewGroup view)
+    {
+        int[] range = getRange();
+        this.sensorPlot = (XYPlot) view.findViewById(R.id.sensor_plot);
+        sensorPlot.setDomainStepMode(XYStepMode.INCREMENT_BY_VAL);
+        sensorPlot.setDomainStepValue(10 / 1);
+        sensorPlot.setTicksPerRangeLabel(3);
+        sensorPlot.setDomainValueFormat(new DecimalFormat("#"));
+        sensorPlot.setRangeValueFormat(new DecimalFormat("#"));
+        sensorPlot.setRangeBoundaries(Integer.valueOf(range[0]), Integer.valueOf(range[1]), BoundaryMode.FIXED);
+        sensorPlot.setRangeLabel(this.mSensor.getUnitLabel());
+        sensorPlot.setDomainBoundaries(0, SensorController.HISTORY_SIZE, BoundaryMode.FIXED);
+        drawer = new Redrawer(sensorPlot, SensorController.HISTORY_SIZE, false);
+    }
+
+    private void setSeries()
     {
         if (sensorController.isSingleSeries()) {
             xSeries = new SimpleXYSeries("X");
@@ -192,7 +198,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
             sensorPlot.addSeries(xSeries, new LineAndPointFormatter(palette.getVibrantColor(Color.RED), null, null, null));
         } else {
             sensorPlot.addSeries(xSeries, new LineAndPointFormatter(palette.getVibrantColor(Color.RED), null, null, null));
-            sensorPlot.addSeries(ySeries, new LineAndPointFormatter(palette.getLightVibrantColor(Color.CYAN), null, null, null));
+            sensorPlot.addSeries(ySeries, new LineAndPointFormatter(palette.getDarkMutedColor(Color.CYAN), null, null, null));
             sensorPlot.addSeries(zSeries, new LineAndPointFormatter(palette.getDarkVibrantColor(Color.YELLOW), null, null, null));
         }
     }
@@ -202,6 +208,14 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
             sensorBitmap = bitmap;
             ivSensor.setImageBitmap(bitmap);
+            ivSensor.post(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    getPallette();
+                }
+            });
         }
 
         @Override
@@ -221,8 +235,8 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
     {
         this.txtTimer = ((TextView) parent.findViewById(R.id.tv_sensor_timer));
         ((TextView) parent.findViewById(R.id.tv_sensor_title)).setText(this.mSensor.getName());
-        ((TextView) parent.findViewById(R.id.tv_sensor_sub_title)).setText(this.mSensor.getSensor().getVendor());
-        ((TextView) parent.findViewById(R.id.tv_sensor_descript)).setText(this.mSensor.getSensor().getName());
+//        ((TextView) parent.findViewById(R.id.tv_sensor_sub_title)).setText(this.mSensor.getSensor().getVendor());
+//        ((TextView) parent.findViewById(R.id.tv_sensor_descript)).setText(this.mSensor.getSensor().getName());
         this.switchTimer = (SwitchCompat) parent.findViewById(R.id.switch_sensor_timer);
         this.switchTimer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
@@ -234,7 +248,6 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         });
 
         this.ivSensor = ((ImageView) parent.findViewById(R.id.iv_sensor_icon));
-
         this.picasso.load(
                 this.mSensor.getIconUrl())
                 .placeholder(R.drawable.ic_launcher)
@@ -260,15 +273,9 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
             }
             xSeries.addLast(null, data[0]);
         } else {
-            if (scale == 1) {
-                xSeries.setTitle(String.format("%.0f", data[0]));
-                ySeries.setTitle(String.format("%.0f", data[1]));
-                zSeries.setTitle(String.format("%.0f", data[2]));
-            } else {
-                xSeries.setTitle(String.format("%.0f",  data[0]));
-                ySeries.setTitle(String.format("%.0f", data[1]));
-                zSeries.setTitle(String.format("%.0f", data[2]));
-            }
+            xSeries.setTitle(String.format("%.0f", data[0]));
+            ySeries.setTitle(String.format("%.0f", data[1]));
+            zSeries.setTitle(String.format("%.0f", data[2]));
             if (zSeries.size() > sensorController.HISTORY_SIZE) {
                 zSeries.removeFirst();
                 ySeries.removeFirst();
@@ -280,26 +287,6 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         }
     }
 
-    private void setScale()
-    {
-        if (this.range[1] >= 99) {
-            this.scale = 1;
-            return;
-        } else if (this.range[1] >= 20) {
-            this.scale = 10;
-            return;
-        } else {
-            this.scale = 100;
-        }
-    }
-
-    private int[] getRange()
-    {
-        return new int[]{
-                Integer.valueOf(mSensor.getSensorRange()[0]),
-                Integer.valueOf(mSensor.getSensorRange()[1])};
-    }
-
     public void setElapsedNanos(long elapsedNanos)
     {
         txtTimer.setText(getTimeString(elapsedNanos));
@@ -307,7 +294,7 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
 
     private String getTimeString(long nanos)
     {
-        long second = TimeUnit.NANOSECONDS.toSeconds(nanos);
+        long second = TimeUnit.NANOSECONDS.toSeconds(nanos) % 60;
         long minute = TimeUnit.NANOSECONDS.toMinutes(nanos);
         return String.format("%02d:%02d", minute, second);
     }
@@ -328,26 +315,20 @@ public class SensorFragment extends ABaseFragment implements SensorEventListener
         switch (accuracy) {
             case SensorManager.SENSOR_STATUS_ACCURACY_HIGH:
                 sensorPlot.setTitle("Accuracy: " + accuracyList[0]);
-
                 break;
             case SensorManager.SENSOR_STATUS_ACCURACY_LOW:
                 sensorPlot.setTitle("Accuracy: " + accuracyList[1]);
-
                 break;
             case SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM:
                 sensorPlot.setTitle("Accuracy: " + accuracyList[2]);
-
                 break;
             case SensorManager.SENSOR_STATUS_NO_CONTACT:
                 sensorPlot.setTitle("Accuracy: " + accuracyList[3]);
-
                 break;
             case SensorManager.SENSOR_STATUS_UNRELIABLE:
                 sensorPlot.setTitle("Accuracy: " + accuracyList[4]);
-
                 break;
             default:
-
                 break;
         }
     }
